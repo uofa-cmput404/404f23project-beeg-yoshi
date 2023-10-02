@@ -10,10 +10,10 @@ Contributors / Licensing
 
 Authors:
     
-* Firstname Lastname
-* Firstname Lastname
-* Firstname Lastname
-* Firstname Lastname
-* Firstname Lastnmae
+* Nathan Wong
+* Josh Vuong
+* Lauren Herman
+* Michael Harbidge
+* Youwei Peng
 
 Generally everything is LICENSE'D under the ______________.
