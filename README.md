@@ -15,5 +15,3 @@ Authors:
 * Lauren Herman (lherman@ualberta.ca)
 * Michael Harbidge (harbidge@ualberta.ca)
 * Youwei Peng (youwei@alberta.ca)
-
-Generally everything is LICENSE'D under the ______________.
