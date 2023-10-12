@@ -4,6 +4,7 @@ CMPUT404-project-socialdistribution
 CMPUT 404 Project: Social Distribution
 
 [Project requirements](https://github.com/uofa-cmput404/project-socialdistribution/blob/master/project.org) 
+[Our Team Wiki](https://github.com/uofa-cmput404/404f23project-beeg-yoshi/wiki)
 
 Contributors
 ============
