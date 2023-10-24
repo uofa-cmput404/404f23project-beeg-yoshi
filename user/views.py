@@ -152,8 +152,38 @@ def get_followers_of_single_author(request, pk):
 @api_view(['POST'])
 def Be_friend(request):
     if request.method == 'POST':
-        serializer = FriendshipSerializer(data=request.data)
+        try:
+            #check whether the to_user is already follow the from_user
+            friendship = Friendship.objects.get(from_user=request.data['to_user'], to_user=request.data['from_user'])
+            friendship.bidirectional = True
+            friendship.save()
+            return Response(status=status.HTTP_200_OK)
+        except Friendship.DoesNotExist:
+                try:
+                    #check whether the from_user is already follow the to_user
+                    friendship = Friendship.objects.get(from_user=request.data['from_user'], to_user=request.data['to_user'])
+                    return Response({"message":"Friendship already exists"},status=status.HTTP_400_BAD_REQUEST)
+                except Friendship.DoesNotExist:
+                    serializer = FriendshipSerializer(data=request.data)
+                    if serializer.is_valid():
+                        serializer.save()
+                        return Response(serializer.data, status=status.HTTP_201_CREATED)
+                    return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
+@api_view(['GET', 'DELETE', 'PUT'])
+def single_friendship_method(request,pk,fk):
+    try:
+        friendship=Friendship.objects.get(pk=pk,fk=fk)
+    except Friendship.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    if request.method=='GET':
+        serializer=FriendshipSerializer(friendship)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    elif request.method=='PUT':
+        serializer=FriendshipSerializer(friendship,data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        return Response(serializer.error,status=status.HTTP_400_BAD_REQUEST)
+    elif request.method=='DELETE':
+        friendship.delete()
+        return Response(status=status.HTTP_200_OK)

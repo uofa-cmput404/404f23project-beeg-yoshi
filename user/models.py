@@ -31,7 +31,7 @@ class ServerAdmin(User):
     base_role=User.Role.SERVER_ADMIN
     Admin_id=models.AutoField(primary_key=True)
     def __str__(self):
-        return self.displayName+" Role: "+self.type
+        return self.displayName+" Role: "+ self.type
 
 class Post(models.Model):
     title=models.CharField(max_length=512)
