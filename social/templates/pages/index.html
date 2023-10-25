@@ -1,12 +1,14 @@
 <!-- This is the homepage -->
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homepage</title>
-    <link rel="stylesheet" href="../stylesheets/main.css">
-    <link rel="stylesheet" href="../stylesheets/homepage.css">
+    <link rel="stylesheet" href="{% static 'social/stylesheets/main.css' %}">
+    <link rel="stylesheet" href="{% static 'social/stylesheets/homepage.css' %}">
 </head>
 <body>
     <!-- Header always sticks to top of screen -->
