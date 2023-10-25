@@ -1,0 +1,93 @@
+/* main.css = Contains style structure tha'ts shared across all webpages. 
+- Main design language.
+- Header.
+- Footer.
+*/
+body{
+    min-height: 100vh; /* Page is at least as long as the length of the page */
+    display: flex;
+    flex-direction: column;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+
+    /* Set defaults for all text */
+    font-size: 18px; /* Adjust using REM units */
+    list-style: none;
+    text-decoration: none;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    box-sizing: border-box; /* For all elements, accounts border + padding into its actual width */
+}
+
+:root{ /* Global variables for colors. If things break in the future, check this. */
+    --headerColor: #27374D;
+    --lightText: #fefefe;
+    --darkText: #11101b;
+    --accentLight: #9DB2BF;
+    --mainBackground: #d1d1e0;
+}
+
+.header {
+    width: 100%; /* Will always be 100% of the viewport */
+    height: 4rem;
+    background: var(--headerColor);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Splits up flex-items */
+}
+
+.header .appLogo{
+    margin-left: 2rem;
+    flex-shrink: 0; /* Prevents logo from shrinking */
+    color: var(--lightText);
+}
+
+.header .navLinks {
+    display: flex;
+    gap: 1rem;
+    margin-right: 2rem;
+}
+
+.header .navLinks li a { /* The clickable links */
+    color: var(--lightText);
+    padding: 10px 25px;
+
+    /* Hover-state */
+    border-radius: 100px;
+    transition: 0.5s; /* Fade-in & out */
+}
+
+.header .navLinks li a:hover{
+    color: var(--darkText);
+    background: var(--accentLight);
+}
+
+/* LATER: If viewport becomes too small, hide the navbar and show hamburger menu instead */
+
+
+/* Footer */
+.footer {
+    /* Stick footer to bottom */
+    position: relative;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    margin-top: auto;
+    background: var(--headerColor);
+}
+
+.footer .footerLinks{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    padding: 8px;
+}
+
+.footer .footerLinks a{
+    color: var(--lightText);
+}
