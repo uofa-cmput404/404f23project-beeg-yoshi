@@ -7,7 +7,7 @@ class User(AbstractBaseUser):
     host=models.CharField(max_length=1024)
     displayName=models.CharField(max_length=1024)
     github=models.CharField(max_length=1024)
-    profileImage=models.ImageField(blank=True)
+    profileImage=models.CharField(max_length=1024)
     USERNAME_FIELD='displayName'
     def __str__(self):
         return self.displayName + " Role: " + self.type
