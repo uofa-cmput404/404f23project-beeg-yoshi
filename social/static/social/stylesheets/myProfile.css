@@ -1,0 +1,60 @@
+body{
+    display: flex;
+    flex-direction: column;
+}
+
+.cover{
+    height: 120px;
+    background-color: var(--accentColor);
+}
+
+#pfp {
+    position: relative;
+    width: 225px;
+    height: auto;
+
+    left: 50%;
+    top: 120px; /* Height of cover = in the middle */
+    transform: translate(-50%, -50%);
+
+    clip-path: circle();
+}
+
+.content .stream{
+    padding-top: 5rem;
+    align-items: center;
+}
+
+hr.divider {
+    border-top: 1px solid var(--darkText);
+    width: 80%; /* of the stream column */
+    margin-top: 1rem; /* spaces out both top & bottom */
+    margin-bottom: 1rem;
+}
+
+/* User Information */
+.content .stream .userInfo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+#githubLogo{
+    width: 45px;
+    height: auto;
+}
+
+.stream #bio{
+    width: 50%; /* Takes up half of the stream column */
+    text-align: center;
+    margin-top: 1rem; /* Space out biography */
+}
+
+
+
+
+
+
+
+

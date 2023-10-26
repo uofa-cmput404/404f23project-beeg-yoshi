@@ -9,6 +9,9 @@
     <title>Homepage</title>
     <link rel="stylesheet" href="{% static 'social/stylesheets/main.css' %}">
     <link rel="stylesheet" href="{% static 'social/stylesheets/homepage.css' %}">
+    <link rel="stylesheet" href="../../static/social/stylesheets/homepage.css"> <!-- For development purposes, can delete it later. -->
+    <link rel="stylesheet" href="../../static/social/stylesheets/main.css"> <!-- ^ -->
+
 </head>
 <body>
     <!-- Header always sticks to top of screen -->
@@ -18,9 +21,8 @@
             <li><a href="">Homepage</a></li>
             <li><a href="">Notifications</a></li>
             <li><a href="">Other Link</a></li>
-            <li><a href="">My Profile</a></li>
+            <li><a href="./userProfile.html">My Profile</a></li>
         </ul>
-
     </div>
 
     <!-- Will have 3 columns. The outer 2 are blank for now, but can add stuff in the future (IE: Future modulartiy)-->
@@ -30,15 +32,25 @@
         </div>
 
         <div class="stream">
-            <div class="post">
-                This column would contain posts <br> For example, this block is a post.
-            </div>
-            <div class="post">
-                Here's another post<br>
-                Note: These divs should be empty, and then dynamically filled with content from the db.
+            <div class="post"> <!-- Another flex container-->
+                <div class="postPfp">
+                    PFP
+                </div>
+                <div class="postContent">
+                    This is the content of the post
+                </div>
+                <div class="postNav">
+                    <ul>
+                        <li>Like</li>
+                        <li>Comment</li>
+                        <li>Share</li>
+                </ul>
+                </div>
             </div>
 
-
+            <button class="postBtn">
+                +
+            </button>
         </div>
 
         <div class="col3">

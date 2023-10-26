@@ -1,0 +1,82 @@
+<!-- This is the user's profile -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'social/stylesheets/main.css' %}">
+    <link rel="stylesheet" href="{% static 'social/stylesheets/userProfile.css' %}">
+    <link rel="stylesheet" href="../../static/social/stylesheets/main.css"> <!-- For development purposes only. Delete later. -->
+    <link rel="stylesheet" href="../../static/social/stylesheets/myProfile.css"> <!-- For development purposes only. Delete later. -->
+    <title>My Profile</title>
+</head>
+<body>
+    <!-- Header always sticks to top of screen -->
+    <div class="header">
+        <div class="appLogo">Beeg Yoshi</div>
+        <ul class="navLinks">
+            <li><a href="./index.html">Homepage</a></li>
+            <li><a href="">Notifications</a></li>
+            <li><a href="">Other Link</a></li>
+            <li><a href="./userProfile.html">My Profile</a></li>
+        </ul>
+    </div>
+
+    <!-- Cover = contains the cover photo / color + profile picture. -->
+    <div class="cover">
+        <img src="../images/beegYoshi.png" alt="" id="pfp"> <!-- Load in pfp from db -->
+    </div>
+
+
+    <div class="content">
+        <div class="col1">
+        </div>
+
+        <div class="stream">
+
+            <!-- 1) User Information -->
+            <div class="userInfo">
+                
+                <a href="https://github.com/uofa-cmput404/404f23project-beeg-yoshi" target="_blank"><img id= "githubLogo" src="../images/githubLogo.png" alt=""></a> <!-- Load GitHub link from DB. -->
+                <div id="handle">@yoshi</div> <!-- Load userID from DB -->
+                <div id="userLinks"> 
+                     
+                </div> 
+            </div>
+
+            <!-- 2) User biography-->
+            <div id="bio">
+                About me: dolor sit amet consectetur adipisicing elit. Fuga sapiente, eos ad voluptates reiciendis officia cum excepturi qui 
+                labore exercitationem vero inventore nesciunt hic magnam temporibus repudiandae quas praesentium. Ducimus, earum obcaecati! 
+                Ea incidunt eaque reprehenderit nisi similique aperiam pariatur tempora architecto perspiciatis sed quis unde aliquid, 
+                nam consequatur magni!
+            </div>
+
+            <hr class="divider">
+
+            <!-- 3) Other Content -->
+            <div class="userContent">
+                <p>< Can put other content here ></p>
+            </div>
+
+        </div>
+
+        <div class="col3">
+        </div>
+    </div>
+
+
+
+    <!-- Footer -->
+    <div class="footer">
+        <ul class="footerLinks">
+            <li><a href="">Link 1</a></li>
+            <li><a href="">Link 2</a></li>
+            <li><a href="">Link 3</a></li>
+        </ul>
+    </div>
+    
+</body>
+</html>
