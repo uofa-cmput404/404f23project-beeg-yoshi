@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{% static 'social/stylesheets/homepage.css' %}">
     <link rel="stylesheet" href="../../static/social/stylesheets/homepage.css"> <!-- For development purposes, can delete it later. -->
     <link rel="stylesheet" href="../../static/social/stylesheets/main.css"> <!-- ^ -->
+    <script src="../scripts/home.js" defer></script> <!-- Must be at end of head -->
 
 </head>
 <body>
@@ -48,7 +49,7 @@
                 </div>
             </div>
 
-            <button class="postBtn">
+            <button data-open-modal class="postBtn">
                 +
             </button>
         </div>
@@ -58,6 +59,26 @@
         </div>
     
     </div>
+
+    <!-- Modal for creating a post -->
+    <dialog data-modal class="createPostModal">
+        <button data-close-modal id="closePostModal">Cancel</button>
+        <div class="modalHeading">     
+            <h1>Create Post</h1>
+        </div>
+        <div class="modalEnterText">
+           Here's what I want to post: Lorem ipsum dolor sit, amet consectetur adipisicing elit. Animi, optio nemo? Nesciunt, quis molestias. Asperiores.
+        </div>
+
+        <div class="modalFooter">
+            <ul>
+                <li><img src="../images/attachImgIcon.png" alt=""></li>
+                <li><img src="../images/githubLogo.png" alt=""></li>
+                <li><img src="../images/privacyIcon.png" alt=""></li>
+            </ul>
+            <button id="submitPostBtn">Post!</button>
+        </div>
+    </dialog>
 
     <!-- Footer -->
     <div class="footer">

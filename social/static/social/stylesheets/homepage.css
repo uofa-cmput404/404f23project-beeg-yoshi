@@ -59,4 +59,77 @@ body{
     border: 1px solid black;
 }
 
+/* Create a post */
+dialog::backdrop{
+    backdrop-filter: blur(2px); /* Background is blurred when a dialog opens */
+}
 
+.createPostModal { /* Style the modal created. NOTE: You can't set this to display: flex otherwise it'll always show no matter what */
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+
+    width: 550px;
+    height: 400px;
+    margin-top: 10px;
+    border-radius: 12px;
+    padding: 1rem;
+}
+
+.createPostModal .modalHeading{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 15%;
+    border-bottom: 1px solid black;
+}
+
+.createPostModal #closePostModal{
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    width: fit-content;
+    padding: 3px;
+
+    border: 1px solid #999;
+    box-shadow: 2px 2px #999;
+    border-radius: 12px;
+    background: var(--softRed);
+}
+
+.createPostModal .modalEnterText{
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    height: 70%;
+}
+
+.createPostModal .modalFooter{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    height: 15%;
+    padding-top: 1rem;
+    border-top: 1px solid var(--darkText);
+}
+
+.createPostModal .modalFooter ul{
+    display: flex;
+    gap: 1rem;
+}
+
+.createPostModal .modalFooter img{
+    width: 40px;
+    height: auto;
+}
+
+.modalFooter #submitPostBtn{
+    background: #99e6ff;
+    border-radius: 12px;
+    width: fit-content;
+    padding: 6px;
+    border: 1px solid #999;
+    border: 1px solid #999;
+    box-shadow: 2px 2px #999;
+}
