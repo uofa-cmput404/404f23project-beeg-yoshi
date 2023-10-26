@@ -44,7 +44,7 @@ body{
     z-index: 100%; /* Always on top */
 }
 
-/* Post */
+/* Post. By default its hidden but you add it in if there's posts to show. */
 .post {
     display: flex;
     align-self: center;
