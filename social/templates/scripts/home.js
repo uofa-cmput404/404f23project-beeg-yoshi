@@ -8,6 +8,5 @@ createPostBtn.addEventListener("click", () =>{
 })
 
 cancelPostBtn.addEventListener("click", () =>{
-    console.log('click')
     postModal.close()
 })
