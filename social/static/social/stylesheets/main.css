@@ -27,6 +27,7 @@ body{
     --darkText: #11101b;
     --accentLight: #9DB2BF;
     --mainBackground: #d1d1e0;
+    --accentColor: #8AA39B;
 }
 
 .header {
@@ -63,6 +64,29 @@ body{
 .header .navLinks li a:hover{
     color: var(--darkText);
     background: var(--accentLight);
+}
+
+/* Content */
+/* Structure */
+.content{
+    background: var(--mainBackground);
+    display: flex;
+    justify-content: space-between;
+    flex: 1 1 0;
+    padding: 2rem;
+}
+.content .col1 {
+    flex: 0 0 200px; /* Won't grow or shrink, has a minimum width of 200px. */
+}
+
+.content .stream{
+    flex: 1 0 500px; /* Will take up the space between the side columns, but won't shrink below 350 px */
+    display: flex;
+    flex-direction: column;
+}
+
+.content .col3{
+    flex: 0 0 200px; /* Won't grow or shrink, has a minimum width of 200px. */
 }
 
 /* LATER: If viewport becomes too small, hide the navbar and show hamburger menu instead */

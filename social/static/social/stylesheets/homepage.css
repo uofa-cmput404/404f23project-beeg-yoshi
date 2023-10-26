@@ -3,28 +3,8 @@ body{
     display: flex;
     flex-direction: column;
 }
-.content{
-    background: var(--mainBackground);
-    display: flex;
-    justify-content: space-between;
-    flex: 1 1 0;
-    padding: 2rem;
-}
 
-/* Structure */
-.content .col1 {
-    flex: 0 0 200px; /* Won't grow or shrink, has a minimum width of 200px. */
-}
 
-.content .stream{
-    flex: 1 0 500px; /* Will take up the space between the side columns, but won't shrink below 350 px */
-    display: flex;
-    flex-direction: column;
-}
-
-.content .col3{
-    flex: 0 0 200px; /* Won't grow or shrink, has a minimum width of 200px. */
-}
 
 .content .stream .postBtn{
     position: fixed;
