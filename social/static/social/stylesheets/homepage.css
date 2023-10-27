@@ -1,0 +1,62 @@
+/* CSS exclusive to the homepage */
+body{
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+.content .stream .postBtn{
+    position: fixed;
+    bottom: 75px;
+    right: 19%; /* Ensures it sits at the right spot no matter screen size */
+    width: 70px;
+    height: 60px;
+
+    background: #99e6ff;
+    box-shadow: 2px 2px #999;
+    border: 1px solid var(--darkText);
+    color: var(--darkText);
+    border-radius: 16px;
+
+    font-size: 36px;
+    text-align: center;
+    z-index: 100%; /* Always on top */
+}
+
+/* Post. By default its hidden but you add it in if there's posts to show. */
+.post {
+    display: flex;
+    align-self: center;
+    justify-content: space-between;
+    width: 70%;
+    height: fit-content; /* Size of each post will be the height of the content */
+    max-height: 300px; /* But at most, 300px tall */
+
+    margin-bottom: 2rem;
+    padding: 24px;
+    
+    border: 2px solid var(--darkText); /* FOR VISUAL PURPOSES ONLY, DELETE LATER */
+    border-radius: 12px;
+}
+
+.post .postPfp {
+    display: flex;
+    flex: 0 0 10%; /* Occupies 10% of the post container */
+    border: 1px solid black;
+}
+
+.post .postContent{
+    display: flex;
+    flex: 0 0 65%;
+    border: 1px solid black;
+}
+
+.post .postNav{
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 5%;
+    border: 1px solid black;
+}
+
+
