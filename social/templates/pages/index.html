@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="../../static/social/stylesheets/homepage.css"> <!-- For development purposes, can delete it later. -->
     <link rel="stylesheet" href="../../static/social/stylesheets/main.css"> <!-- ^ -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script type="module" src="../scripts/home.js" defer></script> <!-- Must be at end of head -->
+    <script type="module" src="../scripts/home.js" defer></script> <!-- Must be at end of head. For development purposes only, comment out. -->
+    <script src="{% static 'social/scripts/home.js' %}"></script>
 
 </head>
 <body>
@@ -28,22 +29,19 @@
     <!-- Will have 3 columns. The outer 2 are blank for now, but can add stuff in the future (IE: Future modulartiy)-->
     <div class="content">
         <div class="col1">
-            This is column 1.
         </div>
 
         <div class="stream">
             <div class="post"> <!-- Another flex container-->
-                <div class="postPfp">
-                    PFP
-                </div>
+                <img src="../images/beegYoshi.png" class="postPfp" alt="">
                 <div class="postContent">
-                    This is the content of the post
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima explicabo sequi pariatur officia consequatur quasi facilis, eveniet laboriosam praesentium suscipit.
                 </div>
                 <div class="postNav">
                     <ul>
-                        <li>Like</li>
-                        <li>Comment</li>
-                        <li>Share</li>
+                        <li><img src="../images/likeIcon.png" id="likeIcon" alt=""></li>
+                        <li><img src="../images/commentIcon.png" id="commentIcon" alt=""></li>
+                        <li><img src="../images/shareIcon.png" id="shareIcon" alt=""></li>
                 </ul>
                 </div>
             </div>
@@ -54,7 +52,6 @@
         </div>
 
         <div class="col3">
-            This is column 3.
         </div>
     
     </div>
@@ -90,7 +87,6 @@
                 <li><img src="../images/githubLogo.png" alt=""></li>
                 <li><img src="../images/privacyIcon.png" alt=""></li>
             </ul>
-            <button id="submitPostBtn">Post!</button>
         </div>
     </dialog>
 
