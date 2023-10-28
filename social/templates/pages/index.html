@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{% static 'social/stylesheets/homepage.css' %}">
     <link rel="stylesheet" href="../../static/social/stylesheets/homepage.css"> <!-- For development purposes, can delete it later. -->
     <link rel="stylesheet" href="../../static/social/stylesheets/main.css"> <!-- ^ -->
-    <!-- <script src="../scripts/home.js" defer></script> <!-- Must be at end of head -->
+    <script src="../scripts/home.js" defer></script> <!-- Must be at end of head. For development purposes only, comment out. -->
     <script src="{% static 'social/scripts/home.js' %}"></script>
 
 </head>
@@ -67,9 +67,13 @@
         <div class="modalHeading">     
             <h1>Create Post</h1>
         </div>
-        <div class="modalEnterText">
-           Here's what I want to post: Lorem ipsum dolor sit, amet consectetur adipisicing elit. Animi, optio nemo? Nesciunt, quis molestias. Asperiores.
-        </div>
+
+        <!-- Form to submit to the db -->
+        <form action="" class="modalEnterText">
+            <textarea name="" id="postText" placeholder="Enter Text (Max 350 characters)" maxlength="350"></textarea>
+            
+            <button type="submit" id="submitPostBtn">Submit</button>
+        </form>
 
         <div class="modalFooter">
             <ul>
@@ -77,7 +81,6 @@
                 <li><img src="../images/githubLogo.png" alt=""></li>
                 <li><img src="../images/privacyIcon.png" alt=""></li>
             </ul>
-            <button id="submitPostBtn">Post!</button>
         </div>
     </dialog>
 
