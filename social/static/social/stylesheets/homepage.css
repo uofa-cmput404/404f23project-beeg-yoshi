@@ -34,27 +34,33 @@ body{
     max-height: 300px; /* But at most, 300px tall */
 
     margin-bottom: 2rem;
-    padding: 24px;
+    padding: 16px;
     
     border: 2px solid var(--darkText); /* FOR VISUAL PURPOSES ONLY, DELETE LATER */
     border-radius: 12px;
 }
 
 .post .postPfp {
-    display: flex;
+    width: auto;
+    height: 65px;
     flex: 0 0 10%; /* Occupies 10% of the post container */
-    border: 1px solid black;
+    clip-path: circle();
 }
 
 .post .postContent{
     display: flex;
-    flex: 0 0 65%;
-    border: 1px solid black;
+    flex: 0 0 70%;
+    border-left: 1px solid var(--darkText);
+    padding: 8px;
+    border-radius: 6px;
 }
 
-.post .postNav{
+.post .postNav ul{
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    height: 100%;
     flex: 0 0 5%;
     border: 1px solid black;
 }
