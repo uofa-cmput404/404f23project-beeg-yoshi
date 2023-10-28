@@ -55,14 +55,18 @@ body{
     border-radius: 6px;
 }
 
-.post .postNav ul{
+.postNav ul{
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
     height: 100%;
     flex: 0 0 5%;
-    border: 1px solid black;
+}
+
+.postNav img{
+    width: 30px;
+    height: auto;
 }
 
 /* Create a post */
