@@ -5,7 +5,7 @@ from rest_framework import serializers
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model=User
-        fields=["type","id","url","host","displayName","github","profileImage"]
+        fields=["type","id","email","password","url","host","displayName","github","profileImage"]
 
 class FriendshipSerializer(serializers.ModelSerializer):
     class Meta:

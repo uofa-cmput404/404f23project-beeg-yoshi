@@ -7,6 +7,7 @@ urlpatterns = [
 #                          author                                            
 ########################################################################################
     path('authors/', views.author_list),
+    path('login/', views.login),
     path('create/author/', views.create_author),
     path('authors/<str:pk>/', views.single_author_method),
 
@@ -43,5 +44,5 @@ urlpatterns = [
     path('test/posts', views.get_all_post),
     path('test/likes', views.get_all_like),
     
-]
+]   
 

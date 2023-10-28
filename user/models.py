@@ -7,8 +7,11 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 class User(AbstractBaseUser):
     id=models.CharField(max_length=1024,primary_key=True)
+    email=models.EmailField(max_length=1024,unique=True)
+    password=models.CharField(max_length=1024)
     url=models.CharField(max_length=1024)
     host=models.CharField(max_length=1024)
+    is_active=models.BooleanField(default=False)
     displayName=models.CharField(max_length=1024)
     github=models.CharField(max_length=1024)
     profileImage=models.CharField(max_length=1024, blank=True)
@@ -45,7 +48,7 @@ class ServerAdmin(User):
 class Post(models.Model):
     type=models.CharField(default="post",max_length=1024)
     title=models.CharField(max_length=512)
-    id=models.CharField(max_length=1024,primary_key=True)
+    id=models.AutoField(primary_key=True)
     source=models.CharField(max_length=1024)
     origin=models.CharField(max_length=1024)
     description=models.CharField(max_length=1024)

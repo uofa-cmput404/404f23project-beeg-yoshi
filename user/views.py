@@ -9,6 +9,16 @@ from rest_framework.decorators import api_view
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Author methods
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+@api_view(['POST'])
+def login(request):
+    if request.method=='POST':
+        try:
+            user=User.objects.get(email=request.data['email'],password=request.data['password'])
+        except User.DoesNotExist:
+            return Response({"message":f"User does not exist or password is wrong"},status=status.HTTP_404_NOT_FOUND)
+        serializer=UserSerializer(user)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
 @api_view(['GET'])
 def author_list(request):  
     if request.method=='GET':

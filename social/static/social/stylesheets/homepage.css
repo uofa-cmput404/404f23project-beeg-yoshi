@@ -102,6 +102,7 @@ dialog::backdrop{
     padding-top: 1rem;
     padding-bottom: 1rem;
     height: 70%;
+    overflow-y: scroll;
 }
 
 .createPostModal .modalFooter{
@@ -133,3 +134,4 @@ dialog::backdrop{
     border: 1px solid #999;
     box-shadow: 2px 2px #999;
 }
+
