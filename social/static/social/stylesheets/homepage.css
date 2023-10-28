@@ -34,29 +34,39 @@ body{
     max-height: 300px; /* But at most, 300px tall */
 
     margin-bottom: 2rem;
-    padding: 24px;
+    padding: 16px;
     
     border: 2px solid var(--darkText); /* FOR VISUAL PURPOSES ONLY, DELETE LATER */
     border-radius: 12px;
 }
 
 .post .postPfp {
-    display: flex;
+    width: auto;
+    height: 65px;
     flex: 0 0 10%; /* Occupies 10% of the post container */
-    border: 1px solid black;
+    clip-path: circle();
 }
 
 .post .postContent{
     display: flex;
-    flex: 0 0 65%;
-    border: 1px solid black;
+    flex: 0 0 70%;
+    border-left: 1px solid var(--darkText);
+    padding: 8px;
+    border-radius: 6px;
 }
 
-.post .postNav{
+.postNav ul{
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    height: 100%;
     flex: 0 0 5%;
-    border: 1px solid black;
+}
+
+.postNav img{
+    width: 30px;
+    height: auto;
 }
 
 /* Create a post */
@@ -98,10 +108,24 @@ dialog::backdrop{
     background: var(--softRed);
 }
 
-.createPostModal .modalEnterText{
+.modalEnterText{ /* the form for submitting to db */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-items: flex-start;
+
     padding-top: 1rem;
     padding-bottom: 1rem;
     height: 70%;
+    width: 100%;
+}
+
+#postText{
+    height: 100%;
+    width: 100%;
+    resize: none;
+    border-radius: 12px;
+    padding: 12px;
 }
 
 .createPostModal .modalFooter{
@@ -124,7 +148,12 @@ dialog::backdrop{
     height: auto;
 }
 
-.modalFooter #submitPostBtn{
+#submitPostBtn{
+    /* Place at bottom right */
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+
     background: #99e6ff;
     border-radius: 12px;
     width: fit-content;
