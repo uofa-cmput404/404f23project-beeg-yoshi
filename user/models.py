@@ -7,8 +7,11 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 class User(AbstractBaseUser):
     id=models.CharField(max_length=1024,primary_key=True)
+    email=models.EmailField(max_length=1024,unique=True)
+    password=models.CharField(max_length=1024)
     url=models.CharField(max_length=1024)
     host=models.CharField(max_length=1024)
+    is_active=models.BooleanField(default=False)
     displayName=models.CharField(max_length=1024)
     github=models.CharField(max_length=1024)
     profileImage=models.CharField(max_length=1024, blank=True)
@@ -45,7 +48,7 @@ class ServerAdmin(User):
 class Post(models.Model):
     type=models.CharField(default="post",max_length=1024)
     title=models.CharField(max_length=512)
-    id=models.CharField(max_length=1024,primary_key=True)
+    id=models.AutoField(primary_key=True)
     source=models.CharField(max_length=1024)
     origin=models.CharField(max_length=1024)
     description=models.CharField(max_length=1024)
@@ -65,10 +68,12 @@ class Post(models.Model):
         default=Visibility.PUBLIC,
     )
     unlisted = models.BooleanField(default=False)
+    def __str__(self):
+        return self.content
 
 class Comment(models.Model):
     type=models.CharField(default="comment",max_length=1024)
-    id=models.CharField(max_length=1024,primary_key=True)
+    id=models.AutoField(primary_key=True)
     author=models.ForeignKey(User,on_delete=models.CASCADE)
     post=models.ForeignKey(Post,on_delete=models.CASCADE)
     comment=models.TextField()  

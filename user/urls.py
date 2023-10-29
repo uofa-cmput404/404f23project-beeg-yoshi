@@ -7,8 +7,11 @@ urlpatterns = [
 #                          author                                            
 ########################################################################################
     path('authors/', views.author_list),
+    path('login/', views.login),
     path('create/author/', views.create_author),
     path('authors/<str:pk>/', views.single_author_method),
+    path('authors/<str:pk>/friends/', views.get_all_friendship_of_single_author),
+    path('authors/<str:pk>/strangers/', views.get_stranger_of_single_author),
 
 ########################################################################################
 #                       followers(friend)                                              
@@ -43,5 +46,5 @@ urlpatterns = [
     path('test/posts', views.get_all_post),
     path('test/likes', views.get_all_like),
     
-]
+]   
 
