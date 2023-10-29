@@ -14,7 +14,10 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             try{
             const response = await axios.post("http://127.0.0.1:8000/service/login/",data)
-            console.log(response.data)
+            if (response.data.is_active === false && response.data.type === "AUTHOR"){
+                alert("Your account is deactivated. Please contact admin to activate your account.")
+                return
+            }
             localStorage.setItem('userData', JSON.stringify(response.data));
             window.location.href="index.html"
             

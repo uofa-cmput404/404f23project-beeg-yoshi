@@ -68,10 +68,12 @@ class Post(models.Model):
         default=Visibility.PUBLIC,
     )
     unlisted = models.BooleanField(default=False)
+    def __str__(self):
+        return self.content
 
 class Comment(models.Model):
     type=models.CharField(default="comment",max_length=1024)
-    id=models.CharField(max_length=1024,primary_key=True)
+    id=models.AutoField(primary_key=True)
     author=models.ForeignKey(User,on_delete=models.CASCADE)
     post=models.ForeignKey(Post,on_delete=models.CASCADE)
     comment=models.TextField()  

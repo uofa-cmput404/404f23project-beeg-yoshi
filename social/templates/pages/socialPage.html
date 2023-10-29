@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social List</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="module" src="../scripts/socialPage.js"></script>
+    <link rel="stylesheet" href="../../static/social/stylesheets/socialPage.css">
+</head>
+<body>
+    <div class="list-container">
+        <div class="list">
+            <h2>Friends</h2>
+            <ul id="friendsList">
+                <!-- Friends will be dynamically populated here -->
+            </ul>
+        </div>
+        <div class="list">
+            <h2>Strangers</h2>
+            <ul id="strangersList">
+                <!-- Strangers will be dynamically populated here -->
+            </ul>
+        </div>
+        <button style="position: absolute; left: 1%; top: 1%;" id="backbtn" >Back</button>
+    </div>
+</body>
+</html>

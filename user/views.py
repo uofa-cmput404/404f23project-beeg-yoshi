@@ -18,13 +18,27 @@ def login(request):
             return Response({"message":f"User does not exist or password is wrong"},status=status.HTTP_404_NOT_FOUND)
         serializer=UserSerializer(user)
         return Response(serializer.data,status=status.HTTP_200_OK)
-
 @api_view(['GET'])
 def author_list(request):  
     if request.method=='GET':
         users=User.objects.filter(type='AUTHOR')
         serializer=UserSerializer(users,many=True)
         return Response(serializer.data)
+@api_view(['GET'])
+def get_all_friendship_of_single_author(request, pk):
+  if request.method == 'GET':
+        friend_ids = Friendship.objects.filter(from_user_id=pk).values_list('to_user_id', flat=True)
+        friends = User.objects.filter(id__in=friend_ids)
+        serializer = UserSerializer(friends, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+@api_view(['GET'])
+def get_stranger_of_single_author(request,pk):
+    if request.method == 'GET':
+        friend_ids = Friendship.objects.filter(from_user_id=pk).values_list('to_user_id', flat=True)
+        non_friends = User.objects.filter(type='AUTHOR').exclude(id__in=friend_ids).exclude(id=pk) # exclude the author themself
+        serializer = UserSerializer(non_friends, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
 @api_view(['POST'])
 def create_author(request): 
     if request.method=='POST':
@@ -217,9 +231,17 @@ Comment methods
 @api_view(['GET', 'POST'])
 def comment_on_post(request,pk,postID):
     if request.method=='GET':
-        comments=Comment.objects.filter(post=pk)
+        comments=Comment.objects.filter(post=postID)
         serializer=CommentSerializer(comments,many=True)
-        print(serializer.data)
+        for comment in serializer.data:
+            comment["author"]={
+                "id":comment["author"],
+                "host":User.objects.get(pk=comment["author"]).host,
+                "displayName":User.objects.get(pk=comment["author"]).displayName,
+                "url":User.objects.get(pk=comment["author"]).url,
+                "github":User.objects.get(pk=comment["author"]).github,
+                "profileImage":User.objects.get(pk=comment["author"]).profileImage
+            }
         return Response(serializer.data,status=status.HTTP_200_OK)
     elif request.method=='POST':
         request.data.update({"post":postID, "author":pk})

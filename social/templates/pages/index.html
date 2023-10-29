@@ -1,104 +1,130 @@
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage</title>
-    <link rel="stylesheet" href="../../static/social/stylesheets/homepage.css">
-    <link rel="stylesheet" href="../../static/social/stylesheets/myProfile.css">
-    <link rel="stylesheet" href="../../static/social/stylesheets/homepage.css"> <!-- For development purposes, can delete it later. -->
-    <link rel="stylesheet" href="../../static/social/stylesheets/main.css"> <!-- ^ -->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script type="module" src="../scripts/home.js" defer></script> <!-- Must be at end of head. For development purposes only, comment out. -->
-    <script src="{% static 'social/scripts/home.js' %}"></script>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Homepage</title>
+        <link rel="stylesheet" href="../../static/social/stylesheets/homepage.css">
+        <link rel="stylesheet" href="../../static/social/stylesheets/myProfile.css">
+        <link rel="stylesheet" href="../../static/social/stylesheets/homepage.css"> <!-- For development purposes, can delete it later. -->
+        <link rel="stylesheet" href="../../static/social/stylesheets/main.css"> <!-- ^ -->
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script type="module" src="../scripts/home.js" defer></script> <!-- Must be at end of head. For development purposes only, comment out. -->
 
-</head>
-<body>
-    <!-- Header always sticks to top of screen -->
-    <div class="header">
-        <div class="appLogo">Beeg Yoshi</div>
-        <ul class="navLinks">
-            <li><a href="">Homepage</a></li>
-            <li><a href="">Notifications</a></li>
-            <li><a href="">Other Link</a></li>
-            <li><a href="./userProfile.html">My Profile</a></li>
-        </ul>
-    </div>
-
-    <!-- Will have 3 columns. The outer 2 are blank for now, but can add stuff in the future (IE: Future modulartiy)-->
-    <div class="content">
-        <div class="col1">
-        </div>
-
-        <div class="stream">
-            <div class="post"> <!-- Another flex container-->
-                <img src="../images/beegYoshi.png" class="postPfp" alt="">
-                <div class="postContent">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima explicabo sequi pariatur officia consequatur quasi facilis, eveniet laboriosam praesentium suscipit.
-                </div>
-                <div class="postNav">
-                    <ul>
-                        <li><img src="../images/likeIcon.png" id="likeIcon" alt=""></li>
-                        <li><img src="../images/commentIcon.png" id="commentIcon" alt=""></li>
-                        <li><img src="../images/shareIcon.png" id="shareIcon" alt=""></li>
-                </ul>
-                </div>
-            </div>
-
-            <button data-open-modal class="postBtn">
-                +
-            </button>
-        </div>
-
-        <div class="col3">
-        </div>
-    
-    </div>
-
-    <!-- Modal for creating a post -->
-    <dialog data-modal class="createPostModal">
-        <button data-close-modal id="closePostModal">Cancel</button>
-        <div class="modalHeading">     
-            <h1>Create Post</h1>
-        </div>
-        <div class="modalEnterText">
-           <h3>title</h3>
-            <input type="text" id="postTitle" name="postTitle" required>
-            <h3>description</h3>
-            <input type="text" id="postDescription" name="postDescription" required>
-            <label style="display: block;" for="content-type">Choose content type</label>
-            <select name="content-type" id="content-type">
-                <option value="plain-text">text/plain</option>
-                <option value="markdown">text/markdown</option>
-            </select>
-            <h4>content</h4>
-            <textarea id="postContent" name="postContent" rows="4" cols="50" required></textarea>
-            <label for="categories">Choose categories</label>
-            <select name="categories" id="categories" multiple>
-                <option value="web">web</option>
-                <option value="tutorial">tutorial</option>
-            </select>
-        </div>
-
-        <div class="modalFooter">
-            <ul>
-                <li><img src="../images/attachImgIcon.png" alt=""></li>
-                <li><img src="../images/githubLogo.png" alt=""></li>
-                <li><img src="../images/privacyIcon.png" alt=""></li>
+    </head>
+    <body>
+        <!-- Header always sticks to top of screen -->
+        <div class="header">
+            <div class="appLogo">Beeg Yoshi</div>
+            <ul class="navLinks">
+                <li><a href="">Homepage</a></li>
+                <li><a href="">Notifications</a></li>
+                <li><a href="./socialPage.html">Social</a></li>
+                <li><a href="./userProfile.html">My Profile</a></li>
             </ul>
         </div>
-    </dialog>
 
-    <!-- Footer -->
-    <div class="footer">
-        <ul class="footerLinks">
-            <li><a href="">Link 1</a></li>
-            <li><a href="">Link 2</a></li>
-            <li><a href="">Link 3</a></li>
-            <button class="log-out">Log out</button>
-        </ul>
-    </div>
-    
-</body>
-</html>
+        <!-- Will have 3 columns. The outer 2 are blank for now, but can add stuff in the future (IE: Future modulartiy)-->
+        <div class="content">
+            <div class="col1">
+            </div>
+
+            <div class="stream">
+
+
+                <button data-open-modal class="postBtn">
+                    +
+                </button>
+            </div>
+
+            <div class="col3">
+            </div>
+        
+        </div>
+
+        <!-- Modal for creating a post -->
+        <dialog data-modal class="createPostModal">
+            <button data-close-modal id="closePostModal">Cancel</button>
+            <div class="modalHeading">     
+                <h1>Create Post</h1>
+            </div>
+            <div class="modalEnterText">
+            <h3>title</h3>
+                <input type="text" id="postTitle" name="postTitle" required>
+                <h3>description</h3>
+                <input type="text" id="postDescription" name="postDescription" required>
+                <label style="display: block;" for="content-type">Choose content type</label>
+                <select name="content-type" id="content-type">
+                    <option value="plain-text">text/plain</option>
+                    <option value="markdown">text/markdown</option>
+                </select>
+                <h4>content</h4>
+                <textarea id="postContent" name="postContent" rows="4" cols="50" required></textarea>
+                <label for="categories">Choose categories</label>
+                <select name="categories" id="categories" multiple>
+                    <option value="web">web</option>
+                    <option value="tutorial">tutorial</option>
+                </select>
+                <label for="categories">Choose visibility</label>
+                <select name="visibility" id="visibility">
+                    <option value="PUBLIC">Public</option>
+                    <option value="FRIENDS">Friend</option>
+                </select>
+            </div>
+
+            <div class="modalFooter">
+                <ul>
+                    <li><img src="../images/attachImgIcon.png" alt=""></li>
+                    <li><img src="../images/githubLogo.png" alt=""></li>
+                    <li><img src="../images/privacyIcon.png" alt=""></li>
+                </ul>
+                <button id="submitPostBtn">Post</button>
+            </div>
+        </dialog>
+
+        <!-- Footer -->
+        <div class="footer">
+            <ul class="footerLinks">
+                <li><a href="">Link 1</a></li>
+                <li><a href="">Link 2</a></li>
+                <li><a href="">Link 3</a></li>
+                <button class="log-out" id="logoutBtn">Log out</button>
+            </ul>
+        </div>
+
+        <div class="confirmation-dialog" id="confirmationDialog">
+            <p>Are you sure you want to delete this post?</p>
+            <button id="confirmDelete">Yes</button>
+            <button id="cancelDelete">No</button>
+        </div>
+        <div class="edit-modal" id="editModal">
+            <h4>Edit Post</h4>
+            <textarea id="editPostContent"></textarea>
+            <div>
+                <button id="saveChanges">Save Changes</button>
+                <button id="cancelEdit">Cancel</button>
+            </div>
+        </div>
+
+        <div id="commentModal" class="modal">   
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h4 style="margin-bottom: 20px;">Comments:</h4>
+                <ul id="commentList">
+                    <li class="comment-item">
+                        <strong>Author's Name</strong>
+                        <p>Comment content here...</p>
+                        <button class="like-btn">Like</button>
+                    </li>
+                </ul>
+                <div class="comment-input-section">
+                    <input type="text" id="userComment" placeholder="Write a comment..." />
+                    <button id="submitCommentBtn">Comment</button>
+                </div>
+            </div>
+        </div>
+        
+        
+    </body>
+    </html>

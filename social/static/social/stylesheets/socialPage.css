@@ -1,0 +1,32 @@
+.list-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 50px;
+}
+
+.list {
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 40%;
+}
+
+.list h2 {
+    text-align: center;
+}
+
+.list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 5px 15px;
+    cursor: pointer;
+}

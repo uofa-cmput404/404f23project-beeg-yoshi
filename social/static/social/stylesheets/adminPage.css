@@ -1,0 +1,18 @@
+.user-item{
+    display: flex;
+    justify-content: space-between;
+}
+.container {
+    display: flex;
+    justify-content: space-between;
+}
+.user-list {
+    width: 45%;
+}
+.active-users {
+    border-right: 2px solid #000;
+}
+.user-item {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}

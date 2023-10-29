@@ -9,7 +9,7 @@ body{
 .content .stream .postBtn{
     position: fixed;
     bottom: 75px;
-    right: 19%; /* Ensures it sits at the right spot no matter screen size */
+    right: 15%; /* Ensures it sits at the right spot no matter screen size */
     width: 70px;
     height: 60px;
 
@@ -29,7 +29,7 @@ body{
     display: flex;
     align-self: center;
     justify-content: space-between;
-    width: 70%;
+    width: 80%;
     height: fit-content; /* Size of each post will be the height of the content */
     max-height: 300px; /* But at most, 300px tall */
 
@@ -38,6 +38,7 @@ body{
     
     border: 2px solid var(--darkText); /* FOR VISUAL PURPOSES ONLY, DELETE LATER */
     border-radius: 12px;
+
 }
 
 .post .postPfp {
@@ -113,21 +114,12 @@ dialog::backdrop{
     flex-direction: column;
     align-items: flex-start;
     justify-items: flex-start;
-
     padding-top: 1rem;
     padding-bottom: 1rem;
-    height: 70%;
+    height: 100%;
     width: 100%;
 }
 
-#postText{
-    height: 100%;
-    width: 100%;
-    resize: none;
-    border-radius: 12px;
-    padding: 12px;
-    overflow-y: scroll;
-}
 
 .createPostModal .modalFooter{
     display: flex;
@@ -152,9 +144,8 @@ dialog::backdrop{
 #submitPostBtn{
     /* Place at bottom right */
     position: absolute;
-    bottom: 1rem;
+    bottom: -10;
     right: 1rem;
-
     background: #99e6ff;
     border-radius: 12px;
     width: fit-content;
@@ -163,4 +154,144 @@ dialog::backdrop{
     border: 1px solid #999;
     box-shadow: 2px 2px #999;
 }
+/* Styles for the delete button */
+.delete-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;        
+    margin-right: 10px;
+    cursor: pointer;
+    height: 30px;
+    width: 50px;
+    font-size: 15px;
+    
+}
+
+/* Styles for the edit button */
+.edit-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    height: 30px;
+    width: 50px;
+    font-size: 15px;
+}
+.button-container {
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.confirmation-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+.confirmation-dialog button {
+    padding: 5px 15px;
+    margin: 5px;
+    cursor: pointer;
+}
+.edit-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1001;
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: none;
+    width: 80%;
+    max-width: 500px;
+}
+
+.edit-modal textarea {
+    width: 100%;
+    min-height: 200px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    resize: vertical;
+}
+
+.edit-modal button {
+    padding: 5px 15px;
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+.modal-content {
+    position: relative;
+    width: 70%;
+    max-width: 600px;
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+#commentList {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.comment-item {
+    margin-bottom: 15px;
+}
+
+.comment-input-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#userComment {
+    flex: 1;
+    padding: 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+#submitCommentBtn {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.close-btn {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+
 
