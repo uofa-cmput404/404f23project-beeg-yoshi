@@ -53,10 +53,24 @@ document.addEventListener("DOMContentLoaded", function() {
                     li.className = `${action}-btn`;
                     const img = document.createElement("img");
                     img.src = `../images/${action}Icon.png`;
+                    
                     img.id = `${action}Icon`;
                     img.alt = action;
                     li.appendChild(img);
                     if (action === "like") {
+                        const checkIfLiked = async () => {
+                            try {
+                                const response = await axios.get(`http://127.0.0.1:8000/service/authors/${userData.id}/liked`)
+                                console.log(response.data);
+                                response.data.forEach(likedPost => {
+                                    if (likedPost.object_id === post.id.toString()) {
+                                        img.src = "../images/likedIcon.png";
+                                    }
+                                });
+                            }catch(error){
+                                console.log(error);
+                            }
+                        }
                         const likeCounter = document.createElement('span');
                         likeCounter.className = 'like-counter';
                         const getLikesForPost = async () => {
@@ -71,6 +85,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                         li.appendChild(likeCounter);
                     }
+                    checkIfLiked();
                     getLikesForPost();
                 }
                     li.addEventListener('click', function() {
