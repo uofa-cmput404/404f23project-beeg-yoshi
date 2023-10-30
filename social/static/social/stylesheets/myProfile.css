@@ -40,6 +40,19 @@ hr.divider {
     gap: 1rem;
 }
 
+/** Edit profile modal **/
+#confirmEditBtn{
+    position: absolute;
+    right: 1rem;
+    background: #99e6ff;
+    border-radius: 12px;
+    width: fit-content;
+    padding: 6px;
+    border: 1px solid #999;
+    border: 1px solid #999;
+    box-shadow: 2px 2px #999;
+}
+
 #githubLogo{
     width: 45px;
     height: auto;
@@ -49,6 +62,15 @@ hr.divider {
     width: 50%; /* Takes up half of the stream column */
     text-align: center;
     margin-top: 1rem; /* Space out biography */
+}
+
+.stream #edit-profile-btn{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    background-color: var(--accentLight);
+    width: fit-content;
+    border-radius: 8px;
+    padding: 6px;
 }
 
 

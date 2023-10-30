@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="../../static/social/stylesheets/myProfile.css">
     <link rel="stylesheet" href="../../static/social/stylesheets/main.css"> <!-- For development purposes only. Delete later. -->
     <link rel="stylesheet" href="../../static/social/stylesheets/myProfile.css"> <!-- For development purposes only. Delete later. -->
+
     <title>My Profile</title>
+    <script src="../scripts/userProfile.js" defer></script> <!-- Must be at end of head. For development purposes only, comment out. -->
 </head>
 <body>
     <!-- Header always sticks to top of screen -->
@@ -33,15 +35,20 @@
 
         <div class="stream">
 
+            <!-- Edit btn -->
+            <button id="edit-profile-btn">
+                Edit Profile
+            </button>
+
             <!-- 1) User Information -->
             <div class="userInfo">
-                
-                <a href="https://github.com/uofa-cmput404/404f23project-beeg-yoshi" target="_blank"><img id= "githubLogo" src="../images/githubLogo.png" alt=""></a> <!-- Load GitHub link from DB. -->
+                <a id="github-handle" href="https://github.com/uofa-cmput404/404f23project-beeg-yoshi" target="_blank"><img id= "githubLogo" src="../images/githubLogo.png" alt=""></a> <!-- Load GitHub link from DB. -->
                 <div id="handle">@yoshi</div> <!-- Load userID from DB -->
                 <div id="userLinks"> 
-                     
                 </div> 
             </div>
+
+
 
             <!-- 2) User biography-->
             <div id="bio">
@@ -74,6 +81,34 @@
             <li><a href="">Link 3</a></li>
         </ul>
     </div>
+
+    <!-- Edit Profile Modal -->
+    <!-- Modal for creating a post -->
+    <dialog data-modal class="createPostModal">
+        <button data-close-modal id="closePostModal">Cancel</button>
+        <div class="modalHeading">     
+            <h1>Edit Profile</h1>
+        </div>
+        <div class="modalEnterText">
+            <h3>Handle</h3>
+            <input type="text" id="userHandle" name="profileHandle" required>
+
+            <h3>GitHub Link</h3>
+            <input type="text" id="userGithub" name="profileGithub" required>
+
+            <h3>Email</h3>
+            <input type="text" id="userGithub" name="profileGithub" required>
+
+            <h3>Password Old</h3>
+            <input type="text" id="userGithub" name="profileGithub" required>
+
+            <h3>Password New</h3>
+            <input type="text" id="userGithub" name="profileGithub" required>
+
+        <div class="modalFooter">
+            <button id="confirmEditBtn">Confirm</button>
+        </div>
+    </dialog>
     
 </body>
 </html>
