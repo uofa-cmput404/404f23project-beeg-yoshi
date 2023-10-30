@@ -186,26 +186,23 @@ dialog::backdrop{
 }
 /* Styles for the delete button */
 .delete-btn {
-    background-color: #f44336;
+    background-color: var(--softRed);
     color: white;
     border: none;        
     margin-right: 10px;
     cursor: pointer;
     height: 30px;
     width: 50px;
-    font-size: 15px;
-    
 }
 
 /* Styles for the edit button */
 .edit-btn {
-    background-color: #4CAF50;
+    background-color: #B2FBA5;
     color: white;
     border: none;
     cursor: pointer;
     height: 30px;
     width: 50px;
-    font-size: 15px;
 }
 .button-container {
     margin-left: 20px;
