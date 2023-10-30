@@ -31,8 +31,6 @@
             </div>
 
             <div class="stream">
-
-
                 <button data-open-modal class="postBtn">
                     +
                 </button>
@@ -50,27 +48,36 @@
                 <h1>Create Post</h1>
             </div>
             <div class="modalEnterText">
-            <h3>title</h3>
+            <h3>Title</h3>
                 <input type="text" id="postTitle" name="postTitle" required>
-                <h3>description</h3>
+                <h3>Description</h3>
                 <input type="text" id="postDescription" name="postDescription" required>
-                <label style="display: block;" for="content-type">Choose content type</label>
-                <select name="content-type" id="content-type">
-                    <option value="plain-text">text/plain</option>
-                    <option value="markdown">text/markdown</option>
-                </select>
-                <h4>content</h4>
-                <textarea id="postContent" name="postContent" rows="4" cols="50" required></textarea>
-                <label for="categories">Choose categories</label>
-                <select name="categories" id="categories" multiple>
-                    <option value="web">web</option>
-                    <option value="tutorial">tutorial</option>
-                </select>
-                <label for="categories">Choose visibility</label>
-                <select name="visibility" id="visibility">
-                    <option value="PUBLIC">Public</option>
-                    <option value="FRIENDS">Friend</option>
-                </select>
+
+
+                <h3>Options</h3>
+                <div class="options">
+                    <!-- <label style="display: block;" for="content-type">Choose content type</label> -->
+                    <select name="content-type" id="content-type">
+                        <option value="" selected disabled>Content Type</option>
+                        <option value="plain-text">Plain Text</option>
+                        <option value="markdown">Markdown</option>
+                    </select>
+                    <!-- <label for="categories">Choose categories</label> -->
+                    <select name="categories" id="categories">
+                        <option value="" selected disabled>Category</option>
+                        <option value="web">Web</option>
+                        <option value="tutorial">Tutorial</option>
+                    </select>
+                    <!-- <label for="categories">Choose visibility</label> -->
+                    <select name="visibility" id="visibility">
+                        <option value="" selected disabled>Visibility</option>
+                        <option value="PUBLIC">Public</option>
+                        <option value="FRIENDS">Friends Only</option>
+                    </select>
+                </div>
+
+                <h4>Content</h4>
+                <textarea id="postContent" name="postContent" maxlength="400" placeholder="Enter Text (Max 400 characters)"></textarea>
             </div>
 
             <div class="modalFooter">
@@ -107,7 +114,8 @@
             </div>
         </div>
 
-        <div id="commentModal" class="modal">   
+        <!-- Comment Modal !-->
+        <dialog data-modal id="commentModal">
             <div class="modal-content">
                 <span class="close-btn">&times;</span>
                 <h4 style="margin-bottom: 20px;">Comments:</h4>
@@ -123,7 +131,7 @@
                     <button id="submitCommentBtn">Comment</button>
                 </div>
             </div>
-        </div>
+        </dialog>
         
         
     </body>
