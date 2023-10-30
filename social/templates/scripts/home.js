@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     const getPosts = async () => {
         try {
-            const response = await axios.get("http://127.0.0.1:8000/service/test/posts");
+            const response = await axios.get(`http://127.0.0.1:8000/service/authors/get/${userData.id}/posts/`);
             console.log(response.data);
             response.data.forEach(post => {
                 const postDiv = document.createElement("div");
@@ -56,10 +56,44 @@ document.addEventListener("DOMContentLoaded", function() {
                     img.id = `${action}Icon`;
                     img.alt = action;
                     li.appendChild(img);
+                    if (action === "like") {
+                        const likeCounter = document.createElement('span');
+                        likeCounter.className = 'like-counter';
+                        const getLikesForPost = async () => {
+                            try {
+                                const response = await axios.get(`http://127.0.0.1:8000/service/authors/${post.author}/posts/${post.id}/likes`)
+                                console.log(response.data.length);
+                                likeCounter.textContent = response.data.length;
+
+                        }
+                        catch(error){
+                        }
+
+                        li.appendChild(likeCounter);
+                    }
+                    getLikesForPost();
+                }
                     li.addEventListener('click', function() {
                         switch(action) {
                             case "like":
                                 console.log("like is clicked");
+                                const likePost = async () => {
+                                    const data={
+                                        author:userData.id,
+                                        content_type:9,
+                                        object_id:post.id
+                                    }
+                                    try {
+                                        const response= await axios.post(`http://127.0.0.1:8000/service/authors/${userData.id}/like/${post.id}/`,data)
+                                        console.log(response.data)
+                                        if (response.status === 200) {
+                                            alert("You already liked this post.");
+                                        }
+                                    } catch (error) {
+                                        
+                                    }
+                                }
+                                likePost();
                                 break;
                             case "comment":
                                 console.log("comment is clicked");

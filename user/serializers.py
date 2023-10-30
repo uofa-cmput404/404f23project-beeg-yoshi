@@ -5,7 +5,7 @@ from rest_framework import serializers
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model=User
-        fields=["type","id","email","password","url","host","displayName","github","profileImage", "is_active"]
+        fields=["type","id","email","password","url","host","displayName","github","profileImage", "is_active", "biography"]
 
 class FriendshipSerializer(serializers.ModelSerializer):
     class Meta:
@@ -27,7 +27,7 @@ class LikeSerializer(serializers.ModelSerializer):
     content_type_name = serializers.SerializerMethodField()
     class Meta:
         model = Like
-        fields = ['id', 'type', 'object_id', 'author', 'content_type_name']
+        fields = ['id', 'type', 'object_id', 'author', 'content_type_name', 'content_type']
 
     def get_content_type_name(self, obj):
         return obj.content_type.model

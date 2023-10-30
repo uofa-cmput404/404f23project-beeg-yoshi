@@ -15,6 +15,7 @@ class User(AbstractBaseUser):
     displayName=models.CharField(max_length=1024)
     github=models.CharField(max_length=1024)
     profileImage=models.CharField(max_length=1024, blank=True)
+    biography=models.TextField(default="I am too lazy to leave a bio.....")
     USERNAME_FIELD='displayName'
     def __str__(self):
         return self.displayName + " Role: " + self.type

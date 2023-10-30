@@ -4,7 +4,7 @@ from .serializers import UserSerializer, CommentSerializer, PostSerializer, Like
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-
+from django.db.models import Q
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Author methods
@@ -75,6 +75,22 @@ def single_author_method(request,pk):
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Post methods
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+@api_view(['GET'])
+def get_public_and_friends_posts(request, pk):
+    if request.method == 'GET':
+        logged_in_user = pk
+        friend_ids = Friendship.objects.filter(
+            from_user=logged_in_user
+        ).values_list('to_user_id', flat=True)
+        posts = Post.objects.filter(
+            Q(visibility=Post.Visibility.PUBLIC) | 
+            Q(author__id__in=friend_ids, visibility=Post.Visibility.PRIVATE) |
+            Q(author=logged_in_user)
+        )
+
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 @api_view(['GET', 'DELETE', 'PUT'])
 def post_method(request,pk,postID):
     user=User.objects.get(pk=pk)
@@ -303,3 +319,14 @@ def get_like_for_comment_on_post(request,pk, postID, cid):
         likes=Like.objects.filter(object_id=cid,content_type=13)
         serializer=LikeSerializer(likes,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
+@api_view(['POST'])
+def like_single_post(request, pk,postID):
+    if request.method=='POST':
+        like=Like.objects.filter(object_id=postID,content_type=9,author=pk)
+        if like.exists():
+            return Response({"message":{f"Like already exists "}},status=status.HTTP_200_OK)
+        serializer=LikeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
