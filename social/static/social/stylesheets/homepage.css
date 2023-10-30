@@ -5,7 +5,6 @@ body{
 }
 
 
-
 .content .stream .postBtn{
     position: fixed;
     bottom: 75px;
@@ -82,7 +81,7 @@ dialog::backdrop{
     z-index: 10;
 
     width: 550px;
-    height: 400px;
+    height: fit-content;
     margin-top: 10px;
     border-radius: 12px;
     padding: 1rem;
@@ -92,8 +91,9 @@ dialog::backdrop{
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 15%;
+    height: 10%;
     border-bottom: 1px solid black;
+    padding: 8px;
 }
 
 .createPostModal #closePostModal{
@@ -116,8 +116,38 @@ dialog::backdrop{
     justify-items: flex-start;
     padding-top: 1rem;
     padding-bottom: 1rem;
-    height: 100%;
+    gap: 0.5rem;
+    height: 100%; /* DON'T CHANGE THIS. THE MODAL GETS DESTROYED IF SO */
     width: 100%;
+}
+
+.modalEnterText input {
+    border-radius: 6px;
+    padding: 6px;
+    border: 1px solid var(--darkText);
+}
+
+.modalEnterText .options{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.modalEnterText #postContent{
+    width: 100%;
+    height: 200px;
+    resize: none;
+
+    border-radius: 6px;
+    padding: 6px;
+    border: 1px solid var(--darkText);
+}
+
+.modalEnterText .options select { /* Drop-down options */
+    background-color: white;
+    padding: 6px;
+    border-radius: 8px;
+    border: 1px solid var(--darkText);
 }
 
 
