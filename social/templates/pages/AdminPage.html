@@ -13,17 +13,41 @@
         <div class="user-list inactive-users">
             <h2>Inactive Users</h2>
             <ul id="inactiveUserList">
-                <!-- Inactive users will be added here by JavaScript -->
             </ul>
         </div>
         <div class="user-list active-users">
             <h2>Active Users</h2>
             <ul id="activeUserList">
-                <!-- Active users will be added here by JavaScript -->
             </ul>
         </div>
     </div>
     <button id="backButton">Back to Dashboard</button>
+    <div id="editUserModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">×</span>
+            <form id="editUserForm">
+                <h2>Edit User</h2>
+                <input type="hidden" id="userId">
+                <div class="form-group">
+                    <label for="userName">Name:</label>
+                    <input type="text" id="userName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="userEmail">Email:</label>
+                    <input type="email" id="userEmail" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="Github">Github:</label>
+                    <input type="Github" id="Github" name="Github" required>
+                </div>
+                <div class="form-group">
+                    <label for="Password">Password:</label>
+                    <input type="pwd" id="Password" name="Password" required>
+                </div>
 
+                <button type="submit" class="save-changes-button">Save Changes</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
