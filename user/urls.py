@@ -24,7 +24,7 @@ urlpatterns = [
 ########################################################################################
     path('authors/<str:pk>/posts/', views.create_post),
     path('authors/<str:pk>/posts/<str:postID>', views.post_method),
-
+    path('authors/get/<str:pk>/posts/', views.get_public_and_friends_posts),
 ########################################################################################
 #                         comments      
 ########################################################################################
@@ -37,6 +37,7 @@ urlpatterns = [
     path('authors/<str:pk>/posts/<str:postID>/likes', views.get_like_for_post),
     path('authors/<str:pk>/posts/<str:postID>/comments/<str:cid>/likes', views.get_like_for_comment_on_post),
     path('authors/<str:pk>/liked',views.likes_of_single_author),
+    path('authors/<str:pk>/like/<str:postID>/', views.like_single_post),
 
 
 ########################################################################################

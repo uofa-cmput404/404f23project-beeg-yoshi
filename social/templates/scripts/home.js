@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     const getPosts = async () => {
         try {
-            const response = await axios.get("http://127.0.0.1:8000/service/test/posts");
+            const response = await axios.get(`http://127.0.0.1:8000/service/authors/get/${userData.id}/posts/`);
             console.log(response.data);
             response.data.forEach(post => {
                 const postDiv = document.createElement("div");
@@ -53,13 +53,62 @@ document.addEventListener("DOMContentLoaded", function() {
                     li.className = `${action}-btn`;
                     const img = document.createElement("img");
                     img.src = `../images/${action}Icon.png`;
+                    
                     img.id = `${action}Icon`;
                     img.alt = action;
                     li.appendChild(img);
+                    if (action === "like") {
+                        const checkIfLiked = async () => {
+                            try {
+                                const response = await axios.get(`http://127.0.0.1:8000/service/authors/${userData.id}/liked`)
+                                console.log(response.data);
+                                response.data.forEach(likedPost => {
+                                    if (likedPost.object_id === post.id.toString()) {
+                                        img.src = "../images/likedIcon.png";
+                                    }
+                                });
+                            }catch(error){
+                                console.log(error);
+                            }
+                        }
+                        const likeCounter = document.createElement('span');
+                        likeCounter.className = 'like-counter';
+                        const getLikesForPost = async () => {
+                            try {
+                                const response = await axios.get(`http://127.0.0.1:8000/service/authors/${post.author}/posts/${post.id}/likes`)
+                                console.log(response.data.length);
+                                likeCounter.textContent = response.data.length;
+
+                        }
+                        catch(error){
+                        }
+
+                        li.appendChild(likeCounter);
+                    }
+                    checkIfLiked();
+                    getLikesForPost();
+                }
                     li.addEventListener('click', function() {
                         switch(action) {
                             case "like":
                                 console.log("like is clicked");
+                                const likePost = async () => {
+                                    const data={
+                                        author:userData.id,
+                                        content_type:9,
+                                        object_id:post.id
+                                    }
+                                    try {
+                                        const response= await axios.post(`http://127.0.0.1:8000/service/authors/${userData.id}/like/${post.id}/`,data)
+                                        console.log(response.data)
+                                        if (response.status === 200) {
+                                            alert("You already liked this post.");
+                                        }
+                                    } catch (error) {
+                                        
+                                    }
+                                }
+                                likePost();
                                 break;
                             case "comment":
                                 console.log("comment is clicked");

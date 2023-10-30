@@ -6,7 +6,7 @@ import uuid
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 class User(AbstractBaseUser):
-    id=models.CharField(max_length=1024,primary_key=True)
+    id=models.AutoField(primary_key=True)
     email=models.EmailField(max_length=1024,unique=True)
     password=models.CharField(max_length=1024)
     url=models.CharField(max_length=1024)
@@ -15,6 +15,7 @@ class User(AbstractBaseUser):
     displayName=models.CharField(max_length=1024)
     github=models.CharField(max_length=1024)
     profileImage=models.CharField(max_length=1024, blank=True)
+    biography=models.TextField(default="I am too lazy to leave a bio.....")
     USERNAME_FIELD='displayName'
     def __str__(self):
         return self.displayName + " Role: " + self.type
