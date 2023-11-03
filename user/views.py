@@ -1,14 +1,30 @@
 from django.shortcuts import render
-from .models import User,ServerAdmin, Comment, Post, Like, Friendship,Inbox
-from .serializers import UserSerializer, CommentSerializer, PostSerializer, LikeSerializer, FriendshipSerializer,InboxSerializer
+from .models import User,ServerAdmin, Like,Inbox
+from .serializers import UserSerializer,LikeSerializer,InboxSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.db.models import Q
+from friendship.models import Friendship
+from post.models import Post
+from post.serializers import PostSerializer
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Author methods
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+@swagger_auto_schema(
+    method='post',
+    operation_description='Login with credentials',
+    responses={
+        200: openapi.Response(
+            description='Login to the system',
+            schema=UserSerializer()
+        ),
+        404: 'Not found',
+    },
+)
 @api_view(['POST'])
 def login(request):
     if request.method=='POST':
@@ -18,12 +34,31 @@ def login(request):
             return Response({"message":f"User does not exist or password is wrong"},status=status.HTTP_404_NOT_FOUND)
         serializer=UserSerializer(user)
         return Response(serializer.data,status=status.HTTP_200_OK)
+@swagger_auto_schema(
+    method='get',
+    operation_description='Get all authors',
+    responses={
+        200: openapi.Response(
+            description='Get all authors',
+            schema=UserSerializer()
+        ),
+    },)
 @api_view(['GET'])
 def author_list(request):  
     if request.method=='GET':
         users=User.objects.filter(type='AUTHOR')
         serializer=UserSerializer(users,many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+@swagger_auto_schema(
+    method='get',
+    operation_description='Get all friends of an author',
+    responses={
+        200: openapi.Response(
+            description='Get all friends of an author',
+            schema=UserSerializer(many=True)
+        ),
+    },)    
+
 @api_view(['GET'])
 def get_all_friendship_of_single_author(request, pk):
   if request.method == 'GET':
@@ -31,6 +66,16 @@ def get_all_friendship_of_single_author(request, pk):
         friends = User.objects.filter(id__in=friend_ids)
         serializer = UserSerializer(friends, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+@swagger_auto_schema(
+        method='get',
+        operation_description='Get all strangers of an author',
+        responses={
+            200: openapi.Response(
+                description='Get all strangers of an author',
+                schema=UserSerializer(many=True)
+            ),
+        },
+)
 @api_view(['GET'])
 def get_stranger_of_single_author(request,pk):
     if request.method == 'GET':
@@ -39,6 +84,18 @@ def get_stranger_of_single_author(request,pk):
         serializer = UserSerializer(non_friends, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
         
+@swagger_auto_schema(
+        method='post',
+        operation_description='create an author',
+        responses={
+            200: openapi.Response(
+                description='create an author',
+                schema=UserSerializer()
+            ),
+            400: 'Bad request',
+        },
+
+)
 @api_view(['POST'])
 def create_author(request): 
     if request.method=='POST':
@@ -47,6 +104,53 @@ def create_author(request):
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+@swagger_auto_schema(
+        method='get',
+        operation_description='Get an author',
+        responses={
+            200: openapi.Response(
+                description='Get an author',
+                schema=UserSerializer()
+            ),
+            404: 'Not found',
+        },
+)
+@swagger_auto_schema(
+        method='post',
+        operation_description='Update an author',
+        responses={
+            200: openapi.Response(
+                description='Update an author',
+                schema=UserSerializer()
+            ),
+            400: 'Bad request',
+            404: 'Not found',
+        },
+)
+@swagger_auto_schema(
+        method='put',
+        operation_description='Update an author',
+        responses={
+            200: openapi.Response(
+                description='Update an author',
+                schema=UserSerializer()
+            ),
+            400: 'Bad request',
+            404: 'Not found',
+        },
+)
+@swagger_auto_schema(
+        method='delete',
+        operation_description='Delete an author',
+        responses={
+            200: openapi.Response(
+                description='Delete an author',
+                schema=UserSerializer()
+            ),
+            404: 'Not found',
+        },
+)
 @api_view(['GET','POST', 'PUT', 'DELETE'])
 def single_author_method(request,pk): 
     try:
@@ -63,7 +167,7 @@ def single_author_method(request,pk):
             return Response(serializer.data,status=status.HTTP_200_OK)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     elif request.method=='PUT':
-        serializer=UserSerializer(user,data=request.data)
+        serializer=UserSerializer(user,data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_200_OK)
@@ -71,134 +175,7 @@ def single_author_method(request,pk):
     elif request.method=='DELETE':
         user.delete()
         return Response({"message":f"author with id {pk} is deleted"},status=status.HTTP_200_OK)
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Post methods
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-@api_view(['GET'])
-def get_public_and_friends_posts(request, pk):
-    if request.method == 'GET':
-        logged_in_user = pk
-        friend_ids = Friendship.objects.filter(
-            from_user=logged_in_user
-        ).values_list('to_user_id', flat=True)
-        posts = Post.objects.filter(
-            Q(visibility=Post.Visibility.PUBLIC) | 
-            Q(author__id__in=friend_ids, visibility=Post.Visibility.PRIVATE) |
-            Q(author=logged_in_user)
-        )
-
-        serializer = PostSerializer(posts, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-@api_view(['GET', 'DELETE', 'PUT'])
-def post_method(request,pk,postID):
-    user=User.objects.get(pk=pk)
-    try:
-        post=Post.objects.get(pk=postID, author=pk)
-    except Post.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    if request.method=='GET':
-        serializer=PostSerializer(post)
-        response=serializer.data
-        response["author"]={
-            "id":user.id,
-            "host":user.host,
-            "displayName":user.displayName,
-            "url":user.url,
-            "github":user.github,
-            "profileImage":user.profileImage
-        } 
-        return Response(response,status=status.HTTP_200_OK)
-    elif request.method=='PUT':
-        serializer=PostSerializer(post,data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data,status=status.HTTP_200_OK)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-    elif request.method=='DELETE':
-        post.delete()
-        return Response({"message":f"post with id {postID} of user with id {pk} is deleted"},status=status.HTTP_200_OK)
-    
-@api_view(['POST', 'GET'])
-def create_post(request,pk):
-    if request.method=='POST':
-        try:
-            user=User.objects.get(pk=pk)
-            request.data.update({"author":user.id})
-            serializer=PostSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                response=serializer.data
-                response["author"]={
-                    "id":user.id,
-                    "host":user.host,
-                    "displayName":user.displayName,
-                    "url":user.url,
-                    "github":user.github,
-                    "profileImage":user.profileImage
-                }
-                return Response(response,status=status.HTTP_201_CREATED)
-            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-        except User.DoesNotExist:
-            return Response({"message":{f"No author with id {request.data['author']} exist, create post fail"}},status=status.HTTP_404_NOT_FOUND)
-    elif request.method=='GET':
-        try:
-            user=User.objects.get(pk=pk)
-            posts=Post.objects.filter(author=user.id)
-            serializer=PostSerializer(posts,many=True)
-            return Response(serializer.data,status=status.HTTP_200_OK)
-        except User.DoesNotExist:
-            return Response({"message":{f"No author with id {pk} exist, get posts fail"}},status=status.HTTP_404_NOT_FOUND)
-
-@api_view(['GET'])
-def get_followers_of_single_author(request, pk):
-    if request.method == 'GET':
-        followers={"type": "followers", "items": []}
-        followers_list1 = Friendship.objects.filter(to_user=pk)
-        for item in followers_list1:
-            followers["items"].append({
-                "id": item.from_user.id,
-                "host": item.from_user.host,
-                "displayName": item.from_user.displayName,
-                "url": item.from_user.url,
-                "host": item.from_user.host,
-                "github": item.from_user.github,
-                "profileImage": item.from_user.profileImage
-            })
-        if len(followers['items'])<1:
-            return Response({"message":{f"No one follow author with id {pk}"}},status=status.HTTP_200_OK)
-        return Response(followers, status=status.HTTP_200_OK)
-    
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Friendship methods
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-@api_view(['GET', 'DELETE', 'PUT'])
-def single_friendship_method(request,pk,fk):
-    if request.method=='GET':
-        try:
-            friendship=Friendship.objects.get(from_user=fk,to_user=pk)
-        except Friendship.DoesNotExist:
-            return Response({"message":{f"Friendship does not exist "}},status=status.HTTP_404_NOT_FOUND)
-        serializer=FriendshipSerializer(friendship)
-        return Response(serializer.data,status=status.HTTP_200_OK)
-    elif request.method=='DELETE':
-        try:
-            friendship=Friendship.objects.get(from_user=fk,to_user=pk)
-        except Friendship.DoesNotExist:
-            return Response({"message":{f"Friendship does not exist "}},status=status.HTTP_404_NOT_FOUND)
-        friendship.delete()
-        return Response({"message":f"author with id {fk} unfollowed author with id {pk}"},status=status.HTTP_200_OK)
-    elif request.method=='PUT':
-        friendship=Friendship.objects.filter(from_user=fk,to_user=pk)
-        if friendship.exists():
-            return Response({"message":{f"Friendship already exists "}},status=status.HTTP_400_BAD_REQUEST)
-        else:
-            serializer=FriendshipSerializer(data={"from_user":fk,"to_user":pk})
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data,status=status.HTTP_201_CREATED)
-            
+      
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Methods for testing purpose or still in progress
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -223,58 +200,33 @@ def get_all_like(request):
         likes=Like.objects.all()
         serializer=LikeSerializer(likes,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Comment methods
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-# @api_view(['GET', 'DELETE', 'PUT'])
-# def single_comment_method(request,pk):
-#     try:
-#         comment=Comment.objects.get(pk=pk)
-#     except Comment.DoesNotExist:
-#         return Response(status=status.HTTP_404_NOT_FOUND)
-#     if request.method=='GET':
-#         serializer=CommentSerializer(comment)
-#         return Response(serializer.data,status=status.HTTP_200_OK)
-#     elif request.method=='PUT':
-#         serializer=CommentSerializer(comment,data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data,status=status.HTTP_200_OK)
-#         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-#     elif request.method=='DELETE':
-#         comment.delete()
-#         return Response(status=status.HTTP_200_OK)
-@api_view(['GET', 'POST'])
-def comment_on_post(request,pk,postID):
-    if request.method=='GET':
-        comments=Comment.objects.filter(post=postID)
-        serializer=CommentSerializer(comments,many=True)
-        for comment in serializer.data:
-            comment["author"]={
-                "id":comment["author"],
-                "host":User.objects.get(pk=comment["author"]).host,
-                "displayName":User.objects.get(pk=comment["author"]).displayName,
-                "url":User.objects.get(pk=comment["author"]).url,
-                "github":User.objects.get(pk=comment["author"]).github,
-                "profileImage":User.objects.get(pk=comment["author"]).profileImage
-            }
-        return Response(serializer.data,status=status.HTTP_200_OK)
-    elif request.method=='POST':
-        request.data.update({"post":postID, "author":pk})
-        serializer=CommentSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            post=Post.objects.get(pk=postID)
-            post.count+=1
-            post.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Like methods 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
+@swagger_auto_schema(
+        method='delete',
+        operation_description='Delete a like',
+        responses={
+            200: openapi.Response(
+                description='Delete a like',
+                schema=LikeSerializer()
+            ),
+            404: 'Not found',
+        },
+)
+@swagger_auto_schema(
+        method='put',
+        operation_description='Update a like',
+        responses={
+            200: openapi.Response(
+                description='Update a like',
+                schema=LikeSerializer()
+            ),
+            400: 'Bad request',
+            404: 'Not found',
+        },
+)
 @api_view(['DELETE', 'PUT'])
 def single_like_method(request,pk):
     try:
@@ -290,7 +242,17 @@ def single_like_method(request,pk):
     elif request.method=='DELETE':
         like.delete()
         return Response(status=status.HTTP_200_OK)
-    
+@swagger_auto_schema(
+        method='post',
+        operation_description='Create a like',
+        responses={
+            200: openapi.Response(
+                description='Create a like',
+                schema=LikeSerializer()
+            ),
+            400: 'Bad request',
+        },
+) 
 @api_view(['POST'])
 def create_like(request):
     if request.method=='POST':
@@ -299,30 +261,69 @@ def create_like(request):
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-    
+@swagger_auto_schema(
+        method='get',
+        operation_description='Get likes of a post',
+        responses={
+            200: openapi.Response(
+                description='Get likes of a post',
+                schema=LikeSerializer(many=True)
+            ),
+        }
+)
 @api_view(['GET'])
 def get_like_for_post(request,pk,postID):
     if request.method=='GET':
-        likes=Like.objects.filter(object_id=postID,content_type=9)
+        likes=Like.objects.filter(object_id=postID,content_type=12)
         serializer=LikeSerializer(likes,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
-
+@swagger_auto_schema(
+        method='get',
+        operation_description='Get a likes of an author',
+        responses={
+            200: openapi.Response(
+                description='Get a likes of an author',
+                schema=LikeSerializer(many=True)
+            ),
+        }
+)
 @api_view(['GET'])
 def likes_of_single_author(request,pk):
     if request.method=='GET':
         likes=Like.objects.filter(author=pk)
         serializer=LikeSerializer(likes,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
+@swagger_auto_schema(
+        method='get',
+        operation_description='get all likes of a comment on a post',
+        responses={
+            200: openapi.Response(
+                description='get all likes of a comment on a post',
+                schema=LikeSerializer(many=True)
+            ),
+        }
+)
 @api_view(['GET'])
 def get_like_for_comment_on_post(request,pk, postID, cid):
     if request.method=='GET':
         likes=Like.objects.filter(object_id=cid,content_type=13)
         serializer=LikeSerializer(likes,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
+@swagger_auto_schema(
+        method='post',
+        operation_description='Like a post',
+        responses={
+            200: openapi.Response(
+                description='Like a post',
+                schema=LikeSerializer()
+            ),
+            400: 'Bad request',
+        },
+)
 @api_view(['POST'])
 def like_single_post(request, pk,postID):
     if request.method=='POST':
-        like=Like.objects.filter(object_id=postID,content_type=9,author=pk)
+        like=Like.objects.filter(object_id=postID,content_type=12,author=pk)
         if like.exists():
             return Response({"message":{f"Like already exists "}},status=status.HTTP_200_OK)
         serializer=LikeSerializer(data=request.data)
