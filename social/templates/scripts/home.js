@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                 const likePost = async () => {
                                     const data={
                                         author:userData.id,
-                                        content_type:9,
+                                        content_type:12,
                                         object_id:post.id
                                     }
                                     try {
@@ -145,7 +145,9 @@ document.addEventListener("DOMContentLoaded", function() {
                                     const createComment = async () => {
                                         const data = {
                                             comment: userCommentInput.value,
-                                            contentType:"text/markdown"
+                                            contentType:"text/markdown",
+                                            post: post.id,
+                                            author: userData.id
                                         };
     
                                     try {
