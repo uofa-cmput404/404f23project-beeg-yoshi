@@ -16,17 +16,27 @@ Setup Guide:
   * ```cd backend/```
   * ```pip install -r requirements.txt```
 
+
 How to run the server:
 
 * In the directory ```backend/```:
   * ```python3 manage.py runserver```
-    * This command starts the webserver on the current machine with the URL ```127.0.0.1:8000``` or ```localhost:8000```
+    * This command starts the webserver on the current machine with the URL ```http://127.0.0.1:8000/``` or ```http://localhost:8000```
     * Default port is 8000
   * To stop the server, input ```Control-C```
 
+
 How to access the server:
 
-* Open any web browser and enter the URL ```127.0.0.1:8000``` or ```localhost:8000```
+* Open any web browser and enter the URL ```http://127.0.0.1:8000/``` or ```http://localhost:8000```
+
+API Documentation
+=================
+
+How to access API Documentation:
+
+* Ensure the server is running (See Setup & Initialization for more details)
+* Go to the URL ```http://127.0.0.1:8000/docs/```
 
 Contributors
 ============
