@@ -22,18 +22,23 @@
         </ul>
     </div>
 
-    <!-- Will have 3 columns. The outer 2 are blank for now, but can add stuff in the future (IE: Future modulartiy)-->
+    <!-- 3 column streams, each for different types of notifcations !-->
+    <!-- Whenever you have a notifcation, you append a value of class "__node" and add in the appropriate values.-->
     <div class="content">
-        <div class="col1">
+        <div class="streamCol">
             <h1>Friend Requests</h1> <!-- List of friend requests -->
+            <div class="friendRQnode">Friend request</div>
         </div>
 
-        <div class="stream">
+        <div class="streamCol">
             <h1>Notifications</h1> <!-- Someone has liked your post, someone has commented: ... -->
+            <div class="likedNode">"X" Liked your post</div>
+            <div class="commentedNode">"X" Commented on your post: "..."</div>
         </div>
 
-        <div class="col3">
+        <div class="streamCol">
             <h1>Posts shared to you (inbox)</h1> <!-- Someone sent you a post, like tagging someone -->
+            <div class="sharedToYouNode">"X" Sent a post to you</div>
         </div>
     
     </div>

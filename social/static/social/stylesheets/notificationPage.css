@@ -1,16 +1,23 @@
-.content .col1 {
-    flex: 0 0 30%; /* Won't grow or shrink, has a minimum width of 200px. */
-    border: 1px solid black;
-}
-
-.content .stream{
-    flex: 1 0 30%; /* Will take up the space between the side columns, but won't shrink below 350 px */
-    border: 1px solid black;
+/* Restructured so that all 3 column streams are the same */
+/* There'll be "___node" content in each streamCol. */
+/* To access specific streamCol's, use the nth-child selector */
+.content .streamCol{
+    /* Structure */
     display: flex;
     flex-direction: column;
+    flex: 0 0 33%;
+    border: 1px solid black;
+
+    /* Styling */
+    padding: 1rem;
 }
 
-.content .col3{
-    flex: 0 0 30%; /* Won't grow or shrink, has a minimum width of 200px. */
-    border: 1px solid black;
+.streamCol h1{
+    font-size: 1.5rem;
+    text-align: center;
 }
+
+/* 1) Friend Request Node */
+/* 2) "Liked" Node */
+/* 3) "Commented" Node */
+/* 4) "sharedToYou" Node */
