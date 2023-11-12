@@ -30,85 +30,22 @@
             <h1>Friend Requests</h1> <!-- List of friend requests -->
             <div id="friendRqNode">
                 <div class="sender">"XYZ" Sent you a friend request.</div> <!-- Replace "XYZ" with username-->
-                <div class="genericHolder"> <!-- Generic flex container to hold the accept / decline buttons -->
-                    <div id="accept">Accept</div> <!-- These will act as buttons. Give them onclick.-->
-                    <div id="decline">Decline</div>
+                <div class="genericContainer"> <!-- Generic flex container to hold the accept / decline buttons -->
+                    <div id="decline">Decline</div> <!-- These will act as buttons. Give them onclick.-->
+                    <div id="accept">Accept</div> 
+                    
                 </div>
             </div>
 
             <!-- here's an example of what multiple would look like, delete this after-->
             <div id="friendRqNode">
                 <div class="sender">"XYZ" Sent you a friend request.</div> <!-- Replace "XYZ" with username-->
-                <div class="genericHolder"> <!-- Generic flex container to hold the accept / decline buttons -->
-                    <div id="accept">Accept</div> <!-- These will act as buttons. Give them onclick.-->
-                    <div id="decline">Decline</div>
+                <div class="genericContainer"> <!-- Generic flex container to hold the accept / decline buttons -->
+                    <div id="decline">Decline</div> <!-- These will act as buttons. Give them onclick.-->
+                    <div id="accept">Accept</div> 
                 </div>
             </div>
 
-            <div id="friendRqNode">
-                <div class="sender">"XYZ" Sent you a friend request.</div> <!-- Replace "XYZ" with username-->
-                <div class="genericHolder"> <!-- Generic flex container to hold the accept / decline buttons -->
-                    <div id="accept">Accept</div> <!-- These will act as buttons. Give them onclick.-->
-                    <div id="decline">Decline</div>
-                </div>
-            </div>
-            <div id="friendRqNode">
-                <div class="sender">"XYZ" Sent you a friend request.</div> <!-- Replace "XYZ" with username-->
-                <div class="genericHolder"> <!-- Generic flex container to hold the accept / decline buttons -->
-                    <div id="accept">Accept</div> <!-- These will act as buttons. Give them onclick.-->
-                    <div id="decline">Decline</div>
-                </div>
-            </div>
-            <div id="friendRqNode">
-                <div class="sender">"XYZ" Sent you a friend request.</div> <!-- Replace "XYZ" with username-->
-                <div class="genericHolder"> <!-- Generic flex container to hold the accept / decline buttons -->
-                    <div id="accept">Accept</div> <!-- These will act as buttons. Give them onclick.-->
-                    <div id="decline">Decline</div>
-                </div>
-            </div>
-            <div id="friendRqNode">
-                <div class="sender">"XYZ" Sent you a friend request.</div> <!-- Replace "XYZ" with username-->
-                <div class="genericHolder"> <!-- Generic flex container to hold the accept / decline buttons -->
-                    <div id="accept">Accept</div> <!-- These will act as buttons. Give them onclick.-->
-                    <div id="decline">Decline</div>
-                </div>
-            </div>
-            <div id="friendRqNode">
-                <div class="sender">"XYZ" Sent you a friend request.</div> <!-- Replace "XYZ" with username-->
-                <div class="genericHolder"> <!-- Generic flex container to hold the accept / decline buttons -->
-                    <div id="accept">Accept</div> <!-- These will act as buttons. Give them onclick.-->
-                    <div id="decline">Decline</div>
-                </div>
-            </div>
-            <div id="friendRqNode">
-                <div class="sender">"XYZ" Sent you a friend request.</div> <!-- Replace "XYZ" with username-->
-                <div class="genericHolder"> <!-- Generic flex container to hold the accept / decline buttons -->
-                    <div id="accept">Accept</div> <!-- These will act as buttons. Give them onclick.-->
-                    <div id="decline">Decline</div>
-                </div>
-            </div>
-            <div id="friendRqNode">
-                <div class="sender">"XYZ" Sent you a friend request.</div> <!-- Replace "XYZ" with username-->
-                <div class="genericHolder"> <!-- Generic flex container to hold the accept / decline buttons -->
-                    <div id="accept">Accept</div> <!-- These will act as buttons. Give them onclick.-->
-                    <div id="decline">Decline</div>
-                </div>
-            </div>
-            <div id="friendRqNode">
-                <div class="sender">"XYZ" Sent you a friend request.</div> <!-- Replace "XYZ" with username-->
-                <div class="genericHolder"> <!-- Generic flex container to hold the accept / decline buttons -->
-                    <div id="accept">Accept</div> <!-- These will act as buttons. Give them onclick.-->
-                    <div id="decline">Decline</div>
-                </div>
-            </div>
-            <div id="friendRqNode">
-                <div class="sender">"XYZ" Sent you a friend request.</div> <!-- Replace "XYZ" with username-->
-                <div class="genericHolder"> <!-- Generic flex container to hold the accept / decline buttons -->
-                    <div id="accept">Accept</div> <!-- These will act as buttons. Give them onclick.-->
-                    <div id="decline">Decline</div>
-                </div>
-            </div>
-            
         </div>
 
         <!-- Either someone has liked your post, or commented on your post. Depending on which one, add in the appropriate node. EACH NODE IS CLICKABLE TO TAKE YOU TO THE POST.-->        
@@ -139,6 +76,15 @@
     <div id="clearBtn">
         Clear all Notifications
     </div>
+
+    <!-- confirm clear modal -->
+    <dialog data-modal id="confirmClearModal">
+        <h1>Are you sure you want to clear all notifcations?</h1>
+        <divl class="genericContainer">
+            <div id="cancelClear">Cancel</div>
+            <div id="confirmClear">Confirm</div>
+        </divl>
+    </dialog>
 
 
     <!-- Footer -->

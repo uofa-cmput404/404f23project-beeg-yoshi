@@ -85,7 +85,7 @@
     font-size: 1.15rem; /* Make text a bit bigger */
 }
 
-#friendRqNode .genericHolder{
+#friendRqNode .genericContainer{
     display: flex;
     gap: 1rem;
 }
@@ -169,4 +169,50 @@
     border: 1px solid var(--darkText);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;;
     cursor: pointer;
+}
+
+dialog::backdrop{
+    backdrop-filter: blur(2px); /* Background is blurred when a dialog opens */
+}
+
+#confirmClearModal{
+    /* Center in screen */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: hidden;
+
+    /* Styling */
+
+    border: 1px solid var(--darkText);
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;    
+    height: 100px;
+    padding: 12px;
+    width: fit-content;
+}
+
+#confirmClearModal .genericContainer{
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+#confirmClear{
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: var(--acceptGreen);
+    cursor: pointer; /* Click = accept */
+    width: fit-content;
+}
+
+#cancelClear{
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: var(--softRed);
+    cursor: pointer; /* Click = accept */
+    width: fit-content;
 }

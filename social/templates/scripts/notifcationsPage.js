@@ -8,27 +8,45 @@
 // 6) Adjust ".sender" text to be: "<SENDER> liked/commented/shared ..."
 
 // Streams:
-var friendRqStream = document.querySelector(".friendRqStream");
-var likedCommentedStream = document.querySelector(".likedCommentedStream");
-var inboxStream = document.querySelector(".inboxStream");
+const friendRqStream = document.querySelector(".friendRqStream");
+const likedCommentedStream = document.querySelector(".likedCommentedStream");
+const inboxStream = document.querySelector(".inboxStream");
 
 // Nodes: <you might have to "createElement" instead>
-var friendRqNode = document.querySelector("#friendRqnode");
-var likedNode = document.querySelector("#likedNode");
-var commentedNode = document.querySelector("#commentedNode");
-var inboxNode = document.querySelector("#inboxNode");
+const friendRqNode = document.querySelector("#friendRqnode");
+const likedNode = document.querySelector("#likedNode");
+const commentedNode = document.querySelector("#commentedNode");
+const inboxNode = document.querySelector("#inboxNode");
 
 // Nested divs in the nodes: <you might have to "createElement" instead>
-var sender = document.querySelector(".sender");
-var likedIcon = document.querySelector("#likedIcon");
-var commentedIcon = document.querySelector("#commentedIcon");
-var genericHolder = document.querySelector(".genericHolder"); // Holds the below 2.
-var acceptBtn = document.querySelector("#accept");
-var declineBtn = document.querySelector("#decline");
+const sender = document.querySelector(".sender");
+const likedIcon = document.querySelector("#likedIcon");
+const commentedIcon = document.querySelector("#commentedIcon");
+const genericHolder = document.querySelector(".genericHolder"); // Holds the below 2.
+const acceptBtn = document.querySelector(".accept");
+const declineBtn = document.querySelector(".decline");
 
 // Extras: 
-var clearBtn = document.querySelector("clearBtn");
+const clearBtn = document.querySelector("#clearBtn");
+const confirmClearModal = document.querySelector("[data-modal]");
+const confirmClearBtn = document.querySelector("#confirmClear");
+const cancelClearBtn = document.querySelector("#cancelClear");
 
 // Query the database / get the notifcation-type (friendRq, liked/commentd, inbox): TODO
 
 // Add the node in to the correct stream.
+
+// Clear Modal + Confirm
+clearBtn.addEventListener("click", () =>{
+    confirmClearModal.showModal();
+})
+
+confirmClearBtn.addEventListener("click", () =>{
+    console.log("CLEAR ALL NOTIFICATIONS"); // TODO
+    confirmClearModal.close();
+})
+
+cancelClearBtn.addEventListener("click", () =>{
+    console.log("Do not clear notifcations");
+    confirmClearModal.close();
+})
