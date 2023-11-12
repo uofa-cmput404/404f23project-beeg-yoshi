@@ -10,19 +10,19 @@ Setup & Intialization
 Setup Guide:
 
 * Create and activate virtual environment:
- * ```virtualenv venv --python=python3```
- * ```source venv/bin/activate```
+  * ```virtualenv venv --python=python3```
+  * ```source venv/bin/activate```
 * Install dependencies:
- * ```cd backend/```
- * ```pip install -r requirements.txt```
+  * ```cd backend/```
+  * ```pip install -r requirements.txt```
 
 How to run the server:
 
 * In the directory ```backend/```:
- * ```python3 manage.py runserver```
-  * This command starts the webserver on the current machine with the URL ```127.0.0.1:8000``` or ```localhost:8000```
-  * Default port is 8000
- * To stop the server, input ```Control-C```
+  * ```python3 manage.py runserver```
+    * This command starts the webserver on the current machine with the URL ```127.0.0.1:8000``` or ```localhost:8000```
+    * Default port is 8000
+  * To stop the server, input ```Control-C```
 
 How to access the server:
 
