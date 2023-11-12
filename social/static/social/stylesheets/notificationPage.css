@@ -11,6 +11,12 @@
     text-align: center;
 }
 
+/* Style scrollbar (this is for Firefox, use webkit for safari & chrome */
+.friendRqStream, .likedCommentedStream, .inboxStream{
+    scrollbar-color: var(--headerColor) var(--mainBackground);
+    scrollbar-width: thin;
+}
+
 /* 3 streams of notifcation */
 .friendRqStream{
     /* Structure */

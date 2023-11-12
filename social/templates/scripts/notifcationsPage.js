@@ -12,13 +12,13 @@ var friendRqStream = document.querySelector(".friendRqStream");
 var likedCommentedStream = document.querySelector(".likedCommentedStream");
 var inboxStream = document.querySelector(".inboxStream");
 
-// Nodes:
+// Nodes: <you might have to "createElement" instead>
 var friendRqNode = document.querySelector("#friendRqnode");
 var likedNode = document.querySelector("#likedNode");
 var commentedNode = document.querySelector("#commentedNode");
 var inboxNode = document.querySelector("#inboxNode");
 
-// Nested divs in the nodes:
+// Nested divs in the nodes: <you might have to "createElement" instead>
 var sender = document.querySelector(".sender");
 var likedIcon = document.querySelector("#likedIcon");
 var commentedIcon = document.querySelector("#commentedIcon");
@@ -26,7 +26,7 @@ var genericHolder = document.querySelector(".genericHolder"); // Holds the below
 var acceptBtn = document.querySelector("#accept");
 var declineBtn = document.querySelector("#decline");
 
-// Extras:
+// Extras: 
 var clearBtn = document.querySelector("clearBtn");
 
 // Query the database / get the notifcation-type (friendRq, liked/commentd, inbox): TODO
