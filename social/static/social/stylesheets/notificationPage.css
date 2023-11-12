@@ -6,7 +6,13 @@
     padding: 1rem;
 }
 
-.content .streamCol{
+.content h1{
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+/* 3 streams of notifcation */
+.friendRqStream{
     /* Structure */
     display: flex;
     flex-direction: column;
@@ -22,10 +28,39 @@
     padding: 1rem;
 }
 
-.streamCol h1{
-    font-size: 1.5rem;
-    text-align: center;
+.likedCommentedStream{
+    /* Structure */
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 33%;
+    border: 1px solid black;
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    overflow-y: auto;
+    min-height: min-content;
+
+    /* Styling */
+    gap: 1rem; /* Gap between nodes */
+    padding: 1rem;
 }
+
+.inboxStream{
+    /* Structure */
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 33%;
+    border: 1px solid black;
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    overflow-y: auto;
+    min-height: min-content;
+
+    /* Styling */
+    gap: 1rem; /* Gap between nodes */
+    padding: 1rem;    
+}
+
+
 
 /* 1) Friend Request Node */
 #friendRqNode {
@@ -100,7 +135,7 @@
 }
 
 /* 4) "sharedToYou" Node */
-#sharedToYouNode{
+#inboxNode{
     display: flex;
     align-items: center;
     justify-content: space-between;
