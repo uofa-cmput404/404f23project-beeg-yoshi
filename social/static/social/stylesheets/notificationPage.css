@@ -85,4 +85,17 @@
     height: 85px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
+
 /* 4) "sharedToYou" Node */
+#sharedToYouNode{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    border: 1px solid var(--darkText);
+    border-radius: 8px;
+    padding: 8px;
+    height: 85px;
+    font-size: 1.15rem;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
