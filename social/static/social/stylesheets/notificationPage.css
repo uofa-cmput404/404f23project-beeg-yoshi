@@ -31,7 +31,7 @@
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-#friendRqNode #friendRqSender{
+.sender{ /* The sender of the notifcation, this is the text you change depending on the notif / user */
     font-size: 1.15rem; /* Make text a bit bigger */
 }
 
@@ -55,5 +55,34 @@
 
 }
 /* 2) "Liked" Node */
+#likedNode{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    border: 1px solid var(--darkText);
+    border-radius: 8px;
+    padding-left: 12px;
+    padding-right: 12px;
+    height: 85px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+#likedIcon, #commentedIcon{
+    height: auto;
+    width: 20px;
+}
 /* 3) "Commented" Node */
+#commentedNode{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    border: 1px solid var(--darkText);
+    border-radius: 8px;
+    padding-left: 12px;
+    padding-right: 12px;
+    height: 85px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
 /* 4) "sharedToYou" Node */

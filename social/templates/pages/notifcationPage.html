@@ -28,7 +28,7 @@
         <div class="streamCol">
             <h1>Friend Requests</h1> <!-- List of friend requests -->
             <div id="friendRqNode">
-                <div id="friendRqSender">"XYZ" Sent you a friend request.</div> <!-- Replace "XYZ" with username-->
+                <div class="sender">"XYZ" Sent you a friend request.</div> <!-- Replace "XYZ" with username-->
                 <div class="genericHolder"> <!-- Generic flex container to hold the accept / decline buttons -->
                     <div id="accept">Accept</div> <!-- These will act as buttons. Give them onclick.-->
                     <div id="decline">Decline</div>
@@ -37,7 +37,7 @@
 
             <!-- here's an example of what multiple would look like, delete this after-->
             <div id="friendRqNode">
-                <div id="friendRqSender">"XYZ" Sent you a friend request.</div> <!-- Replace "XYZ" with username-->
+                <div class="sender">"XYZ" Sent you a friend request.</div> <!-- Replace "XYZ" with username-->
                 <div class="genericHolder"> <!-- Generic flex container to hold the accept / decline buttons -->
                     <div id="accept">Accept</div> <!-- These will act as buttons. Give them onclick.-->
                     <div id="decline">Decline</div>
@@ -47,9 +47,17 @@
         </div>
 
         <div class="streamCol">
+            <!-- Either someone has liked your post, or commented on your post. Depending on which one, add in the appropriate node. EACH NODE IS CLICKABLE TO TAKE YOU TO THE POST.-->
             <h1>Notifications</h1> <!-- Someone has liked your post, someone has commented: ... -->
-            <div id="likedNode">"X" Liked your post</div>
-            <div id="commentedNode">"X" Commented on your post: "..."</div>
+            <div id="likedNode">
+                <div class="sender">"XYZ" Liked your post</div>
+                <img id="likedIcon" src="../images/likedIcon.png" alt="">
+            </div>
+
+            <div id="commentedNode">
+                <div class="sender">"XYZ" Commented: "......................"</div>
+                <img src="../images/commentIcon.png" alt="" id="commentedIcon">
+            </div>
         </div>
 
         <div class="streamCol">
