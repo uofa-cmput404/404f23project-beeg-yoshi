@@ -1,12 +1,21 @@
 /* Restructured so that all 3 column streams are the same */
 /* There'll be "___node" content in each streamCol. */
 /* To access specific streamCol's, use the nth-child selector */
+.content{
+    overflow: auto; /* make it so when content goes out of each column, it adds a scrollbar */
+    padding: 1rem;
+}
+
 .content .streamCol{
     /* Structure */
     display: flex;
     flex-direction: column;
     flex: 0 0 33%;
     border: 1px solid black;
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    overflow-y: auto;
+    min-height: min-content;
 
     /* Styling */
     gap: 1rem; /* Gap between nodes */
