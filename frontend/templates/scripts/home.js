@@ -277,6 +277,13 @@ postButton.addEventListener("click", () =>{
         }
     }
     createPost()
+    document.querySelector("#postTitle").value="";
+    document.querySelector("#postDescription").value="";
+    document.querySelector("#postContent").value="";
+    document.querySelector("#content-type").value="";
+    document.querySelector("#categories").value="";
+    document.querySelector("#visibility").value="";
+
 })
 
 Logout.addEventListener("click", () =>{
