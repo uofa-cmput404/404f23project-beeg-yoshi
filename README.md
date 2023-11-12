@@ -35,7 +35,7 @@ API Documentation
 
 How to access API Documentation:
 
-* Ensure the server is running (See Setup & Initialization for more details)
+* Ensure the server is running (See [Setup & Initialization](https://github.com/uofa-cmput404/404f23project-beeg-yoshi/blob/Documentation/README.md#setup--intialization) for more details)
 * Go to the URL ```http://127.0.0.1:8000/docs/```
 
 Contributors
