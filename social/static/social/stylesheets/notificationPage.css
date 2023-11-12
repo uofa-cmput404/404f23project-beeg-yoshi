@@ -1,0 +1,16 @@
+.content .col1 {
+    flex: 0 0 30%; /* Won't grow or shrink, has a minimum width of 200px. */
+    border: 1px solid black;
+}
+
+.content .stream{
+    flex: 1 0 30%; /* Will take up the space between the side columns, but won't shrink below 350 px */
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+}
+
+.content .col3{
+    flex: 0 0 30%; /* Won't grow or shrink, has a minimum width of 200px. */
+    border: 1px solid black;
+}

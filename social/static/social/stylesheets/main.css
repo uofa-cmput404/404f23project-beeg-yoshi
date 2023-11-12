@@ -3,7 +3,10 @@
 - Header.
 - Footer.
 */
+@import url('https://fonts.googleapis.com/css?family=Varela Round');
+
 body{
+    font-family: 'Varela Round';
     min-height: 100vh; /* Page is at least as long as the length of the page */
     display: flex;
     flex-direction: column;
