@@ -27,18 +27,34 @@
     <div class="content">
         <div class="streamCol">
             <h1>Friend Requests</h1> <!-- List of friend requests -->
-            <div class="friendRQnode">Friend request</div>
+            <div id="friendRqNode">
+                <div id="friendRqSender">"XYZ" Sent you a friend request.</div> <!-- Replace "XYZ" with username-->
+                <div class="genericHolder"> <!-- Generic flex container to hold the accept / decline buttons -->
+                    <div id="accept">Accept</div> <!-- These will act as buttons. Give them onclick.-->
+                    <div id="decline">Decline</div>
+                </div>
+            </div>
+
+            <!-- here's an example of what multiple would look like, delete this after-->
+            <div id="friendRqNode">
+                <div id="friendRqSender">"XYZ" Sent you a friend request.</div> <!-- Replace "XYZ" with username-->
+                <div class="genericHolder"> <!-- Generic flex container to hold the accept / decline buttons -->
+                    <div id="accept">Accept</div> <!-- These will act as buttons. Give them onclick.-->
+                    <div id="decline">Decline</div>
+                </div>
+            </div>
+            
         </div>
 
         <div class="streamCol">
             <h1>Notifications</h1> <!-- Someone has liked your post, someone has commented: ... -->
-            <div class="likedNode">"X" Liked your post</div>
-            <div class="commentedNode">"X" Commented on your post: "..."</div>
+            <div id="likedNode">"X" Liked your post</div>
+            <div id="commentedNode">"X" Commented on your post: "..."</div>
         </div>
 
         <div class="streamCol">
             <h1>Posts shared to you (inbox)</h1> <!-- Someone sent you a post, like tagging someone -->
-            <div class="sharedToYouNode">"X" Sent a post to you</div>
+            <div id="sharedToYouNode">"X" Sent a post to you</div>
         </div>
     
     </div>
