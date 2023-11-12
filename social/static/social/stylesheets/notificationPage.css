@@ -54,6 +54,7 @@
     border-radius: 8px;
     padding: 4px;
     background-color: var(--acceptGreen);
+    cursor: pointer; /* Click = accept */
 }
 
 #friendRqNode #decline{
@@ -61,6 +62,7 @@
     border-radius: 8px;
     padding: 4px;
     background-color: var(--softRed);
+    cursor: pointer; /* Click = decline */
 
 }
 /* 2) "Liked" Node */
@@ -75,6 +77,7 @@
     padding-right: 12px;
     height: 85px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    cursor: pointer; /* Clicking = takes you to post */
 }
 
 #likedIcon, #commentedIcon{
@@ -93,6 +96,7 @@
     padding-right: 12px;
     height: 85px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    cursor: pointer; /* Clicking = takes you to post */
 }
 
 /* 4) "sharedToYou" Node */
@@ -107,4 +111,21 @@
     height: 85px;
     font-size: 1.15rem;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    cursor: pointer; /* clicking = takes you to the post */
+}
+
+/* 5) Clear all notifications */
+#clearBtn{
+    /* Place at bottom right */
+    position: absolute;
+    bottom: 4rem;
+    right: 2rem;
+    z-index: 999;
+    background: var(--softRed);
+    border-radius: 12px;
+    width: fit-content;
+    padding: 6px;
+    border: 1px solid var(--darkText);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;;
+    cursor: pointer;
 }
