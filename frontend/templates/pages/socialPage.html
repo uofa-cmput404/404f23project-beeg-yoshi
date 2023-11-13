@@ -8,11 +8,23 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script type="module" src="../scripts/socialPage.js"></script>
     <link rel="stylesheet" href="../../static/social/stylesheets/socialPage.css">
+    <link rel="stylesheet" href="../../static/social/stylesheets/main.css">
 </head>
 <body>
-    <div class="list-container">
+    <!-- Header always sticks to top of screen -->
+    <div class="header">
+        <div class="appLogo">Beeg Yoshi</div>
+        <ul class="navLinks">
+            <li><a href="">Homepage</a></li>
+            <li><a href="./notificationPage.html">Notifications</a></li>
+            <li><a href="./socialPage.html">Social</a></li>
+            <li><a href="./userProfile.html">My Profile</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
         <div class="list">
-            <h2>People I followed</h2>
+            <h2>People I follow</h2>
             <ul id="friendsList">
                 <!-- Friends will be dynamically populated here -->
             </ul>
@@ -23,7 +35,21 @@
                 <!-- Strangers will be dynamically populated here -->
             </ul>
         </div>
-        <button style="position: absolute; left: 1%; top: 1%;" id="backbtn" >Back</button>
+
+
+
+        <!-- You can probably get rid of this button since we can use the header to navigate. -->
+        <button style="position: absolute; left: 1%; top: 1%;" id="backbtn" >Back</button> 
     </div>
+    <!-- Footer -->
+    <div class="footer">
+        <ul class="footerLinks">
+            <li><a href="">Link 1</a></li>
+            <li><a href="">Link 2</a></li>
+            <li><a href="">Link 3</a></li>
+            <button class="log-out" id="logoutBtn">Log out</button>
+        </ul>
+    </div>
+    
 </body>
 </html>
