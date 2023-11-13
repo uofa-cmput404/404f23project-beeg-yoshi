@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- import the static stylesheets here -->
+
+    <link rel="stylesheet" href="../../static/social/stylesheets/main.css"> <!-- Development purposes -->
+    <link rel="stylesheet" href="../../static/social/stylesheets/notificationPage.css"> <!-- ^ -->
+    <title>My Notifcations</title>
+    <script type="module" src="../scripts/notificationsPage.js" defer></script> <!-- Must be at end of head. For development purposes only, comment out. -->
+</head>
+<body>
+    <!-- Header always sticks to top of screen -->
+    <div class="header">
+        <div class="appLogo">Beeg Yoshi</div>
+        <ul class="navLinks">
+            <li><a href="">Homepage</a></li>
+            <li><a href="">Notifications</a></li>
+            <li><a href="./socialPage.html">Social</a></li>
+            <li><a href="./userProfile.html">My Profile</a></li>
+        </ul>
+    </div>
+
+    <!-- 3 column streams, each for different types of notifcations !-->
+    <!-- Whenever you have a notifcation, you append a value of class "__node" and add in the appropriate values.-->
+    <div class="content">
+        <div class="friendRqStream">
+            <h1>Friend Requests</h1> <!-- List of friend requests -->
+            <div id="friendRqNode">
+                <div class="sender">"XYZ" Sent you a friend request.</div> <!-- Replace "XYZ" with username-->
+                <div class="genericContainer"> <!-- Generic flex container to hold the accept / decline buttons -->
+                    <div id="decline">Decline</div> <!-- These will act as buttons. Give them onclick.-->
+                    <div id="accept">Accept</div> 
+                    
+                </div>
+            </div>
+
+            <!-- here's an example of what multiple would look like, delete this after-->
+            <div id="friendRqNode">
+                <div class="sender">"XYZ" Sent you a friend request.</div> <!-- Replace "XYZ" with username-->
+                <div class="genericContainer"> <!-- Generic flex container to hold the accept / decline buttons -->
+                    <div id="decline">Decline</div> <!-- These will act as buttons. Give them onclick.-->
+                    <div id="accept">Accept</div> 
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Either someone has liked your post, or commented on your post. Depending on which one, add in the appropriate node. EACH NODE IS CLICKABLE TO TAKE YOU TO THE POST.-->        
+        <div class="likedCommentedStream">
+
+            <h1>Notifications</h1> <!-- Someone has liked your post, someone has commented: ... -->
+            <div id="likedNode">
+                <div class="sender">"XYZ" Liked your post</div>
+                <img id="likedIcon" src="../images/likedIcon.png" alt="">
+            </div>
+
+            <div id="commentedNode">
+                <div class="sender">"XYZ" Commented: "......................"</div>
+                <img src="../images/commentIcon.png" alt="" id="commentedIcon">
+            </div>
+        </div>
+
+        <!-- This one is super simple. Just 1 div where you replace the "XYZ" with user, and make it clickable to the post link. -->
+        <div class="inboxStream">
+
+            <h1>Inbox</h1> <!-- Someone sent you a post, like tagging someone -->
+            <div id="inboxNode">"XYZ" Sent a post to you</div> 
+        </div>
+    
+    </div>
+
+    <!-- Clicking this will clear ALL notifcations. Didn't want to add a clear for each column cuz that'll look kinda strange. -->
+    <div id="clearBtn">
+        Clear all Notifications
+    </div>
+
+    <!-- confirm clear modal -->
+    <dialog data-modal id="confirmClearModal">
+        <h1>Are you sure you want to clear all notifcations?</h1>
+        <divl class="genericContainer">
+            <div id="cancelClear">Cancel</div>
+            <div id="confirmClear">Confirm</div>
+        </divl>
+    </dialog>
+
+
+    <!-- Footer -->
+    <div class="footer">
+        <ul class="footerLinks">
+            <li><a href="">Link 1</a></li>
+            <li><a href="">Link 2</a></li>
+            <li><a href="">Link 3</a></li>
+            <button class="log-out" id="logoutBtn">Log out</button>
+        </ul>
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,218 @@
+/* Restructured so that all 3 column streams are the same */
+/* There'll be "___node" content in each streamCol. */
+/* To access specific streamCol's, use the nth-child selector */
+.content{
+    overflow: auto; /* make it so when content goes out of each column, it adds a scrollbar */
+    padding: 1rem;
+}
+
+.content h1{
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+/* Style scrollbar (this is for Firefox, use webkit for safari & chrome */
+.friendRqStream, .likedCommentedStream, .inboxStream{
+    scrollbar-color: var(--headerColor) var(--mainBackground);
+    scrollbar-width: thin;
+}
+
+/* 3 streams of notifcation */
+.friendRqStream{
+    /* Structure */
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 33%;
+    border: 1px solid black;
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    overflow-y: auto;
+    min-height: min-content;
+
+    /* Styling */
+    gap: 1rem; /* Gap between nodes */
+    padding: 1rem;
+}
+
+.likedCommentedStream{
+    /* Structure */
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 33%;
+    border: 1px solid black;
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    overflow-y: auto;
+    min-height: min-content;
+
+    /* Styling */
+    gap: 1rem; /* Gap between nodes */
+    padding: 1rem;
+}
+
+.inboxStream{
+    /* Structure */
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 33%;
+    border: 1px solid black;
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    overflow-y: auto;
+    min-height: min-content;
+
+    /* Styling */
+    gap: 1rem; /* Gap between nodes */
+    padding: 1rem;    
+}
+
+
+
+/* 1) Friend Request Node */
+#friendRqNode {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border: 1px solid var(--darkText);
+    border-radius: 8px;
+    padding: 8px;
+    height: 85px;
+    background-color: var(--babyBlue);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.sender{ /* The sender of the notifcation, this is the text you change depending on the notif / user */
+    font-size: 1.15rem; /* Make text a bit bigger */
+}
+
+#friendRqNode .genericContainer{
+    display: flex;
+    gap: 1rem;
+}
+
+#friendRqNode #accept{
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 4px;
+    background-color: var(--acceptGreen);
+    cursor: pointer; /* Click = accept */
+}
+
+#friendRqNode #decline{
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 4px;
+    background-color: var(--softRed);
+    cursor: pointer; /* Click = decline */
+
+}
+/* 2) "Liked" Node */
+#likedNode{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    border: 1px solid var(--darkText);
+    border-radius: 8px;
+    padding-left: 12px;
+    padding-right: 12px;
+    height: 85px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    cursor: pointer; /* Clicking = takes you to post */
+}
+
+#likedIcon, #commentedIcon{
+    height: auto;
+    width: 20px;
+}
+/* 3) "Commented" Node */
+#commentedNode{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    border: 1px solid var(--darkText);
+    border-radius: 8px;
+    padding-left: 12px;
+    padding-right: 12px;
+    height: 85px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    cursor: pointer; /* Clicking = takes you to post */
+}
+
+/* 4) "sharedToYou" Node */
+#inboxNode{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    border: 1px solid var(--darkText);
+    border-radius: 8px;
+    padding: 8px;
+    height: 85px;
+    font-size: 1.15rem;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    cursor: pointer; /* clicking = takes you to the post */
+}
+
+/* 5) Clear all notifications */
+#clearBtn{
+    /* Place at bottom right */
+    position: absolute;
+    bottom: 4rem;
+    right: 2rem;
+    z-index: 999;
+    background: var(--softRed);
+    border-radius: 12px;
+    width: fit-content;
+    padding: 6px;
+    border: 1px solid var(--darkText);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;;
+    cursor: pointer;
+}
+
+dialog::backdrop{
+    backdrop-filter: blur(2px); /* Background is blurred when a dialog opens */
+}
+
+#confirmClearModal{
+    /* Center in screen */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: hidden;
+
+    /* Styling */
+
+    border: 1px solid var(--darkText);
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;    
+    height: 100px;
+    padding: 12px;
+    width: fit-content;
+}
+
+#confirmClearModal .genericContainer{
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+#confirmClear{
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: var(--acceptGreen);
+    cursor: pointer; /* Click = accept */
+    width: fit-content;
+}
+
+#cancelClear{
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: var(--softRed);
+    cursor: pointer; /* Click = accept */
+    width: fit-content;
+}
