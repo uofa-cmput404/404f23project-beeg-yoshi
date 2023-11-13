@@ -29,6 +29,8 @@ body{
     --mainBackground: #d1d1e0;
     --accentColor: #8AA39B;
     --softRed: #FF6961;
+    --acceptGreen: #99ff99;
+    --babyBlue: #ccf5ff;
 }
 
 .header {
