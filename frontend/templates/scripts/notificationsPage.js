@@ -25,7 +25,7 @@ const commentedIcon = document.querySelector("#commentedIcon");
 const genericHolder = document.querySelector(".genericHolder"); // Holds the below 2.
 const acceptBtn = document.querySelector(".accept");
 const declineBtn = document.querySelector(".decline");
-
+const Logout = document.querySelector("#logoutBtn")
 // Extras: 
 const clearBtn = document.querySelector("#clearBtn");
 const confirmClearModal = document.querySelector("[data-modal]");
@@ -49,4 +49,8 @@ confirmClearBtn.addEventListener("click", () =>{
 cancelClearBtn.addEventListener("click", () =>{
     console.log("Do not clear notifcations");
     confirmClearModal.close();
+})
+Logout.addEventListener("click", () =>{
+    localStorage.removeItem('userData');
+    window.location.href="loginPage.html"
 })

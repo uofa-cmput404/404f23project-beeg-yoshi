@@ -2,7 +2,17 @@ const friendsList = document.getElementById("friendsList");
 const strangersList = document.getElementById("strangersList");
 const userData = JSON.parse(localStorage.getItem('userData'));
 const backbtn = document.getElementById("backbtn");
+const Logout = document.querySelector("#logoutBtn")
+const nav = document.querySelector(".navLinks")
 const authorId = userData.id;
+if (userData) {
+    console.log(userData)
+    if(userData.type==="SERVERADMIN"){
+        let li = document.createElement("li");
+        li.innerHTML = '<a href="./AdminPage.html">Manage Author Access</a>';
+        nav.appendChild(li);
+    }
+}
 async function fetchLists() {
     let friends = await axios.get(`http://127.0.0.1:8000/service/authors/${authorId}/friends/`)
     let strangers = await axios.get(`http://127.0.0.1:8000/service/authors/${authorId}/strangers/`)
@@ -11,7 +21,6 @@ async function fetchLists() {
     populateList(friendsList, friends.data, 'Unfollow');
     populateList(strangersList, strangers.data, 'Follow');
 }
-
 function populateList(listElement, users, buttonText) {
     listElement.innerHTML = ''; 
 
@@ -60,3 +69,8 @@ function handleButtonClick(user, action) {
 
 
 fetchLists();
+
+Logout.addEventListener("click", () =>{
+    localStorage.removeItem('userData');
+    window.location.href="loginPage.html"
+})
