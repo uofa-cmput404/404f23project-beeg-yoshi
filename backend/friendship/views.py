@@ -88,24 +88,24 @@ def get_followers_of_single_author(request, pk):
 def friend_request_methods(request,pk,fk):
     if request.method=='GET':
         try:
-            friend_request=FriendRequest.objects.get(from_user=fk,to_user=pk)
+            friend_request=FriendRequest.objects.get(from_user=pk,to_user=fk)
         except FriendRequest.DoesNotExist:
             return Response({"message":{f"Friend request does not exist "}},status=status.HTTP_404_NOT_FOUND)
         serializer=FriendRequestSerializer(friend_request)
         return Response(serializer.data,status=status.HTTP_200_OK)
     elif request.method=='DELETE':
         try:
-            friend_request=FriendRequest.objects.get(from_user=fk,to_user=pk)
+            friend_request=FriendRequest.objects.get(from_user=pk,to_user=fk)
         except FriendRequest.DoesNotExist:
             return Response({"message":{f"Friend request does not exist "}},status=status.HTTP_404_NOT_FOUND)
         friend_request.delete()
-        return Response({"message":f"author with id {fk} unfollowed author with id {pk}"},status=status.HTTP_200_OK)
+        return Response({"message":"friend request deleted"},status=status.HTTP_200_OK)
     elif request.method=='POST':
-        friend_request=FriendRequest.objects.filter(from_user=fk,to_user=pk)
+        friend_request=FriendRequest.objects.filter(from_user=pk,to_user=fk)
         if friend_request.exists():
             return Response({"message":{f"Friend request already exists "}},status=status.HTTP_400_BAD_REQUEST)
         else:
-            serializer=FriendRequestSerializer(data={"from_user":fk,"to_user":pk})
+            serializer=FriendRequestSerializer(data={"from_user":pk,"to_user":fk})
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data,status=status.HTTP_201_CREATED)
@@ -117,6 +117,26 @@ def friend_request_methods(request,pk,fk):
         if friend_request.status=='pending':
             friend_request.status='accepted'
             friend_request.save()
-            return Response({"message":f"author with id {pk} accepted friend request from author with id {fk}"},status=status.HTTP_200_OK)
+            serializer=FriendshipSerializer(data={"from_user":pk,"to_user":fk})
+            if serializer.is_valid():
+                serializer.save()
+            return Response({"message":"friend request status changed"},status=status.HTTP_200_OK)
         else:
-            return Response({"message":{f"Friend request is not pending "}},status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message":{f"Friend request is not pending"}},status=status.HTTP_400_BAD_REQUEST)
+        
+@api_view(['GET'])
+def get_pending_friend_request(request,pk):
+    if request.method == 'GET':
+        pending_friend_request={"type": "friendrequests", "items": []}
+        pending_friend_request_list1 = FriendRequest.objects.filter(from_user=pk,status='pending')
+        for item in pending_friend_request_list1:
+            pending_friend_request["items"].append({
+                "id": item.to_user.id,
+                "host": item.to_user.host,
+                "displayName": item.to_user.displayName,
+                "url": item.to_user.url,
+                "host": item.to_user.host,
+                "github": item.to_user.github,
+                "profileImage": item.to_user.profileImage
+            })
+        return Response(pending_friend_request, status=status.HTTP_200_OK)

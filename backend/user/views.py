@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from .models import User,ServerAdmin, Like,Inbox
+from friendship.models import Friendship, FriendRequest
 from .serializers import UserSerializer,LikeSerializer,InboxSerializer
+from friendship.serializers import FriendshipSerializer, FriendRequestSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -80,7 +82,7 @@ def get_all_friendship_of_single_author(request, pk):
 def get_stranger_of_single_author(request,pk):
     if request.method == 'GET':
         friend_ids = Friendship.objects.filter(from_user_id=pk).values_list('to_user_id', flat=True)
-        non_friends = User.objects.filter(type='AUTHOR').exclude(id__in=friend_ids).exclude(id=pk) # exclude the author themself
+        non_friends = User.objects.filter(type='AUTHOR').exclude(id__in=friend_ids).exclude(id=pk).exclude(id__in=FriendRequest.objects.filter(from_user_id=pk).values_list('to_user_id', flat=True))
         serializer = UserSerializer(non_friends, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
         
