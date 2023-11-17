@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import Friendship, FriendRequest
 from .serializers import FriendshipSerializer, FriendRequestSerializer
+from user.models import User,Inbox
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
@@ -56,6 +57,9 @@ def single_friendship_method(request,pk,fk):
             serializer=FriendshipSerializer(data={"from_user":fk,"to_user":pk})
             if serializer.is_valid():
                 serializer.save()
+                inbox_object=Inbox.objects.get(author=pk)
+                inbox_object.items=request.data
+                inbox_object.save()
                 return Response(serializer.data,status=status.HTTP_201_CREATED)
 
 @swagger_auto_schema(
@@ -81,7 +85,7 @@ def get_followers_of_single_author(request, pk):
                 "profileImage": item.from_user.profileImage
             })
         if len(followers['items'])<1:
-            return Response({"message":{f"No one follow author with id {pk}"}},status=status.HTTP_200_OK)
+            return Response(followers, status=status.HTTP_200_OK)
         return Response(followers, status=status.HTTP_200_OK)
 
 @api_view(['GET', 'DELETE', 'PUT', 'POST'])
@@ -108,6 +112,13 @@ def friend_request_methods(request,pk,fk):
             serializer=FriendRequestSerializer(data={"from_user":pk,"to_user":fk})
             if serializer.is_valid():
                 serializer.save()
+                inbox_object=Inbox.objects.get(author=fk)
+                message=serializer.data
+                message["from_user_name"]=User.objects.get(id=pk).displayName
+                message["to_user_name"]=User.objects.get(id=fk).displayName
+                message["summary"]=f"{message['from_user_name']} sent you a friend request"
+                inbox_object.items["friendrequests"].append(message)
+                inbox_object.save()
                 return Response(serializer.data,status=status.HTTP_201_CREATED)
     elif request.method=='PUT':
         try:
@@ -117,9 +128,6 @@ def friend_request_methods(request,pk,fk):
         if friend_request.status=='pending':
             friend_request.status='accepted'
             friend_request.save()
-            serializer=FriendshipSerializer(data={"from_user":pk,"to_user":fk})
-            if serializer.is_valid():
-                serializer.save()
             return Response({"message":"friend request status changed"},status=status.HTTP_200_OK)
         else:
             return Response({"message":{f"Friend request is not pending"}},status=status.HTTP_400_BAD_REQUEST)

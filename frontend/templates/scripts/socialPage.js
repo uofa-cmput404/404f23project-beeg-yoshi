@@ -64,8 +64,14 @@ function handleButtonClick(user, action) {
             try {
                 const response= await axios.delete(`http://127.0.0.1:8000/service/authors/${user.id}/followers/${authorId}/`)
                 console.log(response.data)
+                try {
+                    const response= await axios.delete(`http://127.0.0.1:8000/service/authors/${authorId}/request/${user.id}/`)
+                    console.log(response.data)
+                } catch (error) {
+                    console.log(error)
+                }
             } catch (error) {
-                console.log(error.response.data)
+                console.log(error)
             }
 
         }

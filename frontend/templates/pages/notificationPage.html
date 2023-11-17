@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../../static/social/stylesheets/main.css"> <!-- Development purposes -->
     <link rel="stylesheet" href="../../static/social/stylesheets/notificationPage.css"> <!-- ^ -->
     <title>My Notifcations</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script type="module" src="../scripts/notificationsPage.js" defer></script> <!-- Must be at end of head. For development purposes only, comment out. -->
 </head>
 <body>
@@ -28,16 +29,6 @@
     <div class="content">
         <div class="friendRqStream">
             <h1>Friend Requests</h1> <!-- List of friend requests -->
-            <div id="friendRqNode">
-                <div class="sender">"XYZ" Sent you a friend request.</div> <!-- Replace "XYZ" with username-->
-                <div class="genericContainer"> <!-- Generic flex container to hold the accept / decline buttons -->
-                    <div id="decline">Decline</div> <!-- These will act as buttons. Give them onclick.-->
-                    <div id="accept">Accept</div> 
-                    
-                </div>
-            </div>
-
-            <!-- here's an example of what multiple would look like, delete this after-->
             <div id="friendRqNode">
                 <div class="sender">"XYZ" Sent you a friend request.</div> <!-- Replace "XYZ" with username-->
                 <div class="genericContainer"> <!-- Generic flex container to hold the accept / decline buttons -->

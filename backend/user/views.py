@@ -333,3 +333,16 @@ def like_single_post(request, pk,postID):
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET','PUT'])    
+def inbox_methods(request,pk):
+    if request.method=='GET':
+        inbox=Inbox.objects.get(author=pk)
+        serializer=InboxSerializer(inbox)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    elif request.method=='PUT':
+        inbox=Inbox.objects.get(author=pk)
+        inbox.items=request.data
+        inbox.save()
+        serializer=InboxSerializer(inbox)
+        return Response(serializer.data,status=status.HTTP_200_OK)

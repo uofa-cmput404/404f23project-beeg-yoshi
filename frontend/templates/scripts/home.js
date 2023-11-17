@@ -115,7 +115,6 @@ document.addEventListener("DOMContentLoaded", function() {
                                 const getComments = async () => {
                                     try {
                                         const response = await axios.get(`http://127.0.0.1:8000/service/authors/${post.author}/posts/${post.id}/comments`);
-                                        console.log(response.data);
                                         commentList.innerHTML = '';
                                         let commentsHtml = '';
                                         if (response.data.length === 0) {
@@ -130,8 +129,20 @@ document.addEventListener("DOMContentLoaded", function() {
                                                     <button class="like-btn" onclick="console.log('Like clicked for comment:', ${comment.id});">Like</button>
                                                 </div>
                                             `;
+                                            if (post.visibility==="FRIENDS" ){
+                                                if(comment.author.id===userData.id || post.author===userData.id){
+                                                console.log("i comment or i am author")
+                                                commentsHtml += commentHtml;
+                                            }
+                                            }
+                                            else{
+                                                console.log("it's public")
                                             commentsHtml += commentHtml;
+                                            }
                                         });
+                                    }
+                                    if(commentsHtml==='' && post.visibility==="FRIENDS" ){
+                                        commentsHtml = '<p>Comments on friend only post are only visible by post author and comment author</p>';
                                     }
                                         commentList.innerHTML = commentsHtml;
                                         

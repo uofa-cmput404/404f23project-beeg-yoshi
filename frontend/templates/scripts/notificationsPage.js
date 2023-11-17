@@ -11,7 +11,7 @@
 const friendRqStream = document.querySelector(".friendRqStream");
 const likedCommentedStream = document.querySelector(".likedCommentedStream");
 const inboxStream = document.querySelector(".inboxStream");
-
+const userData = JSON.parse(localStorage.getItem('userData'));
 // Nodes: <you might have to "createElement" instead>
 const friendRqNode = document.querySelector("#friendRqnode");
 const likedNode = document.querySelector("#likedNode");
@@ -31,7 +31,41 @@ const clearBtn = document.querySelector("#clearBtn");
 const confirmClearModal = document.querySelector("[data-modal]");
 const confirmClearBtn = document.querySelector("#confirmClear");
 const cancelClearBtn = document.querySelector("#cancelClear");
+const fetchInbox= async () => {
+    try {
+        const response= await axios.get(`http://127.0.0.1:8000/service/authors/${userData.id}/inbox/`)
+        console.log(response.data)
+        const friendRequestsList = response.data.items["friendrequests"];
+        console.log(friendRequestsList)
+        const notificationsList = response.data.items["notifications"];
+        console.log(notificationsList)
+        const inboxList = response.data.items["inbox"];
+        console.log(inboxList)
+        friendRqStream.innerHTML = '<h1>Friend Requests</h1>';
 
+        friendRequestsList.forEach(request => {
+            const node = document.createElement("div");
+            node.id = "friendRqNode";
+            node.innerHTML = `
+                <div class="sender">${request.from_user_name} sent you a friend request.</div>
+                <div class="genericContainer">
+                    <div id="decline">Decline</div> <!-- These will act as buttons. Give them onclick.-->
+                    <div id="accept">Accept</div> 
+                </div>
+            `;
+    
+            // Add event listeners for accept and decline
+            node.querySelector('#accept').addEventListener('click', () => handleAccept(request,friendRequestsList,notificationsList,inboxList));
+            node.querySelector('#decline').addEventListener('click', () => handleDecline(request,friendRequestsList,notificationsList,inboxList));
+    
+            friendRqStream.appendChild(node);
+        });
+
+    }catch (error) {
+        console.log(error)
+    }
+}
+fetchInbox();
 // Query the database / get the notifcation-type (friendRq, liked/commentd, inbox): TODO
 
 // Add the node in to the correct stream.
@@ -54,3 +88,37 @@ Logout.addEventListener("click", () =>{
     localStorage.removeItem('userData');
     window.location.href="loginPage.html"
 })
+
+// Handle accept
+function handleAccept(request,friendsList,inboxList,notificationsList) {
+    const index=friendsList.indexOf(request);
+    friendsList.splice(index,1);
+    const data={"inbox":inboxList,"notifications":notificationsList,"friendrequests":friendsList}
+    const createFriendship = async () => {  
+        try {
+            const response= await axios.put(`http://127.0.0.1:8000/service/authors/${userData.id}/followers/${request.from_user}/`,data)
+            console.log(response.data)
+            try {
+                const response= await axios.put(`http://127.0.0.1:8000/service/authors/${request.from_user}/request/${userData.id}/`)
+                console.log(response.data)
+            } catch (error) {
+                console.log(error)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    createFriendship();
+}
+
+// Handle decline
+function handleDecline(request,friendsList,inboxList,notificationsList) {
+    const index=friendsList.indexOf(request);
+    friendsList.splice(index,1);
+    const data={"inbox":inboxList,"notifications":notificationsList,"friendrequests":friendsList}
+    try {
+        axios.put(`http://127.0.0.1:8000/service/authors/${userData.id}/inbox/`,data)
+    } catch (error) {
+        console.log(error)
+    }
+}

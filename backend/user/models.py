@@ -48,8 +48,14 @@ class Like(models.Model):
     def __str__(self):
         return self.author.displayName + " likes "
 class Inbox(models.Model):
-    id=models.CharField(max_length=1024,primary_key=True)
-    author=models.ForeignKey(User,on_delete=models.CASCADE)
-    items=models.JSONField(default=dict)
+    id = models.AutoField(primary_key=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    def default_items():
+        return {"inbox": [], "notifications": [], "friendrequests": []}
+    items = models.JSONField(default=default_items)
     def __str__(self):
         return self.author.displayName + " inbox"
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['author'], name='unique_author_inbox')
+        ]
