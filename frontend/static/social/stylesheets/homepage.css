@@ -25,6 +25,7 @@ body{
 /* Post. By default its hidden but you add it in if there's posts to show. */
 .post {
     display: flex;
+    flex-direction: column;
     align-self: center;
     justify-content: space-between;
     width: 80%;
@@ -33,6 +34,7 @@ body{
 
     margin-bottom: 2rem;
     padding: 16px;
+    padding-bottom: 10px;
     
     border: 2px solid var(--darkText); /* FOR VISUAL PURPOSES ONLY, DELETE LATER */
     border-radius: 12px;
@@ -40,32 +42,45 @@ body{
 }
 
 .post .postPfp {
-    width: auto;
-    height: 65px;
+    width: 60px;
+    height: 55px;
     flex: 0 0 10%; /* Occupies 10% of the post container */
     clip-path: circle();
 }
 
 .post .postContent{
     display: flex;
-    flex: 0 0 70%;
-    border-left: 1px solid var(--darkText);
-    padding: 8px;
-    border-radius: 6px;
-}
-
-.postNav ul{
-    display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    height: 100%;
-    flex: 0 0 5%;
+    flex: 0 0 70%;
+    padding: 8px;
+    padding-bottom: 0px;
+    margin-top: 10px;
 }
 
-.postNav img{
+/* .postNav ul{
+    display: flex;
+    align-items: center;
+    height: 25%;
+    gap: 0.5rem;
+    flex: 0 0 5%;
+} */
+
+.postContent ul{
+    display: flex;
+    align-items: center;
+    height: 25%;
+    gap: 0.5rem;
+    flex: 0 0 5%;
+    margin-top: 1.5rem;
+}
+
+.postContent img { /* like, comment, share icons */
     width: 30px;
     height: auto;
+}
+
+.postContent ul .button-container{ /* holds the delete & edit buttons */
+    flex-direction: row;  
 }
 
 /* Create a post */
@@ -200,27 +215,28 @@ dialog::backdrop{
 }
 /* Styles for the delete button */
 .delete-btn {
-    background-color: var(--softRed);
-    border-radius: 3px;
-    padding: 3px;
-    color: white;
-    border: none;        
+    background-color: var(--mainBackround);
+    border: 2px solid var(--softRed);
+    color: var(--softRed);
+    text-align: center;
+    border-radius: 400px;
+    padding: 6px;   
     margin-right: 10px;
     cursor: pointer;
-    height: 30px;
-    width: 60px;
+    height: fit-content;
+    width: fit-content;
 }
 
 /* Styles for the edit button */
 .edit-btn {
-    background-color: #00cc44;
-    color: white;
-    border: none;
+    background-color: var(--mainBackround);
+    border: 2px solid var(--acceptGreen);
+    color: var(--acceptGreen);
     cursor: pointer;
-    border-radius: 3px;
-    padding: 3px;
-    height: 30px;
-    width: 60px;
+    border-radius: 500px;
+    padding: 6px;
+    height: fit-content;
+    width: fit-content;
 }
 .button-container {
     margin-left: 20px;

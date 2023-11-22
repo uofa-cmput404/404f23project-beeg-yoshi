@@ -169,7 +169,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     postNavList.appendChild(li);
                 });
                 postNav.appendChild(postNavList);
-                postDiv.appendChild(postNav);
+                /* postDiv.appendChild(postNav); */
                 if (post.author === userData.id) {
                     const buttondiv = document.createElement("div");
                     buttondiv.className = "button-container";
@@ -204,7 +204,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         event.stopPropagation();
                         editPostContent.value = post.content;
                         editModal.style.display = "block";
-                        saveChanges.onclick = () => {
+                        saveChanges.onclick = () => {    
                             post.content = editPostContent.value;
                             const data={
                                 content:post.content
@@ -223,7 +223,8 @@ document.addEventListener("DOMContentLoaded", function() {
                             editModal.style.display = "none";
                         };
                     };
-                    postDiv.appendChild(buttondiv);
+                    postNavList.appendChild(buttondiv);
+                    postContent.appendChild(postNavList);
                 }
                 stream.appendChild(postDiv);
             });
