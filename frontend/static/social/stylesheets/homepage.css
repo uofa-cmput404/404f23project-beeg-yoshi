@@ -302,14 +302,36 @@ dialog::backdrop{
 }
 
 .comment-item {
-    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 20px;
+    padding: 12px;
+    border: 1px solid var(--darkText);
+    border-radius: 8px;
+    width: 95%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+#commentList .comment-item .like-btn{ /* Liking a comment btn */
+    display: inline-block;
+    outline: 0;
+    border: 0;
+    cursor: pointer;
+    background-color: #007BFF;
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 0.75rem;
+    color: white;
+    line-height: 8px;
+    width: 50px;
 }
 
 .comment-input-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 #userComment {
@@ -317,13 +339,13 @@ dialog::backdrop{
     padding: 10px;
     margin-right: 10px;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 2px solid #ccc;
 }
 
 #submitCommentBtn {
     padding: 10px 20px;
     background-color: #007BFF;
-    color: #fff;
+    color: var(--lightText);
     border: none;
     border-radius: 5px;
     cursor: pointer;

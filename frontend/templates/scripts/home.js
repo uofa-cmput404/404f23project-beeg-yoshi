@@ -11,7 +11,7 @@ const editModal = document.getElementById("editModal");
 const editPostContent = document.getElementById("editPostContent");
 const saveChanges = document.getElementById("saveChanges");
 const cancelEdit = document.getElementById("cancelEdit");
-const closeModalBtn = document.querySelector('.close-btn');
+const closeModalBtn = document.querySelector(".close-btn");
 const nav = document.querySelector(".navLinks")
 const postButton = document.querySelector("#submitPostBtn")
 const Logout = document.querySelector("#logoutBtn")
@@ -291,6 +291,7 @@ Logout.addEventListener("click", () =>{
     window.location.href="loginPage.html"
 })
 
-closeModalBtn.addEventListener('click', () => {
+closeModalBtn.addEventListener("click", () => {
+    console.log("close comment modal.");
     commentModal.style.display = 'none';
 });
