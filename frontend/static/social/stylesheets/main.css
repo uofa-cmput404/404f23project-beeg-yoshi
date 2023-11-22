@@ -128,3 +128,17 @@ body{
     color: var(--darkText);
     background: var(--accentLight);
 }
+
+.footerLinks #logoutBtn{
+    display: inline-block;
+    outline: 0;
+    border: 0;
+    cursor: pointer;
+    background-color: var(--softRed);
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 0.75rem;
+    color: white;
+    line-height: 8px;
+    width: fit-content;
+}

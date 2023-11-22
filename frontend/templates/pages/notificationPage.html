@@ -77,6 +77,31 @@
         Clear all Notifications
     </div>
 
+    <!-- Open an inboxNode post sent to you modal -->
+    <!-- The modal -->
+    
+    <div id="inboxNodeModal" class="modal">
+        <!-- Modal Content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>"X" Sent a post by "Y" to you:</h1>
+                <span class="close">&times;</span>
+            </div>
+
+            <div class="modal-body">
+                <p id="postContent">This is where the "Y" post content would go</p>
+            </div>
+
+            <div class="modal-footer">
+                <img src="../images/likeIcon.png" alt="">
+                <img src="../images/commentIcon.png" alt="">
+                <img src="../images/shareIcon.png" alt="">
+            </div>
+
+            
+        </div>
+    </div>
+
     <!-- confirm clear modal -->
     <dialog data-modal id="confirmClearModal">
         <h1>Are you sure you want to clear all notifcations?</h1>
