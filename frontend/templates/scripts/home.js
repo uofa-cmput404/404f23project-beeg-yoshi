@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                         response.data.forEach(comment => {
                                             const commentHtml = `
                                                 <div class="comment-item">
-                                                    <strong>${comment.author["displayName"]} said:</strong>
+                                                    <strong><i>${comment.author["displayName"]}</i> said:</strong>
                                                     <p>${comment.comment}</p>
                                                     <button class="like-btn" onclick="console.log('Like clicked for comment:', ${comment.id});">Like</button>
                                                 </div>

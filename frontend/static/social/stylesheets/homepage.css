@@ -38,6 +38,7 @@ body{
     
     border: 2px solid var(--darkText); /* FOR VISUAL PURPOSES ONLY, DELETE LATER */
     border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 
 }
 
@@ -271,6 +272,7 @@ dialog::backdrop{
     z-index: 1001;
     background-color: white;
     border-radius: 8px;
+    border: 2px solid var(--darkText);
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     display: none;
@@ -284,7 +286,7 @@ dialog::backdrop{
     width: 100%;
     min-height: 250px;
     padding: 10px;
-    border-radius: 4px;
+    border-radius: 8px;
     border: 1px solid var(--niceGray);
     resize: none;
 }
@@ -356,13 +358,14 @@ dialog::backdrop{
     position: fixed;
     width: 550px;
     height: fit-content;
+    max-height: 600px;
     margin-top: 10px;
     border-radius: 12px;
     
 }
 
 #commentList {
-    max-height: 300px;
+    max-height: 400px;
     overflow-y: auto;
 }
 
@@ -376,6 +379,7 @@ dialog::backdrop{
     border-radius: 8px;
     width: 95%;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    overflow: hidden;
 }
 
 #commentList .comment-item .like-btn{ /* Liking a comment btn */
@@ -397,6 +401,27 @@ dialog::backdrop{
     justify-content: space-between;
     align-items: center;
     margin-top: 10px;
+
+
+    border: 0;
+    background: rgba(0, 0, 0, 0);
+    appearance: none;
+    width: 100%;
+    position: relative;
+    border-radius: 3px;
+    color: rgb(0, 0, 0);
+    font-weight: 400;
+    height: 40px;
+    transition: all .2s ease;
+    :hover{
+        box-shadow: 0 0 0 0 #fff inset, var(--acceptGreen) 0 0 0 2px;
+    }
+    :focus{
+        background: #fff;
+        outline: 0;
+        box-shadow: 0 0 0 0 #fff inset, var(--acceptGreen) 0 0 0 3px;
+    }
+
 }
 
 #userComment {
