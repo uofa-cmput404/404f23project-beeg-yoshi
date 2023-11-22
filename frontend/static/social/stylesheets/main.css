@@ -86,7 +86,7 @@ body{
 .content .stream{
     flex: 1 0 500px; /* Will take up the space between the side columns, but won't shrink below 350 px */
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse; /* displays posts in reverse order => thus becoming chronological */
 }
 
 .content .col3{
