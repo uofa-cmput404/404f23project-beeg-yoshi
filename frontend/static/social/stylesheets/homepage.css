@@ -232,22 +232,38 @@ dialog::backdrop{
 }
 
 .confirmation-dialog {
+    line-height: 2rem;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 1000;
-    background-color: white;
+    z-index: 1;
+    background-color: var(--lightText);
     border-radius: 8px;
     padding: 20px;
+    border: 2px solid var(--niceGray);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     display: none;
 }
 
-.confirmation-dialog button {
-    padding: 5px 15px;
-    margin: 5px;
-    cursor: pointer;
+.confirmation-dialog #confirmDelete {
+    margin-right: 12px; /* Spaces out the "yes" and "no" buttons*/
+    width: 60px;
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 4px;
+    background-color: var(--softRed);
+    cursor: pointer; /* Click = accept */
+}
+
+.confirmation-dialog #cancelDelete {
+    width: 60px;
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 4px;
+    background-color: var(--lightText);
+    cursor: pointer; /* Click = accept */
+
 }
 .edit-modal {
     position: fixed;
