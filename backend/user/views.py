@@ -104,6 +104,9 @@ def create_author(request):
         serializer=UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            author=User.objects.get(pk=serializer.data['id'])
+            inbox_object=Inbox.objects.create(author=author)
+            inbox_object.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     

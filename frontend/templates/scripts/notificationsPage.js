@@ -59,6 +59,14 @@ const fetchInbox= async () => {
             node.querySelector('#decline').addEventListener('click', () => handleDecline(request,friendRequestsList,notificationsList,inboxList));
     
             friendRqStream.appendChild(node);
+            
+        });
+        inboxStream.innerHTML = '<h1>Inbox</h1>';
+        inboxList.forEach(message => {
+            const node = document.createElement("div");
+            node.id = "inboxNode";
+            node.innerText = `${message.senderName} Sent a post to you`;
+            inboxStream.appendChild(node);
         });
 
     }catch (error) {
@@ -90,7 +98,7 @@ Logout.addEventListener("click", () =>{
 })
 
 // Handle accept
-function handleAccept(request,friendsList,inboxList,notificationsList) {
+function handleAccept(request,friendsList,notificationsList,inboxList) {
     const index=friendsList.indexOf(request);
     friendsList.splice(index,1);
     const data={"inbox":inboxList,"notifications":notificationsList,"friendrequests":friendsList}
@@ -109,16 +117,27 @@ function handleAccept(request,friendsList,inboxList,notificationsList) {
         }
     }
     createFriendship();
+    fetchInbox();
 }
 
 // Handle decline
-function handleDecline(request,friendsList,inboxList,notificationsList) {
+function handleDecline(request,friendsList,notificationsList,inboxList) {
     const index=friendsList.indexOf(request);
     friendsList.splice(index,1);
     const data={"inbox":inboxList,"notifications":notificationsList,"friendrequests":friendsList}
+    const deleteFriendshipRequest = async () => {
     try {
-        axios.put(`http://127.0.0.1:8000/service/authors/${userData.id}/inbox/`,data)
+        await axios.put(`http://127.0.0.1:8000/service/authors/${userData.id}/inbox/`,data)
+        try {
+            const response= await axios.delete(`http://127.0.0.1:8000/service/authors/${request.from_user}/request/${userData.id}/`)
+        }
+            catch (error) {
+                console.log(error)
+            }
     } catch (error) {
         console.log(error)
     }
+}
+    deleteFriendshipRequest();
+    fetchInbox();
 }

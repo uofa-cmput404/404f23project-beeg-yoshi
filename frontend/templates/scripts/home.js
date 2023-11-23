@@ -19,6 +19,10 @@ const commentModal = document.getElementById('commentModal');
 const commentList = document.getElementById('commentList');
 const userCommentInput = document.getElementById('userComment');
 const submitCommentBtn = document.getElementById('submitCommentBtn');
+const friendModal = document.querySelector('.friend-share-container');
+const friendModalCloseBtn = document.querySelector(".friend-modal-close");
+const friendList=document.querySelector(".list-items");
+let friendData={};
 document.addEventListener("DOMContentLoaded", function() {
     const userData = JSON.parse(localStorage.getItem('userData'));
     if (userData) {
@@ -29,6 +33,16 @@ document.addEventListener("DOMContentLoaded", function() {
             nav.appendChild(li);
         }
     }
+    const getFriends = async () => {
+        try {
+            const response=await axios.get(`http://127.0.0.1:8000/service/authors/${userData.id}/friends/`)
+            friendData=response.data;
+        } catch (error) {
+            console.log(error)
+            
+        }
+    }
+    getFriends();
     const getPosts = async () => {
         try {
             const response = await axios.get(`http://127.0.0.1:8000/service/authors/get/${userData.id}/posts/`);
@@ -173,7 +187,66 @@ document.addEventListener("DOMContentLoaded", function() {
                                 };
                                 break;
                             case "share":
-                                console.log("share is clicked");
+                                friendModal.style.display = "block";
+                                friendList.innerHTML = '';
+                                let friendsHtml = '';
+                                friendData.forEach(friend => {
+                                    const friendHtml = `
+                                    <li class="item" data-user-id="${friend.id}">
+                                    <span class="checkbox">
+                                        <i class="fa-solid fa-check check-icon"></i>
+                                    </span>
+                                    <span class="item-text">${friend.displayName}</span>
+                                </li>
+                                    `;
+                                    friendsHtml += friendHtml;
+                                });
+                                const submitbtnHTML = `
+                                <button class="share-posts-btn"">Share</button>
+                                `
+                                friendsHtml += submitbtnHTML;
+                                friendList.innerHTML = friendsHtml;
+                                const items = document.querySelectorAll(".item");
+                                items.forEach(item => {
+                                    item.addEventListener("click", () => {
+                                        item.classList.toggle("checked");
+                                    });
+                                })
+                                document.querySelector(".share-posts-btn").addEventListener("click", () => {
+                                    const selectedFriends = [];
+                                    document.querySelectorAll(".item.checked").forEach(item => {
+                                        selectedFriends.push(item.dataset.userId);
+                                    });
+                                    selectedFriends.forEach(friendId => {
+                                        const sharePost = async () => {
+                                            const data = {
+                                                senderId:userData.id,
+                                                senderName:userData.displayName,
+                                                postId:post.id,
+                                                post:post.content,
+                                                author:post.author,
+                                                count:post.count,
+                                            }
+                                            try {
+                                                const response = await axios.get(`http://127.0.0.1:8000/service/authors/${friendId}/inbox/`)
+                                                const friendRequest=response.data.items["friendrequests"];
+                                                const notifications=response.data.items["notifications"];
+                                                const inbox = response.data.items["inbox"];
+                                                inbox.push(data);
+                                                const InboxData={"inbox":inbox,"notifications":notifications,"friendrequests":friendRequest}
+                                                try {
+                                                    const response = await axios.put(`http://127.0.0.1:8000/service/authors/${friendId}/inbox/`,InboxData)
+                                                    console.log(response.data);
+                                                } catch (error) {
+                                                    console.log(error);
+                                                }
+                                            } catch (error) {
+                                                console.log(error);
+                                            }
+                                        }
+                                        sharePost();
+                                    })
+                                });
                                 break;
                         }
                     });
@@ -246,7 +319,6 @@ document.addEventListener("DOMContentLoaded", function() {
     
     
     getPosts()
-
 });
 
 createPostBtn.addEventListener("click", () =>{
@@ -305,3 +377,7 @@ Logout.addEventListener("click", () =>{
 closeModalBtn.addEventListener('click', () => {
     commentModal.style.display = 'none';
 });
+friendModalCloseBtn.addEventListener('click', () => {
+    friendModal.style.display = 'none';
+});
+//friends share
