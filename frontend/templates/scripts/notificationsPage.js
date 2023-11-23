@@ -16,8 +16,6 @@ const userData = JSON.parse(localStorage.getItem('userData'));
 const friendRqNode = document.querySelector("#friendRqnode");
 const likedNode = document.querySelector("#likedNode");
 const commentedNode = document.querySelector("#commentedNode");
-const inboxNode = document.querySelector("#inboxNode"); // Clicking this also opens "inboxNodeModal"
-
 // Nested divs in the nodes: <you might have to "createElement" instead>
 const sender = document.querySelector(".sender");
 const likedIcon = document.querySelector("#likedIcon");
@@ -31,6 +29,7 @@ const clearBtn = document.querySelector("#clearBtn");
 const confirmClearModal = document.querySelector("[data-modal]");
 const confirmClearBtn = document.querySelector("#confirmClear");
 const cancelClearBtn = document.querySelector("#cancelClear");
+const inboxNodeModal = document.getElementById("inboxNodeModal");
 const fetchInbox= async () => {
     try {
         const response= await axios.get(`http://127.0.0.1:8000/service/authors/${userData.id}/inbox/`)
@@ -66,6 +65,33 @@ const fetchInbox= async () => {
             const node = document.createElement("div");
             node.id = "inboxNode";
             node.innerText = `${message.senderName} Sent a post to you`;
+            const postModalhtml = `<div class="modal-content">
+            <div class="modal-header">
+                <h1>${message.senderName} Sent a post by share to you:</h1>
+                <span class="close">&times;</span>
+            </div>
+
+            <div class="modal-body">
+                <p id="postContent">${message.post}</p>
+            </div>
+
+            <div class="modal-footer">
+                <img src="../images/likeIcon.png" alt="">
+            </div>
+
+            
+        </div>`
+        inboxNodeModal.innerHTML = postModalhtml;
+        const closeInboxNodeBtn = document.querySelector(".close");
+        closeInboxNodeBtn.addEventListener("click", () => {
+            inboxNodeModal.style.display="none";
+            document.body.style.overflow = "auto"; /* unlocks the background */
+        })
+        
+            node.addEventListener("click", () => {
+            document.body.style.overflow = "hidden";
+            inboxNodeModal.style.display = "block";
+            })
             inboxStream.appendChild(node);
         });
 
@@ -80,16 +106,7 @@ fetchInbox();
 
 
 // inboxNode: Clicking the sent post opens up an expanded version of the post.
-inboxNode.addEventListener("click", () =>{
-    console.log('node clicked');
-    inboxNodeModal.style.display = "block";
-    document.body.style.overflow = "hidden"; /* locks the background when modal is open */
-})
 
-closeInboxNodeBtn.addEventListener("click", () => {
-    inboxNodeModal.style.display="none";
-    document.body.style.overflow = "auto"; /* unlocks the background */
-})
 
 // Clear Modal + Confirm
 clearBtn.addEventListener("click", () =>{

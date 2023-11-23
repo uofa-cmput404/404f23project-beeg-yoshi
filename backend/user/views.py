@@ -336,7 +336,27 @@ def like_single_post(request, pk,postID):
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-    
+
+@swagger_auto_schema(
+        method='get',
+        operation_description='get inbox of an author',
+        responses={
+            200: openapi.Response(
+                description='get inbox of an author',
+                schema=InboxSerializer()
+            ),
+        }
+)
+@swagger_auto_schema(
+        method='put',
+        operation_description='update inbox of an author',
+        responses={
+            200: openapi.Response(
+                description='update inbox of an author',
+                schema=InboxSerializer()
+            ),
+        }
+)
 @api_view(['GET','PUT'])    
 def inbox_methods(request,pk):
     if request.method=='GET':

@@ -35,6 +35,19 @@ def get_public_and_friends_posts(request, pk):
         return Response(serializer.data, status=status.HTTP_200_OK)
 @swagger_auto_schema(
     method='get',
+    operation_description="Get all public posts",
+    responses={200: PostSerializer(many=True)}
+)
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def get_public_posts(request):
+    if request.method == 'GET':
+        posts = Post.objects.filter(visibility='PUBLIC')
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+@swagger_auto_schema(
+    method='get',
     operation_description="get single post of an author",
     responses={
         200: PostSerializer(),

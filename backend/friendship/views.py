@@ -88,6 +88,39 @@ def get_followers_of_single_author(request, pk):
             return Response(followers, status=status.HTTP_200_OK)
         return Response(followers, status=status.HTTP_200_OK)
 
+@swagger_auto_schema(
+    method='get',
+    operation_description="Get friend requests of an author with another author",
+    responses={
+        200: FriendshipSerializer(many=True),
+        }
+)
+@swagger_auto_schema(
+    method='delete',
+    operation_description="Delete a friend request of an author with another author",
+    responses={
+        200: "OK",
+        404: "Not Found"
+        }
+)
+@swagger_auto_schema(
+    method='post',
+    operation_description="Send a friend request to an author",
+    responses={
+        201: FriendshipSerializer(),
+        400: "Bad Request",
+        404: "Not Found"
+        }
+)
+@swagger_auto_schema(
+    method='put',
+    operation_description="Accept a friend request of an author with another author",
+    responses={
+        200: "OK",
+        400: "Bad Request",
+        404: "Not Found"
+    }
+)
 @api_view(['GET', 'DELETE', 'PUT', 'POST'])
 def friend_request_methods(request,pk,fk):
     if request.method=='GET':
@@ -131,7 +164,14 @@ def friend_request_methods(request,pk,fk):
             return Response({"message":"friend request status changed"},status=status.HTTP_200_OK)
         else:
             return Response({"message":{f"Friend request is not pending"}},status=status.HTTP_400_BAD_REQUEST)
-        
+
+@swagger_auto_schema(
+    method='get',
+    operation_description="Get all pending friend requests of an author",
+    responses={
+        200: FriendshipSerializer(many=True),
+        }
+)
 @api_view(['GET'])
 def get_pending_friend_request(request,pk):
     if request.method == 'GET':

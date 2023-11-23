@@ -253,7 +253,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     postNavList.appendChild(li);
                 });
                 postNav.appendChild(postNavList);
-                /* postDiv.appendChild(postNav); */
+                postContent.appendChild(postNavList);
                 if (post.author === userData.id) {
                     const buttondiv = document.createElement("div");
                     buttondiv.className = "button-container";
@@ -308,7 +308,6 @@ document.addEventListener("DOMContentLoaded", function() {
                         };
                     };
                     postNavList.appendChild(buttondiv);
-                    postContent.appendChild(postNavList);
                 }
                 stream.appendChild(postDiv);
             });
