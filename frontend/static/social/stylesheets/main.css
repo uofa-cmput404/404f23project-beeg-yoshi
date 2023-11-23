@@ -31,6 +31,8 @@ body{
     --softRed: #FF6961;
     --acceptGreen: #99ff99;
     --babyBlue: #ccf5ff;
+    --niceGray: #6D7477;
+    --deepBlue: #007BFF;
 }
 
 .header {
@@ -85,7 +87,7 @@ body{
 .content .stream{
     flex: 1 0 500px; /* Will take up the space between the side columns, but won't shrink below 350 px */
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse; /* displays posts in reverse order => thus becoming chronological */
 }
 
 .content .col3{
@@ -104,6 +106,7 @@ body{
     width: 100%;
     height: 50px;
     margin-top: auto;
+    padding: 14px;
     background: var(--headerColor);
 }
 
@@ -112,9 +115,31 @@ body{
     align-items: center;
     justify-content: center;
     gap: 3rem;
-    padding: 8px;
 }
 
 .footer .footerLinks a{
+    /* Hover-state */
+    border-radius: 70px;
+    padding: 6px;
+    transition: 0.5s; /* Fade-in & out */
     color: var(--lightText);
+}
+
+.footer .footerLinks a:hover{
+    color: var(--darkText);
+    background: var(--accentLight);
+}
+
+.footerLinks #logoutBtn{
+    display: inline-block;
+    outline: 0;
+    border: 0;
+    cursor: pointer;
+    background-color: var(--softRed);
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 0.75rem;
+    color: white;
+    line-height: 8px;
+    width: fit-content;
 }

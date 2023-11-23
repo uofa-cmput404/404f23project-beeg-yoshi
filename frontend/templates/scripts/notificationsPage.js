@@ -16,7 +16,7 @@ const userData = JSON.parse(localStorage.getItem('userData'));
 const friendRqNode = document.querySelector("#friendRqnode");
 const likedNode = document.querySelector("#likedNode");
 const commentedNode = document.querySelector("#commentedNode");
-const inboxNode = document.querySelector("#inboxNode");
+const inboxNode = document.querySelector("#inboxNode"); // Clicking this also opens "inboxNodeModal"
 
 // Nested divs in the nodes: <you might have to "createElement" instead>
 const sender = document.querySelector(".sender");
@@ -77,6 +77,19 @@ fetchInbox();
 // Query the database / get the notifcation-type (friendRq, liked/commentd, inbox): TODO
 
 // Add the node in to the correct stream.
+
+
+// inboxNode: Clicking the sent post opens up an expanded version of the post.
+inboxNode.addEventListener("click", () =>{
+    console.log('node clicked');
+    inboxNodeModal.style.display = "block";
+    document.body.style.overflow = "hidden"; /* locks the background when modal is open */
+})
+
+closeInboxNodeBtn.addEventListener("click", () => {
+    inboxNodeModal.style.display="none";
+    document.body.style.overflow = "auto"; /* unlocks the background */
+})
 
 // Clear Modal + Confirm
 clearBtn.addEventListener("click", () =>{
