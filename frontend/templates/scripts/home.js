@@ -11,7 +11,7 @@ const editModal = document.getElementById("editModal");
 const editPostContent = document.getElementById("editPostContent");
 const saveChanges = document.getElementById("saveChanges");
 const cancelEdit = document.getElementById("cancelEdit");
-const closeModalBtn = document.querySelector('.close-btn');
+const closeModalBtn = document.querySelector(".close-btn");
 const nav = document.querySelector(".navLinks")
 const postButton = document.querySelector("#submitPostBtn")
 const Logout = document.querySelector("#logoutBtn")
@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                         response.data.forEach(comment => {
                                             const commentHtml = `
                                                 <div class="comment-item">
-                                                    <strong>${comment.author["displayName"]} said:</strong>
+                                                    <strong><i>${comment.author["displayName"]}</i> said:</strong>
                                                     <p>${comment.comment}</p>
                                                     <button class="like-btn" onclick="console.log('Like clicked for comment:', ${comment.id});">Like</button>
                                                 </div>
@@ -169,7 +169,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     postNavList.appendChild(li);
                 });
                 postNav.appendChild(postNavList);
-                postDiv.appendChild(postNav);
+                /* postDiv.appendChild(postNav); */
                 if (post.author === userData.id) {
                     const buttondiv = document.createElement("div");
                     buttondiv.className = "button-container";
@@ -204,7 +204,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         event.stopPropagation();
                         editPostContent.value = post.content;
                         editModal.style.display = "block";
-                        saveChanges.onclick = () => {
+                        saveChanges.onclick = () => {    
                             post.content = editPostContent.value;
                             const data={
                                 content:post.content
@@ -223,7 +223,8 @@ document.addEventListener("DOMContentLoaded", function() {
                             editModal.style.display = "none";
                         };
                     };
-                    postDiv.appendChild(buttondiv);
+                    postNavList.appendChild(buttondiv);
+                    postContent.appendChild(postNavList);
                 }
                 stream.appendChild(postDiv);
             });
@@ -291,6 +292,7 @@ Logout.addEventListener("click", () =>{
     window.location.href="loginPage.html"
 })
 
-closeModalBtn.addEventListener('click', () => {
+closeModalBtn.addEventListener("click", () => {
+    console.log("close comment modal.");
     commentModal.style.display = 'none';
 });

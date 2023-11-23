@@ -25,6 +25,7 @@ body{
 /* Post. By default its hidden but you add it in if there's posts to show. */
 .post {
     display: flex;
+    flex-direction: column;
     align-self: center;
     justify-content: space-between;
     width: 80%;
@@ -33,39 +34,54 @@ body{
 
     margin-bottom: 2rem;
     padding: 16px;
+    padding-bottom: 10px;
     
     border: 2px solid var(--darkText); /* FOR VISUAL PURPOSES ONLY, DELETE LATER */
     border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 
 }
 
 .post .postPfp {
-    width: auto;
-    height: 65px;
+    width: 60px;
+    height: 55px;
     flex: 0 0 10%; /* Occupies 10% of the post container */
     clip-path: circle();
 }
 
 .post .postContent{
     display: flex;
-    flex: 0 0 70%;
-    border-left: 1px solid var(--darkText);
-    padding: 8px;
-    border-radius: 6px;
-}
-
-.postNav ul{
-    display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    height: 100%;
-    flex: 0 0 5%;
+    flex: 0 0 70%;
+    padding: 8px;
+    padding-bottom: 0px;
+    margin-top: 10px;
 }
 
-.postNav img{
+/* .postNav ul{
+    display: flex;
+    align-items: center;
+    height: 25%;
+    gap: 0.5rem;
+    flex: 0 0 5%;
+} */
+
+.postContent ul{
+    display: flex;
+    align-items: center;
+    height: 25%;
+    gap: 0.5rem;
+    flex: 0 0 5%;
+    margin-top: 1.5rem;
+}
+
+.postContent img { /* like, comment, share icons */
     width: 30px;
     height: auto;
+}
+
+.postContent ul .button-container{ /* holds the delete & edit buttons */
+    flex-direction: row;  
 }
 
 /* Create a post */
@@ -185,27 +201,28 @@ dialog::backdrop{
 }
 /* Styles for the delete button */
 .delete-btn {
-    background-color: var(--softRed);
-    border-radius: 3px;
-    padding: 3px;
-    color: white;
-    border: none;        
+    background-color: var(--mainBackround);
+    border: 2px solid var(--softRed);
+    color: var(--softRed);
+    text-align: center;
+    border-radius: 400px;
+    padding: 6px;   
     margin-right: 10px;
     cursor: pointer;
-    height: 30px;
-    width: 60px;
+    height: fit-content;
+    width: fit-content;
 }
 
 /* Styles for the edit button */
 .edit-btn {
-    background-color: #00cc44;
-    color: white;
-    border: none;
+    background-color: var(--mainBackround);
+    border: 2px solid var(--acceptGreen);
+    color: var(--acceptGreen);
     cursor: pointer;
-    border-radius: 3px;
-    padding: 3px;
-    height: 30px;
-    width: 60px;
+    border-radius: 500px;
+    padding: 6px;
+    height: fit-content;
+    width: fit-content;
 }
 .button-container {
     margin-left: 20px;
@@ -215,22 +232,38 @@ dialog::backdrop{
 }
 
 .confirmation-dialog {
+    line-height: 2rem;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 1000;
-    background-color: white;
+    z-index: 1;
+    background-color: var(--lightText);
     border-radius: 8px;
     padding: 20px;
+    border: 2px solid var(--niceGray);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     display: none;
 }
 
-.confirmation-dialog button {
-    padding: 5px 15px;
-    margin: 5px;
-    cursor: pointer;
+.confirmation-dialog #confirmDelete {
+    margin-right: 12px; /* Spaces out the "yes" and "no" buttons*/
+    width: 60px;
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 4px;
+    background-color: var(--softRed);
+    cursor: pointer; /* Click = accept */
+}
+
+.confirmation-dialog #cancelDelete {
+    width: 60px;
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 4px;
+    background-color: var(--lightText);
+    cursor: pointer; /* Click = accept */
+
 }
 .edit-modal {
     position: fixed;
@@ -240,6 +273,7 @@ dialog::backdrop{
     z-index: 1001;
     background-color: white;
     border-radius: 8px;
+    border: 2px solid var(--darkText);
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     display: none;
@@ -248,18 +282,52 @@ dialog::backdrop{
 }
 
 .edit-modal textarea {
+    margin-top: 15px;
+    margin-bottom: 15px;
     width: 100%;
-    min-height: 200px;
+    min-height: 250px;
     padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    resize: vertical;
+    border-radius: 8px;
+    border: 1px solid var(--niceGray);
+    resize: none;
 }
 
 .edit-modal button {
     padding: 5px 15px;
     margin: 10px 0;
     cursor: pointer;
+}
+
+.edit-modal #saveChanges{ /* Save changes to post button */
+
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    color: white;
+    background-color: rgb(84, 105, 212);
+    box-shadow: rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 12%) 0px 1px 1px 0px, rgb(60 66 87 / 16%) 0px 0px 0px 1px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(60 66 87 / 8%) 0px 2px 5px 0px;
+    border-radius: 4px;
+    border-radius: 4px;
+    padding: 4px 8px;
+    display: inline-block;
+    height: 36px;
+
+}
+
+.edit-modal #cancelEdit{ /* Cancel changes to post button */
+
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    color: rgb(60, 66, 87);
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 12%) 0px 1px 1px 0px, rgb(60 66 87 / 16%) 0px 0px 0px 1px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(60 66 87 / 8%) 0px 2px 5px 0px;
+    border-radius: 4px;
+    padding: 4px 8px;
+    display: inline-block;
+    min-height: 36px;
+
+
 }
 
 .modal {
@@ -291,25 +359,70 @@ dialog::backdrop{
     position: fixed;
     width: 550px;
     height: fit-content;
+    max-height: 600px;
     margin-top: 10px;
     border-radius: 12px;
     
 }
 
 #commentList {
-    max-height: 300px;
+    max-height: 400px;
     overflow-y: auto;
 }
 
 .comment-item {
-    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 20px;
+    padding: 12px;
+    border: 1px solid var(--darkText);
+    border-radius: 8px;
+    width: 95%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    overflow: hidden;
+}
+
+#commentList .comment-item .like-btn{ /* Liking a comment btn */
+    display: inline-block;
+    outline: 0;
+    border: 0;
+    cursor: pointer;
+    background-color: #007BFF;
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 0.75rem;
+    color: white;
+    line-height: 8px;
+    width: 50px;
 }
 
 .comment-input-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 10px;
+
+
+    border: 0;
+    background: rgba(0, 0, 0, 0);
+    appearance: none;
+    width: 100%;
+    position: relative;
+    border-radius: 3px;
+    color: rgb(0, 0, 0);
+    font-weight: 400;
+    height: 40px;
+    transition: all .2s ease;
+    :hover{
+        box-shadow: 0 0 0 0 #fff inset, var(--acceptGreen) 0 0 0 2px;
+    }
+    :focus{
+        background: #fff;
+        outline: 0;
+        box-shadow: 0 0 0 0 #fff inset, var(--acceptGreen) 0 0 0 3px;
+    }
+
 }
 
 #userComment {
@@ -317,13 +430,13 @@ dialog::backdrop{
     padding: 10px;
     margin-right: 10px;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 2px solid #ccc;
 }
 
 #submitCommentBtn {
     padding: 10px 20px;
     background-color: #007BFF;
-    color: #fff;
+    color: var(--lightText);
     border: none;
     border-radius: 5px;
     cursor: pointer;

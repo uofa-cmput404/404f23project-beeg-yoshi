@@ -16,7 +16,7 @@
     <div class="header">
         <div class="appLogo">Beeg Yoshi</div>
         <ul class="navLinks">
-            <li><a href="">Homepage</a></li>
+            <li><a href="./index.html">Homepage</a></li>
             <li><a href="">Notifications</a></li>
             <li><a href="./socialPage.html">Social</a></li>
             <li><a href="./userProfile.html">My Profile</a></li>
@@ -75,6 +75,31 @@
     <!-- Clicking this will clear ALL notifcations. Didn't want to add a clear for each column cuz that'll look kinda strange. -->
     <div id="clearBtn">
         Clear all Notifications
+    </div>
+
+    <!-- Open an inboxNode post sent to you modal -->
+    <!-- The modal -->
+    
+    <div id="inboxNodeModal" class="modal">
+        <!-- Modal Content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>"X" Sent a post by "Y" to you:</h1>
+                <span class="close">&times;</span>
+            </div>
+
+            <div class="modal-body">
+                <p id="postContent">This is where the "Y" post content would go</p>
+            </div>
+
+            <div class="modal-footer">
+                <img src="../images/likeIcon.png" alt="">
+                <img src="../images/commentIcon.png" alt="">
+                <img src="../images/shareIcon.png" alt="">
+            </div>
+
+            
+        </div>
     </div>
 
     <!-- confirm clear modal -->
