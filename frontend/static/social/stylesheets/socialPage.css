@@ -53,3 +53,11 @@
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     cursor: pointer; /* Click = accept */
 }
+#friendRequestsList button { 
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 4px;
+    background-color: var(--softRed);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    cursor: pointer;
+}

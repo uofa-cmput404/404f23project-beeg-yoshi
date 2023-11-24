@@ -27,6 +27,9 @@ urlpatterns = [
     path('test/inbox', views.testInbox),
     path('test/posts', views.get_all_post),
     path('test/likes', views.get_all_like),
-    
+########################################################################################
+#                      Inbox  
+########################################################################################
+    path('authors/<str:pk>/inbox/', views.inbox_methods, name='inbox_methods'),
 ]   
 

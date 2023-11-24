@@ -5,4 +5,5 @@ urlpatterns = [
     path('authors/<str:pk>/posts/', views.create_post, name='create_post'),
     path('authors/<str:pk>/posts/<str:postID>', views.post_method, name='post_method'),
     path('authors/get/<str:pk>/posts/', views.get_public_and_friends_posts, name='get_public_and_friends_posts'),
+    path('get/public/posts/', views.get_public_posts, name='get_public_posts'),
 ]

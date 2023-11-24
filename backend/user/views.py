@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from .models import User,ServerAdmin, Like,Inbox
+from friendship.models import Friendship, FriendRequest
 from .serializers import UserSerializer,LikeSerializer,InboxSerializer
+from friendship.serializers import FriendshipSerializer, FriendRequestSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -80,7 +82,7 @@ def get_all_friendship_of_single_author(request, pk):
 def get_stranger_of_single_author(request,pk):
     if request.method == 'GET':
         friend_ids = Friendship.objects.filter(from_user_id=pk).values_list('to_user_id', flat=True)
-        non_friends = User.objects.filter(type='AUTHOR').exclude(id__in=friend_ids).exclude(id=pk) # exclude the author themself
+        non_friends = User.objects.filter(type='AUTHOR').exclude(id__in=friend_ids).exclude(id=pk).exclude(id__in=FriendRequest.objects.filter(from_user_id=pk).values_list('to_user_id', flat=True))
         serializer = UserSerializer(non_friends, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
         
@@ -102,6 +104,9 @@ def create_author(request):
         serializer=UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            author=User.objects.get(pk=serializer.data['id'])
+            inbox_object=Inbox.objects.create(author=author)
+            inbox_object.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
@@ -331,3 +336,36 @@ def like_single_post(request, pk,postID):
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+@swagger_auto_schema(
+        method='get',
+        operation_description='get inbox of an author',
+        responses={
+            200: openapi.Response(
+                description='get inbox of an author',
+                schema=InboxSerializer()
+            ),
+        }
+)
+@swagger_auto_schema(
+        method='put',
+        operation_description='update inbox of an author',
+        responses={
+            200: openapi.Response(
+                description='update inbox of an author',
+                schema=InboxSerializer()
+            ),
+        }
+)
+@api_view(['GET','PUT'])    
+def inbox_methods(request,pk):
+    if request.method=='GET':
+        inbox=Inbox.objects.get(author=pk)
+        serializer=InboxSerializer(inbox)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    elif request.method=='PUT':
+        inbox=Inbox.objects.get(author=pk)
+        inbox.items=request.data
+        inbox.save()
+        serializer=InboxSerializer(inbox)
+        return Response(serializer.data,status=status.HTTP_200_OK)

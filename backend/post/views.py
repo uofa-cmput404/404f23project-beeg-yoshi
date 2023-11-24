@@ -9,7 +9,9 @@ from friendship.models import Friendship
 from django.db.models import Q
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-
+from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 @swagger_auto_schema(
     method='get',
@@ -29,6 +31,19 @@ def get_public_and_friends_posts(request, pk):
             Q(author=logged_in_user)
         )
 
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+@swagger_auto_schema(
+    method='get',
+    operation_description="Get all public posts",
+    responses={200: PostSerializer(many=True)}
+)
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def get_public_posts(request):
+    if request.method == 'GET':
+        posts = Post.objects.filter(visibility='PUBLIC')
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 @swagger_auto_schema(
