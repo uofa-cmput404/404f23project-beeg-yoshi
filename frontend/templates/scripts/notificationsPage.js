@@ -81,16 +81,15 @@ const fetchInbox= async () => {
 
             
         </div>`
-        inboxNodeModal.innerHTML = postModalhtml;
-        const closeInboxNodeBtn = document.querySelector(".close");
-        closeInboxNodeBtn.addEventListener("click", () => {
-            inboxNodeModal.style.display="none";
-            document.body.style.overflow = "auto"; /* unlocks the background */
-        })
-        
-            node.addEventListener("click", () => {
+        node.addEventListener("click", () => {
+            inboxNodeModal.innerHTML = postModalhtml;
             document.body.style.overflow = "hidden";
             inboxNodeModal.style.display = "block";
+            const closeInboxNodeBtn = document.querySelector(".close");
+            closeInboxNodeBtn.addEventListener("click", () => {
+                inboxNodeModal.style.display="none";
+                document.body.style.overflow = "auto"; /* unlocks the background */
+            })
             })
             inboxStream.appendChild(node);
         });
