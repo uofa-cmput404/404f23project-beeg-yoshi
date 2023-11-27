@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from .models import User,ServerAdmin, Like,Inbox
-from friendship.models import Friendship, FriendRequest
+from .models import User,ServerAdmin, Like,Inbox, UserToken
+from friendship.models import Friendship, FriendRequest, remoteFriendRequest, remoteFriendship
 from .serializers import UserSerializer,LikeSerializer,InboxSerializer
-from friendship.serializers import FriendshipSerializer, FriendRequestSerializer
+from friendship.serializers import FriendshipSerializer, FriendRequestSerializer, remoteFriendRequestSerializer, remoteFriendshipSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -35,7 +35,10 @@ def login(request):
         except User.DoesNotExist:
             return Response({"message":f"User does not exist or password is wrong"},status=status.HTTP_404_NOT_FOUND)
         serializer=UserSerializer(user)
-        return Response(serializer.data,status=status.HTTP_200_OK)
+        token=UserToken.objects.get(user=user)
+        response=serializer.data
+        response["token"]=token.token
+        return Response(response,status=status.HTTP_200_OK)
 @swagger_auto_schema(
     method='get',
     operation_description='Get all authors',
@@ -64,9 +67,19 @@ def author_list(request):
 @api_view(['GET'])
 def get_all_friendship_of_single_author(request, pk):
   if request.method == 'GET':
+        token = request.headers.get('Authorization')
+        the_user = str(UserToken.objects.get(user=pk).token)
+        if token != the_user:
+            return Response({"message": "You are not authorized to view this page"}, status=status.HTTP_401_UNAUTHORIZED)
         friend_ids = Friendship.objects.filter(from_user_id=pk).values_list('to_user_id', flat=True)
         friends = User.objects.filter(id__in=friend_ids)
         serializer = UserSerializer(friends, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+@api_view(['GET'])
+def get_all_remote_friendship_of_single_author(request, pk):
+  if request.method == 'GET':
+        friend_ids = remoteFriendship.objects.filter(from_user=pk)
+        serializer = remoteFriendshipSerializer(friend_ids, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 @swagger_auto_schema(
         method='get',
@@ -85,7 +98,6 @@ def get_stranger_of_single_author(request,pk):
         non_friends = User.objects.filter(type='AUTHOR').exclude(id__in=friend_ids).exclude(id=pk).exclude(id__in=FriendRequest.objects.filter(from_user_id=pk).values_list('to_user_id', flat=True))
         serializer = UserSerializer(non_friends, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-        
 @swagger_auto_schema(
         method='post',
         operation_description='create an author',
@@ -101,14 +113,17 @@ def get_stranger_of_single_author(request,pk):
 @api_view(['POST'])
 def create_author(request): 
     if request.method=='POST':
-        serializer=UserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            author=User.objects.get(pk=serializer.data['id'])
-            inbox_object=Inbox.objects.create(author=author)
-            inbox_object.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+        new_user=User.objects.create(**request.data)
+        serializer=UserSerializer(new_user)
+        author=User.objects.get(pk=serializer.data['id'])
+        inbox_object=Inbox.objects.create(author=author)
+        inbox_object.save()
+        token=UserToken.objects.create(user=author)
+        token.save()
+        response=serializer.data
+        response["token"]=token.token
+        return Response(response,status=status.HTTP_201_CREATED)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
     
 @swagger_auto_schema(
         method='get',

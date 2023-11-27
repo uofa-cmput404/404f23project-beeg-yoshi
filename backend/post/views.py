@@ -4,7 +4,7 @@ from .serializers import PostSerializer
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from user.models import User
+from user.models import User, UserToken
 from friendship.models import Friendship
 from django.db.models import Q
 from drf_yasg import openapi
@@ -45,7 +45,18 @@ def get_public_posts(request):
     if request.method == 'GET':
         posts = Post.objects.filter(visibility='PUBLIC')
         serializer = PostSerializer(posts, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        response=serializer.data
+        for post in response:
+            user=User.objects.get(pk=post["author"])
+            post["author"]={
+            "id":user.id,
+            "host":user.host,
+            "displayName":user.displayName,
+            "url":user.url,
+            "github":user.github,
+            "profileImage":user.profileImage
+        } 
+        return Response(response, status=status.HTTP_200_OK)
 @swagger_auto_schema(
     method='get',
     operation_description="get single post of an author",
