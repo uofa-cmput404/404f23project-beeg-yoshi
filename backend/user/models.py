@@ -9,7 +9,7 @@ class User(AbstractBaseUser):
     email=models.EmailField(max_length=1024,unique=True)
     password=models.CharField(max_length=1024)
     url=models.CharField(max_length=1024, blank=True)
-    host=models.CharField(max_length=1024,default='https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/')
+    host=models.CharField(max_length=1024,default='https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/')
     is_active=models.BooleanField(default=False)
     displayName=models.CharField(max_length=1024)
     github=models.CharField(max_length=1024)

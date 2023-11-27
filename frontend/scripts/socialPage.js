@@ -152,10 +152,10 @@ function handleButtonClick(user, action) {
             
         }
     }
-        else if (user.host === 'https://web-weavers-backend-fb4af7963149.herokuapp.com/'){ //Web Weavers
+        else if (user.host === 'https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/'){ //Web Weavers
             const follow = async () => {
                 try {
-                    const response= await axios.post(`https://web-weavers-backend-fb4af7963149.herokuapp.com/service/authors/${authorId}/request/${user.id}/`)
+                    const response= await axios.post(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${authorId}/request/${user.id}/`)
                     console.log(response.data)
                 } catch (error) {
                     console.log(error)
