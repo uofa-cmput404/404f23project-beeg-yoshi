@@ -35,7 +35,11 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     const getFriends = async () => {
         try {
-            const response=await axios.get(`http://127.0.0.1:8000/service/authors/${userData.id}/friends/`)
+            const response = await axios.get(`http://127.0.0.1:8000/service/authors/${userData.id}/friends/`, {
+                headers: {
+                    'Authorization': userData.token
+                }
+            });
             friendData=response.data;
         } catch (error) {
             console.log(error)
@@ -45,6 +49,48 @@ document.addEventListener("DOMContentLoaded", function() {
     getFriends();
     const getPosts = async () => {
         try {
+            const response = await axios.get(`https://c404-5f70eb0b3255.herokuapp.com/getAllPublicPosts/`)
+            console.log(response.data.results.items);
+            response.data.results.items.forEach(post => {
+                const postDiv = document.createElement("div");
+                postDiv.className = "post";
+                const postPfp = document.createElement("img");
+                postPfp.className = "postPfp";
+                postPfp.src = "../images/mao.jpg";
+                postPfp.alt = "Profile Picture";
+                postDiv.appendChild(postPfp);
+                const postContent = document.createElement("div");
+                postContent.className = "postContent";
+                postContent.textContent = post.content; 
+                postDiv.appendChild(postContent);
+                stream.appendChild(postDiv);
+            });
+            
+        } catch (error) {
+            console.log(error);
+        }
+        try {
+            const response = await axios.get(`https://web-weavers-backend-fb4af7963149.herokuapp.com/public-posts/`)
+            console.log(response.data.items);
+            response.data.items.forEach(post => {
+                const postDiv = document.createElement("div");
+                postDiv.className = "post";
+                const postPfp = document.createElement("img");
+                postPfp.className = "postPfp";
+                postPfp.src = "../images/wusaqi.webp";
+                postPfp.alt = "Profile Picture";
+                postDiv.appendChild(postPfp);
+                const postContent = document.createElement("div");
+                postContent.className = "postContent";
+                postContent.textContent = post.content; 
+                postDiv.appendChild(postContent);
+                stream.appendChild(postDiv);
+            });
+            
+        } catch (error) {
+            console.log(error);
+        }
+        try {
             const response = await axios.get(`http://127.0.0.1:8000/service/authors/get/${userData.id}/posts/`);
             console.log(response.data);
             response.data.forEach(post => {
@@ -52,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 postDiv.className = "post";
                 const postPfp = document.createElement("img");
                 postPfp.className = "postPfp";
-                postPfp.src = "../images/beegYoshi.png";
+                postPfp.src = "../images/chiikawa.png";
                 postPfp.alt = "Profile Picture";
                 postDiv.appendChild(postPfp);
                 const postContent = document.createElement("div");
@@ -312,8 +358,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 stream.appendChild(postDiv);
             });
         } catch (error) {
-            console.log(error.response.data);
-            console.log(error.response.status);
+            console.log(error);
+            console.log(error);
         }
     }
     

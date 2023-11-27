@@ -28,3 +28,31 @@ class FriendRequest(models.Model):
 
     class Meta:
         unique_together = ('from_user', 'to_user')
+
+class remoteFriendship(models.Model):
+    from_user = models.CharField(max_length=1024)
+    to_user = models.CharField(max_length=1024)
+    server=models.CharField(max_length=1024,default="unknown")
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['from_user', 'to_user'], name='unique_remote_friendship')
+        ]
+class remoteFriendRequest(models.Model):
+    PENDING = 'pending'
+    ACCEPTED = 'accepted'
+    DECLINED = 'declined'
+    STATUS_CHOICES = [
+        (PENDING, 'Pending'),
+        (ACCEPTED, 'Accepted'),
+        (DECLINED, 'Declined'),
+    ]
+
+    from_user = models.CharField(max_length=1024)
+    to_user = models.CharField(max_length=1024)
+    status = models.CharField(max_length=8, choices=STATUS_CHOICES, default=PENDING)
+    server=models.CharField(max_length=1024,default="unknown")
+    def __str__(self):
+        return f"{self.from_user} -> {self.to_user} is ({self.status})"
+
+    class Meta:
+        unique_together = ('from_user', 'to_user')

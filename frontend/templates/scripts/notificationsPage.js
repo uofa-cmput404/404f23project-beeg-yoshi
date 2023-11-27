@@ -133,7 +133,11 @@ function handleAccept(request,friendsList,notificationsList,inboxList) {
     const data={"inbox":inboxList,"notifications":notificationsList,"friendrequests":friendsList}
     const createFriendship = async () => {  
         try {
-            const response= await axios.put(`http://127.0.0.1:8000/service/authors/${userData.id}/followers/${request.from_user}/`,data)
+            const response= await axios.put(`http://127.0.0.1:8000/service/authors/${userData.id}/followers/${request.from_user}/`,data,{
+                headers: {
+                    'Authorization': userData.token
+                }
+            });
             console.log(response.data)
             try {
                 const response= await axios.put(`http://127.0.0.1:8000/service/authors/${request.from_user}/request/${userData.id}/`)
