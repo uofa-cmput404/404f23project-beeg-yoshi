@@ -23,6 +23,9 @@ const friendModal = document.querySelector('.friend-share-container');
 const friendModalCloseBtn = document.querySelector(".friend-modal-close");
 const friendList=document.querySelector(".list-items");
 let friendData={};
+const username = 'beeg-yoshi';
+const password = '12345';
+const encodedCredentials = btoa(`${username}:${password}`);
 document.addEventListener("DOMContentLoaded", function() {
     const userData = JSON.parse(localStorage.getItem('userData'));
     if (userData) {
@@ -74,7 +77,11 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log(error);
         }
         try {
-            const response = await axios.get(`https://web-weavers-backend-fb4af7963149.herokuapp.com/public-posts/`)
+            const response = await axios.get(`https://web-weavers-backend-fb4af7963149.herokuapp.com/public-posts/`,{
+                headers: {
+                    'Authorization': `Basic ${encodedCredentials}`
+                }
+            })
             console.log(response.data.items);
             response.data.items.forEach(post => {
                 const postDiv = document.createElement("div");
