@@ -242,6 +242,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                     }
                                 }
                                 createComment();
+                                window.location.reload();
                                 };
                                 break;
                             case "share":
