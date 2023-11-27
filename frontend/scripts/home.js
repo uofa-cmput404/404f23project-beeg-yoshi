@@ -181,6 +181,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                     }
                                 }
                                 likePost();
+                                window.location.reload();
                                 break;
                             case "comment":
                                 console.log("comment is clicked");
@@ -340,6 +341,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         cancelDelete.onclick = () => {
                             confirmationDialog.style.display = "none";
                         };
+                        window.location.reload();
                     };
                     const editBtn = document.createElement("button");
                     editBtn.textContent = "Edit";
@@ -367,6 +369,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         cancelEdit.onclick = () => {
                             editModal.style.display = "none";
                         };
+                        window.location.reload();
                     };
                     postNavList.appendChild(buttondiv);
                 }
