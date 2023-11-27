@@ -32,7 +32,7 @@ const cancelClearBtn = document.querySelector("#cancelClear");
 const inboxNodeModal = document.getElementById("inboxNodeModal");
 const fetchInbox= async () => {
     try {
-        const response= await axios.get(`http://127.0.0.1:8000/service/authors/${userData.id}/inbox/`)
+        const response= await axios.get(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${userData.id}/inbox/`)
         console.log(response.data)
         const friendRequestsList = response.data.items["friendrequests"];
         console.log(friendRequestsList)
@@ -133,14 +133,14 @@ function handleAccept(request,friendsList,notificationsList,inboxList) {
     const data={"inbox":inboxList,"notifications":notificationsList,"friendrequests":friendsList}
     const createFriendship = async () => {  
         try {
-            const response= await axios.put(`http://127.0.0.1:8000/service/authors/${userData.id}/followers/${request.from_user}/`,data,{
+            const response= await axios.put(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${userData.id}/followers/${request.from_user}/`,data,{
                 headers: {
                     'Authorization': userData.token
                 }
             });
             console.log(response.data)
             try {
-                const response= await axios.put(`http://127.0.0.1:8000/service/authors/${request.from_user}/request/${userData.id}/`)
+                const response= await axios.put(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${request.from_user}/request/${userData.id}/`)
                 console.log(response.data)
             } catch (error) {
                 console.log(error)
@@ -160,9 +160,9 @@ function handleDecline(request,friendsList,notificationsList,inboxList) {
     const data={"inbox":inboxList,"notifications":notificationsList,"friendrequests":friendsList}
     const deleteFriendshipRequest = async () => {
     try {
-        await axios.put(`http://127.0.0.1:8000/service/authors/${userData.id}/inbox/`,data)
+        await axios.put(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${userData.id}/inbox/`,data)
         try {
-            const response= await axios.delete(`http://127.0.0.1:8000/service/authors/${request.from_user}/request/${userData.id}/`)
+            const response= await axios.delete(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${request.from_user}/request/${userData.id}/`)
         }
             catch (error) {
                 console.log(error)

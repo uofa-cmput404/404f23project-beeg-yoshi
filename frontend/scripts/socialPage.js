@@ -18,21 +18,21 @@ if (userData) {
     }
 }
 async function fetchLists() {
-    let friends = await axios.get(`http://127.0.0.1:8000/service/authors/${authorId}/friends/`, {
+    let friends = await axios.get(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${authorId}/friends/`, {
         headers: {
             'Authorization': userData.token
         }
     });
-    let strangers = await axios.get(`http://127.0.0.1:8000/service/authors/${authorId}/strangers/`)
-    let followers = await axios.get(`http://127.0.0.1:8000/service/authors/${authorId}/followers/`);
-    let pending = await axios.get(`http://127.0.0.1:8000/service/authors/${authorId}/request/pending`)
+    let strangers = await axios.get(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${authorId}/strangers/`)
+    let followers = await axios.get(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${authorId}/followers/`);
+    let pending = await axios.get(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${authorId}/request/pending`)
     let A_Team_res= await axios.get(`https://c404-5f70eb0b3255.herokuapp.com/authors/`)
     let web_weavers_res= await axios.get(`https://web-weavers-backend-fb4af7963149.herokuapp.com/authors/`, {
         headers: {
             'Authorization': `Basic ${encodedCredentials}`
         }
     })
-    let remote_followers= await axios.get(`http://127.0.0.1:8000/service/remote/authors/${authorId}/followers/`)
+    let remote_followers= await axios.get(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/remote/authors/${authorId}/followers/`)
     remote_followers.data.items.forEach(item => {
         if (item.server==='Web Weavers'){
         web_weavers_res.data.items.forEach(user => {
@@ -53,7 +53,7 @@ async function fetchLists() {
         })
     }
     })
-    let remoteFriends= await axios.get(`http://127.0.0.1:8000/service/remote/authors/${authorId}/friends/`)
+    let remoteFriends= await axios.get(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/remote/authors/${authorId}/friends/`)
     remoteFriends.data.forEach(item => {
         if (item.server==='Web Weavers'){
         web_weavers_res.data.items.forEach(user => {
@@ -122,17 +122,23 @@ function handleButtonClick(user, action) {
         if (user.host === 'https://c404-5f70eb0b3255.herokuapp.com/'){ //A-Team
             const follow = async () => {
             try{
+                const id=String(userData.id)
+                console.log(typeof(id))
                 const data= {
-                    summary:`${userData.displayName} wants to follow you`,
-                    actor:{ id:userData.id},
+                    actor:String(id)
                 }
-                const response= await axios.post(`https://c404-5f70eb0b3255.herokuapp.com/authors/${user.id}/followRequests/`,data)
+                const response= await axios.post(`https://c404-5f70eb0b3255.herokuapp.com/authors/${user.id}/followRequests/`, data, {
+                    headers: {
+                        'Authorization': "Token e99281997c1aad7dbc54e0c9b6414a9b3065339a",
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    }
+                })
                 console.log(response.data)
                 try {
                     const data1= {
                         server: 'A-Team',
                     }
-                    const response1= await axios.post(`http://127.0.0.1:8000/service/remote/authors/${userData.id}/request/${user.id}/`,data1)
+                    const response1= await axios.post(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/remote/authors/${userData.id}/request/${user.id}/`,data1)
                     console.log(response1.data)
                 }catch (error) {
                     console.log(error)
@@ -162,7 +168,7 @@ function handleButtonClick(user, action) {
         else if (user.host === `https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/`){
             const follow = async () => {
                 try {
-                    const response= await axios.post(`http://127.0.0.1:8000/service/authors/${authorId}/request/${user.id}/`)
+                    const response= await axios.post(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${authorId}/request/${user.id}/`)
                     console.log(response.data)
                 } catch (error) {
                     console.log(error)
@@ -176,10 +182,10 @@ function handleButtonClick(user, action) {
      else if(action === 'Unfollow') {
         const unfollow = async () => {
             try {
-                const response= await axios.delete(`http://127.0.0.1:8000/service/authors/${user.id}/followers/${authorId}/`)
+                const response= await axios.delete(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${user.id}/followers/${authorId}/`)
                 console.log(response.data)
                 try {
-                    const response= await axios.delete(`http://127.0.0.1:8000/service/authors/${authorId}/request/${user.id}/`)
+                    const response= await axios.delete(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${authorId}/request/${user.id}/`)
                     console.log(response.data)
                 } catch (error) {
                     console.log(error)
@@ -223,7 +229,7 @@ function handleButtonClick(user, action) {
         else{
         const cancel = async () => {
             try {
-                const response= await axios.delete(`http://127.0.0.1:8000/service/authors/${authorId}/request/${user.id}/`)
+                const response= await axios.delete(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${authorId}/request/${user.id}/`)
             }
             catch (error) {
                 console.log(error.response.data)
