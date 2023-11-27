@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 password:password
             }
             try{
-            const response = await axios.post("https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/login/",data)
+            const response = await axios.post("https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/login/",data)
             if (response.data.is_active === false && response.data.type === "AUTHOR"){
                 alert("Your account is deactivated. Please contact admin to activate your account.")
                 return

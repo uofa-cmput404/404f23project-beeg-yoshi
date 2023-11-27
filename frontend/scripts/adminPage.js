@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const users = [];
     const fetchAuthors = async () => {
         try {
-            const response = await axios.get('https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/')
+            const response = await axios.get('https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/')
             users.push(...response.data);
             users.forEach(user => {
                 const userItem = document.createElement('div');
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         is_active: isActive
                     }
                     try {
-                        const response = await axios.post(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${userId}/`,data);
+                        const response = await axios.post(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userId}/`,data);
                         console.log(response.data);
                     } catch (error) {
                         console.log(error);
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 const deleteUser = async (userId) => {
                     try {
-                        const response = await axios.delete(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${userId}/`);
+                        const response = await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userId}/`);
 
                     }catch(error) {
                         console.log(error);
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             password:document.getElementById('Password').value
                         }
                         try {
-                            const response= await axios.post(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${user.id}/`, data)
+                            const response= await axios.post(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${user.id}/`, data)
                             console.log(response.data)
                         } catch (error) {
                             console.log(error);

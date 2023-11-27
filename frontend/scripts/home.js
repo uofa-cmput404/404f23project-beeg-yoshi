@@ -1,7 +1,7 @@
 const createPostBtn = document.querySelector("[data-open-modal]")
 const cancelPostBtn = document.querySelector("[data-close-modal]")
 //const submitPostBtn = document.querySelector()
-// const ORIGIN="https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/"
+// const ORIGIN="https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/"
 const stream=document.querySelector(".stream")
 const postModal = document.querySelector("[data-modal]")
 const confirmationDialog = document.getElementById("confirmationDialog");
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     const getFriends = async () => {
         try {
-            const response = await axios.get(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${userData.id}/friends/`, {
+            const response = await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/friends/`, {
                 headers: {
                     'Authorization': userData.token
                 }
@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log(error);
         }
         try {
-            const response = await axios.get(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/get/${userData.id}/posts/`);
+            const response = await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/get/${userData.id}/posts/`);
             console.log(response.data);
             response.data.forEach(post => {
                 const postDiv = document.createElement("div");
@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     if (action === "like") {
                         const checkIfLiked = async () => {
                             try {
-                                const response = await axios.get(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${userData.id}/liked`)
+                                const response = await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/liked`)
                                 console.log(response.data);
                                 response.data.forEach(likedPost => {
                                     if (likedPost.object_id === post.id.toString()) {
@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         likeCounter.className = 'like-counter';
                         const getLikesForPost = async () => {
                             try {
-                                const response = await axios.get(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${post.author}/posts/${post.id}/likes`)
+                                const response = await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${post.author}/posts/${post.id}/likes`)
                                 console.log(response.data.length);
                                 likeCounter.textContent = response.data.length;
 
@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                         object_id:post.id
                                     }
                                     try {
-                                        const response= await axios.post(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${userData.id}/like/${post.id}/`,data)
+                                        const response= await axios.post(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/like/${post.id}/`,data)
                                         console.log(response.data)
                                         if (response.status === 200) {
                                             alert("You already liked this post.");
@@ -187,7 +187,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                 console.log("comment is clicked");
                                 const getComments = async () => {
                                     try {
-                                        const response = await axios.get(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${post.author}/posts/${post.id}/comments`);
+                                        const response = await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${post.author}/posts/${post.id}/comments`);
                                         commentList.innerHTML = '';
                                         let commentsHtml = '';
                                         if (response.data.length === 0) {
@@ -235,7 +235,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                         };
     
                                     try {
-                                        const response= await axios.post(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${userData.id}/posts/${post.id}/comments`,data)
+                                        const response= await axios.post(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/posts/${post.id}/comments`,data)
                                         console.log(response.data)
                                     } catch (error) {
                                         console.log(error);
@@ -290,14 +290,14 @@ document.addEventListener("DOMContentLoaded", function() {
                                                 count:post.count,
                                             }
                                             try {
-                                                const response = await axios.get(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${friendId}/inbox/`)
+                                                const response = await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${friendId}/inbox/`)
                                                 const friendRequest=response.data.items["friendrequests"];
                                                 const notifications=response.data.items["notifications"];
                                                 const inbox = response.data.items["inbox"];
                                                 inbox.push(data);
                                                 const InboxData={"inbox":inbox,"notifications":notifications,"friendrequests":friendRequest}
                                                 try {
-                                                    const response = await axios.put(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${friendId}/inbox/`,InboxData)
+                                                    const response = await axios.put(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${friendId}/inbox/`,InboxData)
                                                     console.log(response.data);
                                                 } catch (error) {
                                                     console.log(error);
@@ -328,7 +328,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         confirmDelete.onclick = () => {
                             const deletePost = async () => {
                                 try{
-                                const response= await axios.delete(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${userData.id}/posts/${post.id}`)
+                                const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/posts/${post.id}`)
                                 console.log(response.data)
                                 }
                                 catch(error){
@@ -357,7 +357,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                 content:post.content
                             }
                             try {
-                                const response= axios.put(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${userData.id}/posts/${post.id}`,data)
+                                const response= axios.put(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/posts/${post.id}`,data)
                                 console.log(response.data)
                             } catch (error) {
                                 console.log(error.response.data);
@@ -414,7 +414,7 @@ postButton.addEventListener("click", () =>{
             visibility:visibility
         }
         try{
-        const response= await axios.post(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${userData.id}/posts/`,data)
+        const response= await axios.post(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/posts/`,data)
         console.log(response.data)
         postModal.close()
         }

@@ -42,7 +42,7 @@ confirmEditBtn.addEventListener("click", async () => {
         
         console.log(data)
         try {
-            const response= await axios.post(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/${userData.id}/`, data)
+            const response= await axios.post(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/`, data)
             console.log(response.data)
             userData.displayName = data.displayName;
             userData.biography = data.biography;

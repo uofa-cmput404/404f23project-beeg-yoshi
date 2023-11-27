@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 github:github,
             }
             try{
-                const response = await axios.post(`https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/create/author/`, data)
+                const response = await axios.post(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/create/author/`, data)
                 window.location.href="./index.html"
                 alert("Account Created Successfully")
         }
