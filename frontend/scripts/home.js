@@ -59,6 +59,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 postPfp.src = "../images/mao.jpg";
                 postPfp.alt = "Profile Picture";
                 postDiv.appendChild(postPfp);
+                const postTitle = document.createElement("div");
+                postTitle.className = "postTitle";
+                postTitle.textContent = post.title;
+                postDiv.appendChild(postTitle);
                 const postContent = document.createElement("div");
                 postContent.className = "postContent";
                 postContent.textContent = post.content; 
@@ -80,6 +84,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 postPfp.src = "../images/wusaqi.webp";
                 postPfp.alt = "Profile Picture";
                 postDiv.appendChild(postPfp);
+                const postTitle = document.createElement("div");
+                postTitle.className = "postTitle";
+                postTitle.textContent = post.title;
+                postDiv.appendChild(postTitle);
                 const postContent = document.createElement("div");
                 postContent.className = "postContent";
                 postContent.textContent = post.content; 
@@ -101,6 +109,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 postPfp.src = "../images/chiikawa.png";
                 postPfp.alt = "Profile Picture";
                 postDiv.appendChild(postPfp);
+                const postTitle = document.createElement("div");
+                postTitle.className = "postTitle";
+                postTitle.textContent = post.title;
+                postDiv.appendChild(postTitle);
                 const postContent = document.createElement("div");
                 postContent.className = "postContent";
                 postContent.textContent = post.content; 
@@ -417,7 +429,7 @@ postButton.addEventListener("click", () =>{
 
 Logout.addEventListener("click", () =>{
     localStorage.removeItem('userData');
-    window.location.href="loginPage.html"
+    window.location.href="index.html"
 })
 
 closeModalBtn.addEventListener("click", () => {

@@ -114,6 +114,9 @@ def get_stranger_of_single_author(request,pk):
 def create_author(request): 
     if request.method=='POST':
         new_user=User.objects.create(**request.data)
+        new_user.save()
+        new_user.url=f"https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/{new_user.id}"
+        new_user.save()
         serializer=UserSerializer(new_user)
         author=User.objects.get(pk=serializer.data['id'])
         inbox_object=Inbox.objects.create(author=author)

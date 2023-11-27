@@ -6,6 +6,9 @@ const pendingList = document.getElementById("friendRequestsList");
 const Logout = document.querySelector("#logoutBtn")
 const nav = document.querySelector(".navLinks")
 const authorId = userData.id;
+const usernameWebWeavers = 'beeg-yoshi';
+const passwordWebWeavers = '12345';
+const encodedCredentials = btoa(`${usernameWebWeavers}:${passwordWebWeavers}`);
 if (userData) {
     console.log(userData)
     if(userData.type==="SERVERADMIN"){
@@ -24,7 +27,11 @@ async function fetchLists() {
     let followers = await axios.get(`http://127.0.0.1:8000/service/authors/${authorId}/followers/`);
     let pending = await axios.get(`http://127.0.0.1:8000/service/authors/${authorId}/request/pending`)
     let A_Team_res= await axios.get(`https://c404-5f70eb0b3255.herokuapp.com/authors/`)
-    let web_weavers_res= await axios.get(`https://web-weavers-backend-fb4af7963149.herokuapp.com/authors/`)
+    let web_weavers_res= await axios.get(`https://web-weavers-backend-fb4af7963149.herokuapp.com/authors/`, {
+        headers: {
+            'Authorization': `Basic ${encodedCredentials}`
+        }
+    })
     let remote_followers= await axios.get(`http://127.0.0.1:8000/service/remote/authors/${authorId}/followers/`)
     remote_followers.data.items.forEach(item => {
         if (item.server==='Web Weavers'){
@@ -99,7 +106,9 @@ function populateList(listElement, users, buttonText) {
         if (buttonText!==''){
         let button = document.createElement("button");
         button.textContent = buttonText;
-        button.addEventListener('click', () => handleButtonClick(user, buttonText));
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            handleButtonClick(user, buttonText)});
         
         li.appendChild(button);
         }
@@ -112,37 +121,51 @@ function handleButtonClick(user, action) {
     if(action === 'Follow') {
         if (user.host === 'https://c404-5f70eb0b3255.herokuapp.com/'){ //A-Team
             const follow = async () => {
-                try {
-                    const response= await axios.post(`https://c404-5f70eb0b3255.herokuapp.com/service/authors/${authorId}/request/${user.id}/`)
-                    console.log(response.data)
-                } catch (error) {
-                    console.log(error.response.data)
+            try{
+                const data= {
+                    summary:`${userData.displayName} wants to follow you`,
+                    actor:{ id:userData.id},
                 }
-    
+                const response= await axios.post(`https://c404-5f70eb0b3255.herokuapp.com/authors/${user.id}/followRequests/`,data)
+                console.log(response.data)
+                try {
+                    const data1= {
+                        server: 'A-Team',
+                    }
+                    const response1= await axios.post(`http://127.0.0.1:8000/service/remote/authors/${userData.id}/request/${user.id}/`,data1)
+                    console.log(response1.data)
+                }catch (error) {
+                    console.log(error)
+                }
+            } catch (error) {
+                console.log(error)
+            }
             }
             follow();
             fetchLists();
+            
         }
-        if (user.host === 'https://web-weavers-backend-fb4af7963149.herokuapp.com/'){ //Web Weavers
+    }
+        else if (user.host === 'https://web-weavers-backend-fb4af7963149.herokuapp.com/'){ //Web Weavers
             const follow = async () => {
                 try {
                     const response= await axios.post(`https://web-weavers-backend-fb4af7963149.herokuapp.com/service/authors/${authorId}/request/${user.id}/`)
                     console.log(response.data)
                 } catch (error) {
-                    console.log(error.response.data)
+                    console.log(error)
                 }
     
             }
             follow();
             fetchLists();
         }
-        else{
+        else if (user.host === `https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/`){
             const follow = async () => {
                 try {
                     const response= await axios.post(`http://127.0.0.1:8000/service/authors/${authorId}/request/${user.id}/`)
                     console.log(response.data)
                 } catch (error) {
-                    console.log(error.response.data)
+                    console.log(error)
                 }
 
             }
@@ -150,7 +173,7 @@ function handleButtonClick(user, action) {
         follow();
         fetchLists();
         }
-    } else if(action === 'Unfollow') {
+     else if(action === 'Unfollow') {
         const unfollow = async () => {
             try {
                 const response= await axios.delete(`http://127.0.0.1:8000/service/authors/${user.id}/followers/${authorId}/`)
@@ -170,6 +193,34 @@ function handleButtonClick(user, action) {
         fetchLists();
     }
     else if (action === 'Cancel'){
+        if (user.host === 'https://c404-5f70eb0b3255.herokuapp.com/'){ //A-Team
+            const cancel = async () => {
+                try {
+                    const data= {
+                        actor: userData.id
+                    }
+                    const response= await axios.delete(`https://c404-5f70eb0b3255.herokuapp.com/authors/${user.id}/followRequests/`,data)
+                }
+                catch (error) {
+                    console.log(error.response.data)
+                }
+            }
+            cancel();
+            fetchLists();
+        }
+        if (user.host === 'https://web-weavers-backend-fb4af7963149.herokuapp.com/'){ //Web Weavers
+            const cancel = async () => {
+                try {
+                    const response= await axios.delete(`https://web-weavers-backend-fb4af7963149.herokuapp.com/service/authors/${authorId}/request/${user.id}/`)
+                }
+                catch (error) {
+                    console.log(error.response.data)
+                }
+            }
+            cancel();
+            fetchLists();
+        }
+        else{
         const cancel = async () => {
             try {
                 const response= await axios.delete(`http://127.0.0.1:8000/service/authors/${authorId}/request/${user.id}/`)
@@ -182,11 +233,13 @@ function handleButtonClick(user, action) {
         fetchLists();
     }
 }
+}
 
 
 fetchLists();
 
-Logout.addEventListener("click", () =>{
+Logout.addEventListener("click", (event) =>{
+    event.preventDefault();
     localStorage.removeItem('userData');
-    window.location.href="loginPage.html"
+    window.location.href="index.html"
 })

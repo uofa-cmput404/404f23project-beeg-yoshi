@@ -123,7 +123,7 @@ cancelClearBtn.addEventListener("click", () =>{
 })
 Logout.addEventListener("click", () =>{
     localStorage.removeItem('userData');
-    window.location.href="loginPage.html"
+    window.location.href="index.html"
 })
 
 // Handle accept

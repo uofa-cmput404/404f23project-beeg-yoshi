@@ -58,6 +58,9 @@ body{
     margin-top: 10px;
 }
 
+.postTitle{
+    font-weight: 700;
+}
 /* .postNav ul{
     display: flex;
     align-items: center;

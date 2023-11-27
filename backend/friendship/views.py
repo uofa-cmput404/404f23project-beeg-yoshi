@@ -263,13 +263,13 @@ def remote_friend_request_methods(request,pk,fk):
             serializer=remoteFriendRequestSerializer(data={"from_user":pk,"to_user":fk, "server": request.data["server"]})
             if serializer.is_valid():
                 serializer.save()
-                inbox_object=Inbox.objects.get(author=fk)
-                message=serializer.data
-                message["from_user_name"]=pk
-                message["to_user_name"]=User.objects.get(id=fk).displayName
-                message["summary"]=f"{message['from_user_name']} sent you a friend request"
-                inbox_object.items["friendrequests"].append(message)
-                inbox_object.save()
+                # inbox_object=Inbox.objects.get(author=fk)
+                # message=serializer.data
+                # message["from_user_name"]=pk
+                # message["to_user_name"]=User.objects.get(id=fk).displayName
+                # message["summary"]=f"{message['from_user_name']} sent you a friend request"
+                # inbox_object.items["friendrequests"].append(message)
+                # inbox_object.save()
                 return Response(serializer.data,status=status.HTTP_201_CREATED)
     elif request.method=='PUT':
         try:

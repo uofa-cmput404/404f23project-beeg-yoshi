@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
+    console.log("login here");
     const loginForm = document.querySelector("#loginForm");
     if(localStorage.getItem('userData')){
        localStorage.removeItem('userData');
@@ -19,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 return
             }
             localStorage.setItem('userData', JSON.stringify(response.data));
-            window.location.href="index.html"
+            window.location.href="./Dashboard.html"
             
             }catch(error){
                 alert("Invalid Credentials")
