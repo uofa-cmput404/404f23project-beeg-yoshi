@@ -364,12 +364,12 @@ document.addEventListener("DOMContentLoaded", function() {
                                 console.log(error.response.status); 
                             }
                             editModal.style.display = "none";
+                            window.location.reload();
                         };
                     
                         cancelEdit.onclick = () => {
                             editModal.style.display = "none";
                         };
-                        window.location.reload();
                     };
                     postNavList.appendChild(buttondiv);
                 }
