@@ -242,7 +242,8 @@ document.addEventListener("DOMContentLoaded", function() {
                                     }
                                 }
                                 createComment();
-                                window.location.reload();
+                                userCommentInput.value = '';
+                                commentModal.style.display = "none";
                                 };
                                 break;
                             case "share":
