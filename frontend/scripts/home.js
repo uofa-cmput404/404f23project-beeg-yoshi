@@ -26,7 +26,6 @@ let friendData={};
 const username = 'beeg-yoshi';
 const password = '12345';
 const encodedCredentials = btoa(`${username}:${password}`);
-document.addEventListener("DOMContentLoaded", function() {
     const userData = JSON.parse(localStorage.getItem('userData'));
     if (userData) {
         console.log(userData);
@@ -252,7 +251,6 @@ document.addEventListener("DOMContentLoaded", function() {
                                 createComment();
                                 userCommentInput.value = '';
                                 commentModal.style.display = "none";
-                                window.location.reload();
                                 };
                                 break;
                             case "share":
@@ -390,7 +388,6 @@ document.addEventListener("DOMContentLoaded", function() {
     
     
     getPosts()
-});
 
 createPostBtn.addEventListener("click", () =>{
     postModal.showModal()

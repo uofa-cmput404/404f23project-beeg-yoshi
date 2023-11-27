@@ -151,11 +151,10 @@ function handleButtonClick(user, action) {
             fetchLists();
             
         }
-    }
-        else if (user.host === 'https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/'){ //Web Weavers
+        else if (user.host === ''){ //Web Weavers
             const follow = async () => {
                 try {
-                    const response= await axios.post(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${authorId}/request/${user.id}/`)
+                    const response= await axios.post(``)
                     console.log(response.data)
                 } catch (error) {
                     console.log(error)
@@ -179,6 +178,7 @@ function handleButtonClick(user, action) {
         follow();
         fetchLists();
         }
+    }
      else if(action === 'Unfollow') {
         const unfollow = async () => {
             try {
