@@ -244,7 +244,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                 createComment();
                                 userCommentInput.value = '';
                                 commentModal.style.display = "none";
-                                getComments();
+                                window.location.reload();
                                 };
                                 break;
                             case "share":
