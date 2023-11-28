@@ -3,5 +3,4 @@ __pycache__/
 migrations/
 test.sql
 *.log
-db.sqlite3
 

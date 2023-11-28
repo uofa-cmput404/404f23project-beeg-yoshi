@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     try {
                         const response = await axios.post(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userId}/`,data);
                         console.log(response.data);
+                        window.location.reload();
                     } catch (error) {
                         console.log(error);
                     }
@@ -28,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const deleteUser = async (userId) => {
                     try {
                         const response = await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userId}/`);
+                        window.location.reload();
 
                     }catch(error) {
                         console.log(error);
@@ -86,5 +88,5 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchAuthors();
 });
 Backbtn.addEventListener('click', () => {
-    window.location.href = "index.html";
+    window.location.href = "Dashboard.html";
 });

@@ -30,15 +30,18 @@ const confirmClearModal = document.querySelector("[data-modal]");
 const confirmClearBtn = document.querySelector("#confirmClear");
 const cancelClearBtn = document.querySelector("#cancelClear");
 const inboxNodeModal = document.getElementById("inboxNodeModal");
+let friendRequestsList = [];
+let notificationsList = [];
+let inboxList = [];
 const fetchInbox= async () => {
     try {
         const response= await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/inbox/`)
         console.log(response.data)
-        const friendRequestsList = response.data.items["friendrequests"];
+        friendRequestsList = response.data.items["friendrequests"];
         console.log(friendRequestsList)
-        const notificationsList = response.data.items["notifications"];
+        notificationsList = response.data.items["notifications"];
         console.log(notificationsList)
-        const inboxList = response.data.items["inbox"];
+        inboxList = response.data.items["inbox"];
         console.log(inboxList)
         friendRqStream.innerHTML = '<h1>Friend Requests</h1>';
 
@@ -113,7 +116,16 @@ clearBtn.addEventListener("click", () =>{
 })
 
 confirmClearBtn.addEventListener("click", () =>{
-    console.log("CLEAR ALL NOTIFICATIONS"); // TODO
+    const data={"inbox":[], "notifications":notificationsList, "friendrequests":friendRequestsList}
+    const clearNotifications = async () => {
+        try {
+            await axios.put(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/inbox/`,data)
+            window.location.reload();
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    clearNotifications();
     confirmClearModal.close();
 })
 
@@ -142,6 +154,7 @@ function handleAccept(request,friendsList,notificationsList,inboxList) {
             try {
                 const response= await axios.put(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${request.from_user}/request/${userData.id}/`)
                 console.log(response.data)
+                window.location.reload();
             } catch (error) {
                 console.log(error)
             }
@@ -163,6 +176,7 @@ function handleDecline(request,friendsList,notificationsList,inboxList) {
         await axios.put(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/inbox/`,data)
         try {
             const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${request.from_user}/request/${userData.id}/`)
+            window.location.reload();
         }
             catch (error) {
                 console.log(error)

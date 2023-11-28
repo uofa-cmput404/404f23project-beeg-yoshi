@@ -16,7 +16,6 @@ if (userData) {
 }
 document.querySelector("#userHandle").value=userData.displayName
 document.querySelector("#userGithub").value=userData.github
-document.querySelector("#userEmail").value=userData.email
 document.querySelector("#editBio").value=userData.biography
 Name.innerHTML=userData.displayName
 bio.innerHTML=userData.biography
@@ -34,7 +33,6 @@ confirmEditBtn.addEventListener("click", async () => {
             displayName:document.querySelector("#userHandle").value,
             biography:document.querySelector("#editBio").value,
             github:document.querySelector("#userGithub").value,
-            email:document.querySelector("#userEmail").value,
         }
         if (document.querySelector("#userPasswordNew").value !== ""){
             data.password=document.querySelector("#userPasswordNew").value

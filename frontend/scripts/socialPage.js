@@ -26,6 +26,7 @@ async function fetchLists() {
     let strangers = await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${authorId}/strangers/`)
     let followers = await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${authorId}/followers/`);
     let pending = await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${authorId}/request/pending`)
+    let pending_remote= await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/remote/authors/${authorId}/pending/request/`)
     let A_Team_res= await axios.get(`https://c404-5f70eb0b3255.herokuapp.com/authors/`)
     let web_weavers_res= await axios.get(`https://web-weavers-backend-fb4af7963149.herokuapp.com/authors/`, {
         headers: {
@@ -75,6 +76,30 @@ async function fetchLists() {
         })
     }
     })
+    pending_remote.data.items.forEach(item => {
+        console.log(item)
+        console.log(item.server)
+        if (item.server==='Web Weavers'){
+        web_weavers_res.data.items.forEach(user => {
+            if (item.id === user.id){
+                web_weavers_res.data.items.splice(web_weavers_res.data.items.indexOf(user),1)
+                pending.data.items.push(user)
+                return
+            }
+        })
+    }
+
+        else if (item.server==='A-Team'){
+        A_Team_res.data.results.items.forEach(user => {
+            if (item.id === user.id){
+                A_Team_res.data.results.items.splice(A_Team_res.data.results.items.indexOf(user),1)
+                pending.data.items.push(user)
+                return
+            }
+        })
+    }
+    })
+    console.log(pending_remote.data.items)
     console.log(remoteFriends.data)
     console.log(remote_followers.data.items)
     console.log(A_Team_res.data.results.items)
@@ -91,9 +116,10 @@ async function fetchLists() {
     populateList(strangersList, strangers.data, 'Follow');
 }
 function populateList(listElement, users, buttonText) {
-
     users.forEach(user => {
+        
         let li = document.createElement("li");
+        li.setAttribute('data-user-id', user.id);
         if (user.host === 'https://c404-5f70eb0b3255.herokuapp.com/'){
             li.textContent = user.displayName+" (A-Team)";
         }
@@ -140,6 +166,8 @@ function handleButtonClick(user, action) {
                     }
                     const response1= await axios.post(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/remote/authors/${userData.id}/request/${user.id}/`,data1)
                     console.log(response1.data)
+                    removeFromList(strangersList, user.id);
+                    addToList(pendingList, user, 'Cancel');
                 }catch (error) {
                     console.log(error)
                 }
@@ -148,7 +176,6 @@ function handleButtonClick(user, action) {
             }
             }
             follow();
-            fetchLists();
             
         }
         else if (user.host === ''){ //Web Weavers
@@ -169,6 +196,8 @@ function handleButtonClick(user, action) {
                 try {
                     const response= await axios.post(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${authorId}/request/${user.id}/`)
                     console.log(response.data)
+                    removeFromList(strangersList, user.id);
+                    addToList(pendingList, user, 'Cancel');
                 } catch (error) {
                     console.log(error)
                 }
@@ -176,10 +205,56 @@ function handleButtonClick(user, action) {
             }
         
         follow();
-        fetchLists();
         }
     }
      else if(action === 'Unfollow') {
+        if (user.host === 'https://c404-5f70eb0b3255.herokuapp.com/'){ //A-Team
+            const unfollow = async () => {
+                try {
+                    const id=String(userData.id)
+                    console.log(typeof(id))
+                    const data= {
+                        actor:String(id)
+                    }
+                    const response= await axios.delete(`https://c404-5f70eb0b3255.herokuapp.com/authors/${user.id}/followers/`,data)
+                    console.log(response.data)
+                    try {
+                        const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${authorId}/request/${user.id}/`)
+                        console.log(response.data)
+                        removeFromList(friendsList, user.id);
+                        addToList(strangersList, user, 'Follow');
+                    } catch (error) {
+                        console.log(error)
+                    }
+                } catch (error) {
+                    console.log(error)
+                }
+    
+            }
+            unfollow();
+     }
+        else if (user.host === 'https://web-weavers-backend-fb4af7963149.herokuapp.com/'){ //Web Weavers    
+            const unfollow = async () => {
+                try {
+                    const response= await axios.delete(`https://web-weavers-backend-fb4af7963149.herokuapp.com/service/authors/${authorId}/followers/${user.id}/`)
+                    console.log(response.data)
+                    try {
+                        const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${authorId}/request/${user.id}/`)
+                        console.log(response.data)
+                        removeFromList(friendsList, user.id);
+                        addToList(strangersList, user, 'Follow');
+                    } catch (error) {
+                        console.log(error)
+                    }
+                } catch (error) {
+                    console.log(error)
+                }
+    
+            }
+            unfollow();
+    }
+        else if (user.host === `https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/`){
+        
         const unfollow = async () => {
             try {
                 const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${user.id}/followers/${authorId}/`)
@@ -187,6 +262,8 @@ function handleButtonClick(user, action) {
                 try {
                     const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${authorId}/request/${user.id}/`)
                     console.log(response.data)
+                    removeFromList(friendsList, user.id);
+                    addToList(strangersList, user, 'Follow');
                 } catch (error) {
                     console.log(error)
                 }
@@ -196,47 +273,55 @@ function handleButtonClick(user, action) {
 
         }
         unfollow();
-        fetchLists();
     }
+}
     else if (action === 'Cancel'){
         if (user.host === 'https://c404-5f70eb0b3255.herokuapp.com/'){ //A-Team
+        console.log("dleete remote request")
             const cancel = async () => {
                 try {
+                    const id=String(userData.id)
+                    console.log(typeof(id))
                     const data= {
-                        actor: userData.id
+                        actor:String(id)
                     }
-                    const response= await axios.delete(`https://c404-5f70eb0b3255.herokuapp.com/authors/${user.id}/followRequests/`,data)
+                    await axios.delete(`https://c404-5f70eb0b3255.herokuapp.com/authors/${user.id}/followRequests/`,data)
+                    removeFromList(pendingList, user.id);
+                    addToList(strangersList, user, 'Follow');
                 }
                 catch (error) {
-                    console.log(error.response.data)
+                    console.log(error)
                 }
             }
             cancel();
-            fetchLists();
         }
         if (user.host === 'https://web-weavers-backend-fb4af7963149.herokuapp.com/'){ //Web Weavers
             const cancel = async () => {
                 try {
                     const response= await axios.delete(`https://web-weavers-backend-fb4af7963149.herokuapp.com/service/authors/${authorId}/request/${user.id}/`)
+                    console.log(response.data)
+                    removeFromList(pendingList, user.id);
+                    addToList(strangersList, user, 'Follow');
                 }
                 catch (error) {
                     console.log(error.response.data)
                 }
             }
             cancel();
-            fetchLists();
         }
-        else{
+        else if (user.host === `https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/`){
         const cancel = async () => {
             try {
                 const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${authorId}/request/${user.id}/`)
+                console.log(response.data)
+                removeFromList(pendingList, user.id);
+                addToList(strangersList, user, 'Follow');
             }
             catch (error) {
                 console.log(error.response.data)
             }
         }
         cancel();
-        fetchLists();
     }
 }
 }
@@ -249,3 +334,29 @@ Logout.addEventListener("click", (event) =>{
     localStorage.removeItem('userData');
     window.location.href="index.html"
 })
+function removeFromList(listElement, userId) {
+    console.log(userId)
+    const items = listElement.querySelectorAll('li[data-user-id]');
+    items.forEach(item => {
+        console.log(item)
+        if (item.getAttribute('data-user-id') === userId.toString()) {
+            listElement.removeChild(item);
+        }
+    });
+}
+
+function addToList(listElement, user, buttonText) {
+    let li = document.createElement('li');
+    li.dataset.userId = user.id;
+    li.textContent = user.displayName;
+    if (buttonText !== '') {
+        let button = document.createElement('button');
+        button.textContent = buttonText;
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            handleButtonClick(user, buttonText);
+        });
+        li.appendChild(button);
+    }
+    listElement.appendChild(li);
+}

@@ -179,15 +179,15 @@ const encodedCredentials = btoa(`${username}:${password}`);
                                     try {
                                         const response= await axios.post(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/like/${post.id}/`,data)
                                         console.log(response.data)
+                                        window.location.reload();
                                         if (response.status === 200) {
                                             alert("You already liked this post.");
                                         }
                                     } catch (error) {
-                                        
+                                        console.log(error);
                                     }
                                 }
                                 likePost();
-                                window.location.reload();
                                 break;
                             case "comment":
                                 console.log("comment is clicked");
@@ -304,6 +304,7 @@ const encodedCredentials = btoa(`${username}:${password}`);
                                                 try {
                                                     const response = await axios.put(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${friendId}/inbox/`,InboxData)
                                                     console.log(response.data);
+                                                    friendModal.style.display = "none";
                                                 } catch (error) {
                                                     console.log(error);
                                                 }
@@ -335,6 +336,7 @@ const encodedCredentials = btoa(`${username}:${password}`);
                                 try{
                                 const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/posts/${post.id}`)
                                 console.log(response.data)
+                                window.location.reload();
                                 }
                                 catch(error){
                                     console.log(error.response.data)
@@ -346,7 +348,6 @@ const encodedCredentials = btoa(`${username}:${password}`);
                         cancelDelete.onclick = () => {
                             confirmationDialog.style.display = "none";
                         };
-                        window.location.reload();
                     };
                     const editBtn = document.createElement("button");
                     editBtn.textContent = "Edit";
@@ -421,6 +422,7 @@ postButton.addEventListener("click", () =>{
         const response= await axios.post(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/posts/`,data)
         console.log(response.data)
         postModal.close()
+        
         }
         catch(error){
             console.log(error.response.data)
@@ -434,7 +436,7 @@ postButton.addEventListener("click", () =>{
     document.querySelector("#content-type").value="";
     document.querySelector("#categories").value="";
     document.querySelector("#visibility").value="";
-
+    getPosts();
 })
 
 Logout.addEventListener("click", () =>{

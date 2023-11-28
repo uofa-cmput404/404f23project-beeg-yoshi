@@ -292,5 +292,6 @@ def get_remote_pending_friend_request(request,pk):
         for item in pending_friend_request_list1:
             pending_friend_request["items"].append({
                 "id": item.to_user,
+                "server":item.server,
             })
         return Response(pending_friend_request, status=status.HTTP_200_OK)
