@@ -216,13 +216,21 @@ function handleButtonClick(user, action) {
                     const data= {
                         actor:String(id)
                     }
-                    const response= await axios.delete(`https://c404-5f70eb0b3255.herokuapp.com/authors/${user.id}/followers/`,data)
+                    const response= await axios.delete(`https://c404-5f70eb0b3255.herokuapp.com/authors/${user.id}/followers/${userData.id}/`, {
+                        headers: {
+                            'Authorization': "Token e99281997c1aad7dbc54e0c9b6414a9b3065339a",
+                    }})
                     console.log(response.data)
                     try {
-                        const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${authorId}/request/${user.id}/`)
+                        const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/remote/authors/${userData.id}/request/${user.id}/`)
                         console.log(response.data)
-                        removeFromList(friendsList, user.id);
-                        addToList(strangersList, user, 'Follow');
+                        try {
+                            const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/remote/authors/${user.id}/followers/${userData.id}/`)
+                            removeFromList(friendsList, user.id);
+                            addToList(strangersList, user, 'Follow');
+                        } catch (error) {
+                            console.log(error)
+                        }
                     } catch (error) {
                         console.log(error)
                     }
@@ -277,7 +285,6 @@ function handleButtonClick(user, action) {
 }
     else if (action === 'Cancel'){
         if (user.host === 'https://c404-5f70eb0b3255.herokuapp.com/'){ //A-Team
-        console.log("dleete remote request")
             const cancel = async () => {
                 try {
                     const id=String(userData.id)
@@ -285,9 +292,14 @@ function handleButtonClick(user, action) {
                     const data= {
                         actor:String(id)
                     }
-                    await axios.delete(`https://c404-5f70eb0b3255.herokuapp.com/authors/${user.id}/followRequests/`,data)
-                    removeFromList(pendingList, user.id);
-                    addToList(strangersList, user, 'Follow');
+                    await axios.delete(`https://c404-5f70eb0b3255.herokuapp.com/authors/${user.id}/followRequests/`,{data:data})
+                    try {
+                        const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/remote/authors/${userData.id}/request/${user.id}/`)
+                        removeFromList(pendingList, user.id);
+                        addToList(strangersList, user, 'Follow');
+                    } catch (error) {
+                        console.log(error)
+                    }
                 }
                 catch (error) {
                     console.log(error)
