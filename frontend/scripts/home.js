@@ -365,12 +365,12 @@ const encodedCredentials = btoa(`${username}:${password}`);
                             try {
                                 const response= axios.put(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/posts/${post.id}`,data)
                                 console.log(response.data)
+                                window.location.reload();
                             } catch (error) {
                                 console.log(error.response.data);
                                 console.log(error.response.status); 
                             }
                             editModal.style.display = "none";
-                            window.location.reload();
                         };
                     
                         cancelEdit.onclick = () => {
