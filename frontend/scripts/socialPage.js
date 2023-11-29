@@ -33,6 +33,11 @@ async function fetchLists() {
             'Authorization': `Basic ${encodedCredentials}`
         }
     })
+    web_weavers_res.data.items.forEach(user => {
+        if (user.host!=='https://web-weavers-backend-fb4af7963149.herokuapp.com/'){ 
+            web_weavers_res.data.items.splice(web_weavers_res.data.items.indexOf(user),1)
+    }
+    })
     let remote_followers= await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/remote/authors/${authorId}/followers/`)
     remote_followers.data.items.forEach(item => {
         if (item.server==='Web Weavers'){
@@ -77,11 +82,9 @@ async function fetchLists() {
     }
     })
     pending_remote.data.items.forEach(item => {
-        console.log(item)
-        console.log(item.server)
         if (item.server==='Web Weavers'){
         web_weavers_res.data.items.forEach(user => {
-            if (item.id === user.id){
+            if (item.id === user.uuid){
                 web_weavers_res.data.items.splice(web_weavers_res.data.items.indexOf(user),1)
                 pending.data.items.push(user)
                 return
@@ -183,8 +186,6 @@ function handleButtonClick(user, action) {
                 try {
                     let urlSend=String(userData.url)
                     urlSend=urlSend.slice(0,-1)
-                    console.log(urlSend)
-                    console.log(userData.id)
                     const data={
                         type: "Follow",
                         summary: `${userData.displayName} wants to follow you`,
@@ -199,7 +200,7 @@ function handleButtonClick(user, action) {
                     console.log(response.data)
                     try {
                         const data1= {
-                            server: 'Web-Weavers',
+                            server: 'Web Weavers',
                         }
                         console.log(userData.id)
                         const response1= await axios.post(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/remote/authors/${userData.id}/request/${user.uuid}/`,data1)
@@ -264,7 +265,11 @@ function handleButtonClick(user, action) {
         else if (user.host === 'https://web-weavers-backend-fb4af7963149.herokuapp.com/'){ //Web Weavers    
             const unfollow = async () => {
                 try {
-                    const response= await axios.delete(`https://web-weavers-backend-fb4af7963149.herokuapp.com/service/authors/${authorId}/followers/${user.id}/`)
+                    const response= await axios.delete(`https://web-weavers-backend-fb4af7963149.herokuapp.com/authors/${user.uuid}/inbox/`,data, {
+                        headers: {
+                            'Authorization': `Basic ${encodedCredentials}`
+                        }
+                    })
                     console.log(response.data)
                     try {
                         const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${authorId}/request/${user.id}/`)
@@ -330,10 +335,26 @@ function handleButtonClick(user, action) {
         if (user.host === 'https://web-weavers-backend-fb4af7963149.herokuapp.com/'){ //Web Weavers
             const cancel = async () => {
                 try {
-                    const response= await axios.delete(`https://web-weavers-backend-fb4af7963149.herokuapp.com/service/authors/${authorId}/request/${user.id}/`)
+                    let urlSend=String(userData.url)
+                    urlSend=urlSend.slice(0,-1)
+                    const data={
+                        actor: urlSend,
+                        object: user.id,
+                    }
+                    const response= await axios.delete(`https://web-weavers-backend-fb4af7963149.herokuapp.com/follow-requests/`,{data:data}, {
+                        headers: {
+                            'Authorization': `Basic ${encodedCredentials}`
+                        }
+                    })
                     console.log(response.data)
-                    removeFromList(pendingList, user.id);
-                    addToList(strangersList, user, 'Follow');
+                    try {
+                        const response1 = await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/remote/authors/${userData.id}/request/${user.uuid}/`)
+                        console.log(response1.data)
+                        removeFromList(pendingList, user.id);
+                        addToList(strangersList, user, 'Follow');
+                    } catch (error) {
+                        console.log(error)
+                    }
                 }
                 catch (error) {
                     console.log(error.response.data)
