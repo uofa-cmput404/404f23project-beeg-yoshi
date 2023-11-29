@@ -42,7 +42,7 @@ async function fetchLists() {
     remote_followers.data.items.forEach(item => {
         if (item.server==='Web Weavers'){
         web_weavers_res.data.items.forEach(user => {
-            if (item.id === user.id){
+            if (item.id === user.uuid){
                 web_weavers_res.data.items.splice(web_weavers_res.data.items.indexOf(user),1)
                 followers.data.items.push(user)
                 return
