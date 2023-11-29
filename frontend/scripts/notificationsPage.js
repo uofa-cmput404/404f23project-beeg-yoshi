@@ -140,6 +140,31 @@ Logout.addEventListener("click", () =>{
 
 // Handle accept
 function handleAccept(request,friendsList,notificationsList,inboxList) {
+    if (request.server==='A-Team'){
+        console.log("A-Team accept")
+        //send a put to the remote friend request accept the request and create a friendship
+        //send a request to A-Team to add the friend
+        const createRemoteFriendship = async () => {
+        try {
+            const index=friendsList.indexOf(request);
+            friendsList.splice(index,1);
+            const data={
+                server: "A-Team",
+                "friendrequests":friendsList
+            }
+            const response = await axios.put(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/remote/authors/${request.from_user}/request/${userData.id}/`, data)
+            console.log(response.data)
+            window.location.reload();
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    createRemoteFriendship();
+    }
+    else if (request.server==='Web-Weavers'){
+        console.log("Web-Weavers")
+    }
+    else{
     const index=friendsList.indexOf(request);
     friendsList.splice(index,1);
     const data={"inbox":inboxList,"notifications":notificationsList,"friendrequests":friendsList}
@@ -165,9 +190,26 @@ function handleAccept(request,friendsList,notificationsList,inboxList) {
     createFriendship();
     fetchInbox();
 }
+}
 
 // Handle decline
 function handleDecline(request,friendsList,notificationsList,inboxList) {
+    if (request.server==='A-Team'){
+        console.log("A-Team decline")
+        const declineRemoteFriendshipRequest = async () => {
+        try {
+            const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/remote/authors/${request.from_user}/request/${userData.id}/`)
+            window.location.reload();
+        } catch (error) {
+            console.log(error)
+        }
+        }
+        declineRemoteFriendshipRequest();
+    }
+    else if (request.server==='Web-Weavers'){
+        console.log("Web-Weavers")
+    }
+    else{
     const index=friendsList.indexOf(request);
     friendsList.splice(index,1);
     const data={"inbox":inboxList,"notifications":notificationsList,"friendrequests":friendsList}
@@ -187,4 +229,5 @@ function handleDecline(request,friendsList,notificationsList,inboxList) {
 }
     deleteFriendshipRequest();
     fetchInbox();
+}
 }

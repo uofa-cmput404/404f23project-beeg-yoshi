@@ -178,18 +178,43 @@ function handleButtonClick(user, action) {
             follow();
             
         }
-        else if (user.host === ''){ //Web Weavers
+        else if (user.host === 'https://web-weavers-backend-fb4af7963149.herokuapp.com/'){ //Web Weavers
             const follow = async () => {
                 try {
-                    const response= await axios.post(``)
+                    let urlSend=String(userData.url)
+                    urlSend=urlSend.slice(0,-1)
+                    console.log(urlSend)
+                    console.log(userData.id)
+                    const data={
+                        type: "Follow",
+                        summary: `${userData.displayName} wants to follow you`,
+                        actor: urlSend,
+                        object: user.id,
+                    }
+                    const response= await axios.post(`https://web-weavers-backend-fb4af7963149.herokuapp.com/authors/${user.uuid}/inbox/`,data, {
+                        headers: {
+                            'Authorization': `Basic ${encodedCredentials}`
+                        }
+                    })
                     console.log(response.data)
+                    try {
+                        const data1= {
+                            server: 'Web-Weavers',
+                        }
+                        console.log(userData.id)
+                        const response1= await axios.post(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/remote/authors/${userData.id}/request/${user.uuid}/`,data1)
+                        console.log(response1.data)
+                        removeFromList(strangersList, user.id);
+                        addToList(pendingList, user, 'Cancel');
+                    }catch (error) {
+                        console.log(error)
+                    }
                 } catch (error) {
                     console.log(error)
                 }
     
             }
             follow();
-            fetchLists();
         }
         else if (user.host === `https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/`){
             const follow = async () => {
@@ -224,13 +249,8 @@ function handleButtonClick(user, action) {
                     try {
                         const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/remote/authors/${userData.id}/request/${user.id}/`)
                         console.log(response.data)
-                        try {
-                            const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/remote/authors/${user.id}/followers/${userData.id}/`)
-                            removeFromList(friendsList, user.id);
-                            addToList(strangersList, user, 'Follow');
-                        } catch (error) {
-                            console.log(error)
-                        }
+                        removeFromList(friendsList, user.id);
+                        addToList(strangersList, user, 'Follow');
                     } catch (error) {
                         console.log(error)
                     }
@@ -360,7 +380,15 @@ function removeFromList(listElement, userId) {
 function addToList(listElement, user, buttonText) {
     let li = document.createElement('li');
     li.dataset.userId = user.id;
-    li.textContent = user.displayName;
+    if (user.host === 'https://c404-5f70eb0b3255.herokuapp.com/'){
+        li.textContent = user.displayName+" (A-Team)";
+    }
+    else if (user.host === 'https://web-weavers-backend-fb4af7963149.herokuapp.com/'){
+        li.textContent = user.displayName+" (Web Weavers)";
+    }
+    else{
+    li.textContent = user.displayName + " (Beeg Yoshi)"
+    }
     if (buttonText !== '') {
         let button = document.createElement('button');
         button.textContent = buttonText;
