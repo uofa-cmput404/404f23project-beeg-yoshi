@@ -49,7 +49,7 @@ const encodedCredentials = btoa(`${username}:${password}`);
         }
     }
     getFriends();
-    const getPosts = async () => {
+    const getPosts = async () => { // A-Team
         try {
             const response = await axios.get(`https://c404-5f70eb0b3255.herokuapp.com/getAllPublicPosts/`)
             console.log(response.data.results.items);
@@ -68,6 +68,101 @@ const encodedCredentials = btoa(`${username}:${password}`);
                 const postContent = document.createElement("div");
                 postContent.className = "postContent";
                 postContent.textContent = post.content; 
+                const postNav = document.createElement("div");
+                postNav.className = "postNav";
+                const postNavList = document.createElement("ul");
+                ["like", "comment", "share"].forEach(action => {
+                    const li = document.createElement("li");
+                    li.className = `${action}-btn`;
+                    const img = document.createElement("img");
+                    img.src = `../images/${action}Icon.png`;
+                    
+                    img.id = `${action}Icon`;
+                    img.alt = action;
+                    li.appendChild(img);
+                    if (action === "like") {
+                    const likeCounter = document.createElement('span');
+                    likeCounter.className = 'like-counter';
+                    likeCounter.textContent = post.likes.length;
+                    li.appendChild(likeCounter);
+                    }
+                    postNavList.appendChild(li);
+                    li.addEventListener('click', function() {
+                        switch(action) {
+                            case "like":
+                                console.log("like is clicked");
+                        }
+                        switch(action) {
+                            case "comment":
+                                console.log("comment is clicked");
+                                console.log(post.author.id);
+                                const postID=post.id.split("/")[6];
+                                const getComments_ATeam = async () => { // A-Team
+                                    try {
+                                        const response = await axios.get(`https://c404-5f70eb0b3255.herokuapp.com/authors/${post.author.id}/posts/${postID}/comments/`);
+                                        console.log(response.data);
+                                        commentList.innerHTML = '';
+                                        let commentsHtml = '';
+                                        console.log(response.data.count);
+                                        if (response.data.count === 0) {
+                                            commentsHtml = '<p>No comments yet.</p>';
+                                        }
+                                        else{
+                                        response.data.results.comments.forEach(comment => {
+                                            const commentHtml = `
+                                                <div class="comment-item">
+                                                    <strong><i>${comment.author["displayName"]}</i> said:</strong>
+                                                    <p>${comment.comment}</p>
+                                                    <button class="like-btn" onclick="console.log('Like clicked for comment:', ${comment.id});">Like</button>
+                                                </div>
+                                            `;
+                                            commentsHtml += commentHtml;
+                                        });
+
+                                    }
+                                    commentList.innerHTML = commentsHtml;
+                                    commentModal.style.display = "block";
+                                    submitCommentBtn.onclick = () => {
+                                        const createComment_ATeam = async () => {
+                                            try {
+                                                const data={
+                                                    "author_id": userData.id,
+                                                    "comment": userCommentInput.value,
+                                                    "contentType": "text/plain"
+                                                }
+                                                const response = await axios.post(post.comments+"/",data, {
+                                                    headers: {
+                                                        'Authorization': "Token e99281997c1aad7dbc54e0c9b6414a9b3065339a"
+                                                    
+                                                    }
+                                                })
+                                                console.log(response.data);
+
+                                            } catch (error) {
+                                                console.log(error);
+                                            }
+                                        };
+                                        createComment_ATeam();
+                                        userCommentInput.value = '';
+                                        commentModal.style.display = "none";
+
+                                    };
+                                    } catch (error) {
+                                        console.log(error);
+                                    }
+                                }
+                                getComments_ATeam();
+                                break;
+                            }
+                            
+                        switch(action) {
+                            case "share":
+                                console.log("share is clicked");
+                            }
+                        });
+                });
+                postNav.appendChild(postNavList);
+                postContent.appendChild(postNavList);
                 postDiv.appendChild(postContent);
                 stream.appendChild(postDiv);
             });
@@ -97,6 +192,37 @@ const encodedCredentials = btoa(`${username}:${password}`);
                 const postContent = document.createElement("div");
                 postContent.className = "postContent";
                 postContent.textContent = post.content; 
+                const postNav = document.createElement("div");
+                postNav.className = "postNav";
+                const postNavList = document.createElement("ul");
+                ["like", "comment", "share"].forEach(action => {
+                    const li = document.createElement("li");
+                    li.className = `${action}-btn`;
+                    const img = document.createElement("img");
+                    img.src = `../images/${action}Icon.png`;
+                    
+                    img.id = `${action}Icon`;
+                    img.alt = action;
+                    li.appendChild(img);
+                    postNavList.appendChild(li);
+                    li.addEventListener('click', function() {
+                        switch(action) {
+                            case "like":
+                                console.log("like is clicked");
+                        }
+                        switch(action) {
+                            case "comment":
+                                console.log("comment is clicked");
+                            }
+                        switch(action) {
+                            case "share":
+                                console.log("share is clicked");
+                            }
+                        });
+
+                });
+                postNav.appendChild(postNavList);
+                postContent.appendChild(postNavList);
                 postDiv.appendChild(postContent);
                 stream.appendChild(postDiv);
             });

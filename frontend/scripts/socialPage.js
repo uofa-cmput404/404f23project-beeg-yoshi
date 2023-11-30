@@ -33,17 +33,17 @@ async function fetchLists() {
             'Authorization': `Basic ${encodedCredentials}`
         }
     })
-    web_weavers_res.data.items.forEach(user => {
-        if (user.host!=='https://web-weavers-backend-fb4af7963149.herokuapp.com/'){ 
-            web_weavers_res.data.items.splice(web_weavers_res.data.items.indexOf(user),1)
-    }
-    })
+    // web_weavers_res.data.items.forEach(user => {
+    //     if (user.host!=='https://web-weavers-backend-fb4af7963149.herokuapp.com/'){
+    //         console.log("flitered out")
+    //         web_weavers_res.data.items.splice(web_weavers_res.data.items.indexOf(user),1)
+    // }
+    // })
     let remote_followers= await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/remote/authors/${authorId}/followers/`)
     remote_followers.data.items.forEach(item => {
         if (item.server==='Web Weavers'){
         web_weavers_res.data.items.forEach(user => {
             if (item.id === user.uuid){
-                web_weavers_res.data.items.splice(web_weavers_res.data.items.indexOf(user),1)
                 followers.data.items.push(user)
                 return
             }
@@ -52,7 +52,6 @@ async function fetchLists() {
         else if (item.server==='A-Team'){
         A_Team_res.data.results.items.forEach(user => {
             if (item.id === user.id){
-                A_Team_res.data.results.items.splice(A_Team_res.data.results.items.indexOf(user),1)
                 followers.data.items.push(user)
                 return
             }
@@ -63,7 +62,7 @@ async function fetchLists() {
     remoteFriends.data.forEach(item => {
         if (item.server==='Web Weavers'){
         web_weavers_res.data.items.forEach(user => {
-            if (item.to_user === user.id){
+            if (item.to_user === user.uuid){
                 web_weavers_res.data.items.splice(web_weavers_res.data.items.indexOf(user),1)
                 friends.data.push(user)
                 return
@@ -265,14 +264,15 @@ function handleButtonClick(user, action) {
         else if (user.host === 'https://web-weavers-backend-fb4af7963149.herokuapp.com/'){ //Web Weavers    
             const unfollow = async () => {
                 try {
-                    const response= await axios.delete(`https://web-weavers-backend-fb4af7963149.herokuapp.com/authors/${user.uuid}/inbox/`,data, {
-                        headers: {
-                            'Authorization': `Basic ${encodedCredentials}`
-                        }
-                    })
+                    const data={
+                        actor: `${userData.id}`,
+                    }
+                    const response= await axios.delete(`${user.url}/followers/${userData.id}/`, { headers:{
+                        'Authorization': `Basic ${encodedCredentials}`
+                    },data: data})
                     console.log(response.data)
                     try {
-                        const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${authorId}/request/${user.id}/`)
+                        const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${authorId}/request/${user.uuid}/`)
                         console.log(response.data)
                         removeFromList(friendsList, user.id);
                         addToList(strangersList, user, 'Follow');
@@ -293,7 +293,7 @@ function handleButtonClick(user, action) {
                 const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${user.id}/followers/${authorId}/`)
                 console.log(response.data)
                 try {
-                    const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${authorId}/request/${user.id}/`)
+                    const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/remote/authors/${userData.id}/request/${user.id}/`)
                     console.log(response.data)
                     removeFromList(friendsList, user.id);
                     addToList(strangersList, user, 'Follow');
