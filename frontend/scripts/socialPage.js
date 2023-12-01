@@ -272,7 +272,7 @@ function handleButtonClick(user, action) {
                     },data: data})
                     console.log(response.data)
                     try {
-                        const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${authorId}/request/${user.uuid}/`)
+                        const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/remote/authors/${authorId}/request/${user.uuid}/`)
                         console.log(response.data)
                         removeFromList(friendsList, user.id);
                         addToList(strangersList, user, 'Follow');
@@ -293,7 +293,7 @@ function handleButtonClick(user, action) {
                 const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${user.id}/followers/${authorId}/`)
                 console.log(response.data)
                 try {
-                    const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/remote/authors/${userData.id}/request/${user.id}/`)
+                    const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/request/${user.id}/`)
                     console.log(response.data)
                     removeFromList(friendsList, user.id);
                     addToList(strangersList, user, 'Follow');
