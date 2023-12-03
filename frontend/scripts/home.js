@@ -232,6 +232,15 @@ const encodedCredentials = btoa(`${username}:${password}`);
         }
         try {
             const response = await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/get/${userData.id}/posts/`);
+            let images=[];
+            try {
+                const response = await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/get/all/images/`);
+                console.log(response.data);
+                images=response.data;
+            }
+            catch(error){
+                console.log(error);
+            }
             console.log(response.data);
             response.data.forEach(post => {
                 const postDiv = document.createElement("div");
@@ -247,7 +256,23 @@ const encodedCredentials = btoa(`${username}:${password}`);
                 postDiv.appendChild(postTitle);
                 const postContent = document.createElement("div");
                 postContent.className = "postContent";
-                postContent.textContent = post.content; 
+                postContent.textContent = post.content;
+                const imageDiv = document.createElement('div');
+                images.forEach(image => {
+                    if (image.post === post.id) {
+                        const imageElement = document.createElement('img');
+                        imageElement.className = 'image-on-post';
+                        imageElement.style.width = '350px';
+                        imageElement.style.margin = 'auto';
+                        imageElement.style.marginTop = '30px';
+                        imageElement.style.marginLeft = '30px';
+                        imageElement.style.display = 'inline-block';
+                        imageElement.style.maxHeight = '450px';
+                        imageElement.src = `${image.image}`;
+                        imageDiv.appendChild(imageElement);
+                    }
+                });
+                postContent.appendChild(imageDiv);
                 postDiv.appendChild(postContent);
                 const postNav = document.createElement("div");
                 postNav.className = "postNav";
@@ -412,6 +437,12 @@ const encodedCredentials = btoa(`${username}:${password}`);
                                     });
                                     selectedFriends.forEach(friendId => {
                                         const sharePost = async () => {
+                                            const image_for_this_post = [];
+                                            images.forEach(image => {
+                                                if (image.post === post.id) {
+                                                    image_for_this_post.push(image.image);
+                                                }
+                                            });
                                             const data = {
                                                 senderId:userData.id,
                                                 senderName:userData.displayName,
@@ -419,6 +450,7 @@ const encodedCredentials = btoa(`${username}:${password}`);
                                                 post:post.content,
                                                 author:post.author,
                                                 count:post.count,
+                                                images:image_for_this_post,
                                             }
                                             try {
                                                 const response = await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${friendId}/inbox/`)
@@ -448,9 +480,51 @@ const encodedCredentials = btoa(`${username}:${password}`);
                 });
                 postNav.appendChild(postNavList);
                 postContent.appendChild(postNavList);
-                if (post.author === userData.id) {
+                if (post.author.id === userData.id) {
                     const buttondiv = document.createElement("div");
                     buttondiv.className = "button-container";
+                    const AddImageBtn = document.createElement("button");
+                    AddImageBtn.textContent = "Add Image";
+                    AddImageBtn.className = "add-image-btn";
+                    buttondiv.appendChild(AddImageBtn);
+                    AddImageBtn.addEventListener('click', () => {
+                        const fileInput = document.createElement('input');
+                        fileInput.type = 'file';
+                        fileInput.accept = 'image/png, image/jpeg, image/webp, image/jpg';
+                        fileInput.style.display = 'none';
+                        const imagePreview = document.createElement('img');
+                        imagePreview.style.display = 'none';
+                        document.body.appendChild(imagePreview);
+                        fileInput.addEventListener('change', function(event) {
+                            const file = event.target.files[0];
+                            if (file) {
+                                console.log(file);
+                                const reader = new FileReader();
+                                reader.readAsDataURL(file);
+                                reader.onload = function () {
+                                    const base64Image = reader.result.split(',')[1];
+                                    const data = {
+                                        image: base64Image
+                                    };
+                                    const uploadImage = async () => {
+                                        try {
+                                            const response = await axios.post(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/posts/${post.id}/image`, data);
+                                            console.log(response.data);
+                                            window.location.reload();
+                                        } catch (error) {
+                                            console.log(error);
+                                        }
+                                    };
+                                    uploadImage();
+                                  };
+                                  reader.onerror = function (error) {
+                                    console.log('Error: ', error);
+                                  };
+                            }
+                        });
+                        document.body.appendChild(fileInput);
+                        fileInput.click();
+                    });
                     const deleteBtn = document.createElement("button");
                     deleteBtn.textContent = "Delete";
                     deleteBtn.className = "delete-btn";
@@ -536,8 +610,6 @@ postButton.addEventListener("click", () =>{
     const createPost = async ()=> {
         const data={
             title:title,
-            source:"test source",
-            origin:"test origin1",
             description:description,
             content:content,
             contentType:contentType,

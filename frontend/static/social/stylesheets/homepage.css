@@ -30,8 +30,7 @@ body{
     justify-content: space-between;
     width: 80%;
     height: fit-content; /* Size of each post will be the height of the content */
-    max-height: 300px; /* But at most, 300px tall */
-
+    
     margin-bottom: 2rem;
     padding: 16px;
     padding-bottom: 10px;
@@ -558,5 +557,16 @@ dialog::backdrop{
     transform: scale(1);
 }
 
-
+.add-image-btn{
+    background-color: var(--mainBackround);
+    border: 2px solid rgb(70, 169, 255);
+    color: rgb(70, 169, 255);
+    text-align: center;
+    border-radius: 400px;
+    padding: 6px;   
+    margin-right: 10px;
+    cursor: pointer;
+    height: fit-content;
+    width: fit-content;
+}
 

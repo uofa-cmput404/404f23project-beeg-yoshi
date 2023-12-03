@@ -74,10 +74,10 @@ const fetchInbox= async () => {
                 <span class="close">&times;</span>
             </div>
 
-            <div class="modal-body">
+            <div class="modal-body" style="overflow-y: auto; max-height: 450px;">
                 <p id="postContent">${message.post}</p>
+                ${message.images.map(image => `<img src="${image}" alt="Image" style="width: 400px; max-height: 500px;">`).join('')}
             </div>
-
             <div class="modal-footer">
                 <img src="../images/likeIcon.png" alt="">
             </div>
