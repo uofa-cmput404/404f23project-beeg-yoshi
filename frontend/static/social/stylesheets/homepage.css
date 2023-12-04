@@ -55,6 +55,7 @@ body{
     padding: 8px;
     padding-bottom: 0px;
     margin-top: 10px;
+    word-wrap: break-word;
 }
 
 .postTitle{
