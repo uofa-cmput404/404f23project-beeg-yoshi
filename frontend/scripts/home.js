@@ -22,6 +22,23 @@ const submitCommentBtn = document.getElementById('submitCommentBtn');
 const friendModal = document.querySelector('.friend-share-container');
 const friendModalCloseBtn = document.querySelector(".friend-modal-close");
 const friendList=document.querySelector(".list-items");
+const postContentTextarea = document.querySelector("#postContent");
+const imagePreviewContainer = document.getElementById("imagePreviewContainer");
+const imagePreview = document.getElementById("imagePreview");
+const contentTypeSelect = document.querySelector("#content-type");
+const imageInputContainer = document.querySelector("#imageInputContainer");
+contentTypeSelect.addEventListener('change', function() {
+    if (this.value === 'image') {
+        postContentTextarea.style.display = 'none';
+        imageInputContainer.style.display = 'block';
+        imagePreviewContainer.style.display = 'block';
+    } else {
+        postContentTextarea.style.display = 'block';
+        imageInputContainer.style.display = 'none';
+        imagePreviewContainer.style.display = 'none';
+        imagePreview.style.display = 'none';
+    }
+});
 let friendData={};
 const username = 'beeg-yoshi';
 const password = '12345';
@@ -275,7 +292,7 @@ const encodedCredentials = btoa(`${username}:${password}`);
                         imageElement.style.marginTop = '30px';
                         imageElement.style.marginLeft = '30px';
                         imageElement.style.display = 'inline-block';
-                        imageElement.style.maxHeight = '450px';
+                        imageElement.style.maxHeight = '400px';
                         imageElement.src = `${image.image}`;
                         imageDiv.appendChild(imageElement);
                     }
@@ -657,4 +674,3 @@ closeModalBtn.addEventListener("click", () => {
 friendModalCloseBtn.addEventListener('click', () => {
     friendModal.style.display = 'none';
 });
-//friends share
