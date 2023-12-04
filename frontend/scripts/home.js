@@ -71,6 +71,10 @@ const encodedCredentials = btoa(`${username}:${password}`);
             const response = await axios.get(`https://c404-5f70eb0b3255.herokuapp.com/getAllPublicPosts/`)
             console.log(response.data.results.items);
             response.data.results.items.forEach(post => {
+                if (post.content.length > 5000) {
+                    console.log('Post content too long, skipping post.');
+                    return;
+                }
                 const postDiv = document.createElement("div");
                 postDiv.className = "post";
                 const postPfp = document.createElement("img");
@@ -195,6 +199,10 @@ const encodedCredentials = btoa(`${username}:${password}`);
             })
             console.log(response.data.items);
             response.data.items.forEach(post => {
+                if (post.content.length > 5000) {
+                    console.log('Post content too long, skipping post.');
+                    return;
+                }
                 const postDiv = document.createElement("div");
                 postDiv.className = "post";
                 const postPfp = document.createElement("img");
@@ -327,6 +335,7 @@ const encodedCredentials = btoa(`${username}:${password}`);
 
                         }
                         catch(error){
+                            console.log(error);
                         }
 
                         li.appendChild(likeCounter);
@@ -341,7 +350,6 @@ const encodedCredentials = btoa(`${username}:${password}`);
                                 const likePost = async () => {
                                     const data={
                                         author:userData.id,
-                                        content_type:12,
                                         object_id:post.id
                                     }
                                     try {
@@ -395,7 +403,7 @@ const encodedCredentials = btoa(`${username}:${password}`);
                                         
                                         commentModal.style.display = "block";
                                     } catch (error) {
-                                        
+                                        console.log(error);
                                     }
                                 }
                                 getComments();
