@@ -27,6 +27,19 @@ const imagePreviewContainer = document.getElementById("imagePreviewContainer");
 const imagePreview = document.getElementById("imagePreview");
 const contentTypeSelect = document.querySelector("#content-type");
 const imageInputContainer = document.querySelector("#imageInputContainer");
+const imageInput = document.getElementById('imageInput');
+const imageInputPreview = document.getElementById('imageInputPreview');
+imageInput.addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            imageInputPreview.src = e.target.result;
+            imageInputPreview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+});
 contentTypeSelect.addEventListener('change', function() {
     if (this.value === 'image') {
         postContentTextarea.style.display = 'none';
@@ -125,7 +138,18 @@ const encodedCredentials = btoa(`${username}:${password}`);
                 postDiv.appendChild(postTitle);
                 const postContent = document.createElement("div");
                 postContent.className = "postContent";
-                postContent.textContent = post.content; 
+                postContent.textContent = post.content;
+                if(post.image){
+                    const img = document.createElement('img');
+                    img.style.width = '350px';
+                    img.style.margin = 'auto';
+                    img.style.marginTop = '30px';
+                    img.style.marginLeft = '30px';
+                    img.style.display = 'inline-block';
+                    img.style.maxHeight = '400px';
+                    img.src = post.image;
+                    postContent.appendChild(img);
+                }
                 const postNav = document.createElement("div");
                 postNav.className = "postNav";
                 const postNavList = document.createElement("ul");
@@ -293,6 +317,33 @@ const encodedCredentials = btoa(`${username}:${password}`);
                 postDiv.appendChild(postTitle);
                 const postContent = document.createElement("div");
                 postContent.className = "postContent";
+                    if (post.content.length> 5000) {
+                        const img = document.createElement('img');
+                        img.style.width = '350px';
+                        img.style.margin = 'auto';
+                        img.style.marginTop = '30px';
+                        img.style.marginLeft = '30px';
+                        img.style.display = 'inline-block';
+                        img.style.maxHeight = '400px';
+                        img.src = 'data:image/jpeg;base64,' + post.content;
+                        postContent.appendChild(img);
+                        
+                    }
+                    else if (post.content.startsWith('http://') || post.content.startsWith('https://')) {
+                        const img = document.createElement('img');
+                        img.style.width = '350px';
+                        img.style.margin = 'auto';
+                        img.style.marginTop = '30px';
+                        img.style.marginLeft = '30px';
+                        img.style.display = 'inline-block';
+                        img.style.maxHeight = '400px';
+                        img.src = post.content;
+                        postContent.appendChild(img);
+                    }
+                    else {
+                        postContent.textContent = post.content;
+                    }
+                postDiv.appendChild(postContent);
                 const postNav = document.createElement("div");
                 postNav.className = "postNav";
                 const postNavList = document.createElement("ul");
@@ -737,7 +788,25 @@ const encodedCredentials = btoa(`${username}:${password}`);
                                     }
                                     else if (friend.server==="Web Weavers"){
                                         console.log("Also picked Web Weavers");
-                                        friendModal.style.display = "none";
+                                        const SharepostToWebWeavers = async () => {
+                                            const data = {
+                                                id:post.source,
+                                                type: "post",
+                                            }
+                                                try {
+                                                    const res= await axios.post(`https://web-weavers-backend-fb4af7963149.herokuapp.com/authors/${friend.id}/inbox/`,data, {
+                                                        headers: {
+                                                            authorization: `Basic ${encodedCredentials}`
+                                                        }
+                                                    })
+                                                    console.log(res.data);
+                                                    friendModal.style.display = "none";
+                                                } catch (error) {
+                                                    console.log(error);
+                                                }
+                                        }
+                                        SharepostToWebWeavers();
+                                        
                                     }
                                     })
                                 
@@ -803,7 +872,7 @@ const encodedCredentials = btoa(`${username}:${password}`);
                         confirmDelete.onclick = () => {
                             const deletePost = async () => {
                                 try{
-                                const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/posts/${post.id}`)
+                                const response= await axios.delete(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/posts/${post.id}/`)
                                 console.log(response.data)
                                 window.location.reload();
                                 }
@@ -818,6 +887,7 @@ const encodedCredentials = btoa(`${username}:${password}`);
                             confirmationDialog.style.display = "none";
                         };
                     };
+                    if(post.contentType!=="image"){
                     const editBtn = document.createElement("button");
                     editBtn.textContent = "Edit";
                     editBtn.className = "edit-btn";
@@ -826,13 +896,14 @@ const encodedCredentials = btoa(`${username}:${password}`);
                         event.stopPropagation();
                         editPostContent.value = post.content;
                         editModal.style.display = "block";
-                        saveChanges.onclick = () => {    
-                            post.content = editPostContent.value;
+                        saveChanges.onclick = () => {
+                            const theValue=editPostContent.value;
+                            post.content = theValue;
                             const data={
                                 content:post.content
                             }
                             try {
-                                const response= axios.put(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/posts/${post.id}`,data)
+                                const response= axios.put(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/posts/${post.id}/`,data)
                                 console.log(response.data)
                                 window.location.reload();
                             } catch (error) {
@@ -846,6 +917,7 @@ const encodedCredentials = btoa(`${username}:${password}`);
                             editModal.style.display = "none";
                         };
                     };
+                }
                     postNavList.appendChild(buttondiv);
                 }
                 stream.appendChild(postDiv);
@@ -865,6 +937,16 @@ createPostBtn.addEventListener("click", () =>{
 
 cancelPostBtn.addEventListener("click", () =>{
     postModal.close()
+    document.querySelector("#postTitle").value="";
+    document.querySelector("#postDescription").value="";
+    document.querySelector("#postContent").value="";
+    document.querySelector("#content-type").value="";
+    document.querySelector("#categories").value="";
+    document.querySelector("#visibility").value="";
+    imageInputContainer.style.display = 'none';
+    postContentTextarea.style.display = 'block';
+    document.querySelector("#imageInput").value="";
+    imageInputPreview.src = '';
 })
 postButton.addEventListener("click", () =>{
     const userData = JSON.parse(localStorage.getItem('userData'));
@@ -888,8 +970,45 @@ postButton.addEventListener("click", () =>{
         try{
         const response= await axios.post(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/posts/`,data)
         console.log(response.data)
+        const postID=response.data.id;
+        if(contentType==="image"){
+            const fileInput = document.querySelector('#imageInput');
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64Image = e.target.result.split(',')[1];
+                    const data = {
+                        image: base64Image
+                    };
+                    const uploadImage = async () => {
+                        try {
+                            const response1 = await axios.post(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/posts/${postID}/image`, data);
+                            console.log(response1.data);
+                            document.querySelector("#postTitle").value="";
+                            document.querySelector("#postDescription").value="";
+                            document.querySelector("#postContent").value="";
+                            document.querySelector("#content-type").value="";
+                            document.querySelector("#categories").value="";
+                            document.querySelector("#visibility").value="";
+                            imageInputContainer.style.display = 'none';
+                            postContentTextarea.style.display = 'block';
+                            document.querySelector("#imageInput").value="";
+                            imageInputPreview.src = '';
+                            window.location.reload();
+                        } catch (error) {
+                            console.log(error);
+                        }
+                    };
+                    uploadImage();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        else{
+            cancelPostBtn.click();
+        }
         postModal.close()
-        
         }
         catch(error){
             console.log(error.response.data)
@@ -897,12 +1016,6 @@ postButton.addEventListener("click", () =>{
         }
     }
     createPost()
-    document.querySelector("#postTitle").value="";
-    document.querySelector("#postDescription").value="";
-    document.querySelector("#postContent").value="";
-    document.querySelector("#content-type").value="";
-    document.querySelector("#categories").value="";
-    document.querySelector("#visibility").value="";
     getPosts();
 })
 
