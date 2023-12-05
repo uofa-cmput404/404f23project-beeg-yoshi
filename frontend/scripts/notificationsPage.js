@@ -80,6 +80,7 @@ const fetchInbox= async () => {
             </div>
             <div class="modal-footer">
                 <img src="../images/likeIcon.png" alt="">
+                <span id="likeCount">${message.numberOfLikes}</span>
             </div>
 
             

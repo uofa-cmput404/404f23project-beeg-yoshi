@@ -40,6 +40,7 @@ contentTypeSelect.addEventListener('change', function() {
     }
 });
 let friendData={};
+let people={"A-Team":[],"Web Weavers":[]};
 const username = 'beeg-yoshi';
 const password = '12345';
 const encodedCredentials = btoa(`${username}:${password}`);
@@ -52,6 +53,17 @@ const encodedCredentials = btoa(`${username}:${password}`);
             nav.appendChild(li);
         }
     }
+    const getPeople = async () => {
+        let A_Team_res= await axios.get(`https://c404-5f70eb0b3255.herokuapp.com/authors/`)
+        let web_weavers_res= await axios.get(`https://web-weavers-backend-fb4af7963149.herokuapp.com/authors/`, {
+            headers: {
+                'Authorization': `Basic ${encodedCredentials}`
+            }
+        })
+        people["A-Team"]=A_Team_res.data.results.items;
+        people["Web Weavers"]=web_weavers_res.data.items;
+        console.log(people);
+    }
     const getFriends = async () => {
         try {
             const response = await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/friends/`, {
@@ -59,7 +71,32 @@ const encodedCredentials = btoa(`${username}:${password}`);
                     'Authorization': userData.token
                 }
             });
-            friendData=response.data;
+            try {
+                const response1 = await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/remote/authors/${userData.id}/friends/`)
+                friendData=response.data.concat(response1.data);
+                await getPeople();
+                friendData.forEach(friend => {
+                    console.log(friend.server==='A-Team');
+                    if(friend.server==='A-Team'){
+                        people["A-Team"].forEach(person => {
+                            if(person.id===friend.to_user){
+                                friend.displayName=person.displayName;
+                            }
+                        });
+                    }
+                    if (friend.server==='Web Weavers') {
+                        people["Web Weavers"].forEach(person => {
+                            if(person.uuid===friend.to_user){
+                                friend.displayName=person.displayName;
+                            }
+                        });
+                    }
+                });
+                console.log(friendData);
+            } catch (error) {
+                console.log(error);
+            }
+            
         } catch (error) {
             console.log(error)
             
@@ -101,17 +138,61 @@ const encodedCredentials = btoa(`${username}:${password}`);
                     img.id = `${action}Icon`;
                     img.alt = action;
                     li.appendChild(img);
-                    if (action === "like") {
-                    const likeCounter = document.createElement('span');
-                    likeCounter.className = 'like-counter';
-                    likeCounter.textContent = post.likes.length;
-                    li.appendChild(likeCounter);
-                    }
                     postNavList.appendChild(li);
+                    const checkIfLikedA_Team = () => {
+                        console.log("check if liked running")
+                        if (action === "like") {
+                            console.log("action is like")
+                            let likeCounter = li.querySelector('.like-counter');
+                            if (!likeCounter) {
+                                likeCounter = document.createElement('span');
+                                likeCounter.className = 'like-counter';
+                                li.appendChild(likeCounter);
+                            }
+                            likeCounter.textContent = post.likes.length;
+                        post.likes.forEach(likedPost => {
+                            if (likedPost.author.id === userData.id.toString()) {
+                                console.log("liked by me")
+                                img.src = "../images/likedIcon.png";
+                            }
+                        });
+                    }
+                    }
+                    checkIfLikedA_Team();
                     li.addEventListener('click', function() {
                         switch(action) {
                             case "like":
                                 console.log("like is clicked");
+                                const likePost_ATeam = async () => {
+                                    let liked = false;
+                                    post.likes.forEach(likedPost => {
+                                        if (likedPost.author.id === userData.id.toString()) {
+                                            liked = true;
+                                        }
+                                    });
+                                    console.log(liked);
+                                    if(liked){
+                                        alert("You already liked this post.");
+                                        return;
+                                    }
+                                        try {
+                                            const data={
+                                                "author_id": userData.id,
+                                            }
+                                            const postID=post.id.split("/")[6];
+                                            const response= await axios.post(`https://c404-5f70eb0b3255.herokuapp.com/authors/${post.author.id}/posts/${postID}/likes/`,data, {
+                                                headers: {
+                                                    'Authorization': "Token e99281997c1aad7dbc54e0c9b6414a9b3065339a"
+                                                }
+                                            })
+                                            console.log(response.data)
+                                            window.location.reload();
+                                        } catch (error) {
+                                            console.log(error);
+                                        }
+
+                                }
+                                likePost_ATeam();
                         }
                         switch(action) {
                             case "comment":
@@ -191,7 +272,7 @@ const encodedCredentials = btoa(`${username}:${password}`);
         } catch (error) {
             console.log(error);
         }
-        try {
+        try { //Web weavers
             const response = await axios.get(`https://web-weavers-backend-fb4af7963149.herokuapp.com/public-posts/`,{
                 headers: {
                     'Authorization': `Basic ${encodedCredentials}`
@@ -199,10 +280,6 @@ const encodedCredentials = btoa(`${username}:${password}`);
             })
             console.log(response.data.items);
             response.data.items.forEach(post => {
-                if (post.content.length > 5000) {
-                    console.log('Post content too long, skipping post.');
-                    return;
-                }
                 const postDiv = document.createElement("div");
                 postDiv.className = "post";
                 const postPfp = document.createElement("img");
@@ -216,7 +293,6 @@ const encodedCredentials = btoa(`${username}:${password}`);
                 postDiv.appendChild(postTitle);
                 const postContent = document.createElement("div");
                 postContent.className = "postContent";
-                postContent.textContent = post.content; 
                 const postNav = document.createElement("div");
                 postNav.className = "postNav";
                 const postNavList = document.createElement("ul");
@@ -230,14 +306,154 @@ const encodedCredentials = btoa(`${username}:${password}`);
                     img.alt = action;
                     li.appendChild(img);
                     postNavList.appendChild(li);
+                    const checkLike_web_weavers=async()=>{
+                    if (action === "like") {
+                        const checkIfLiked = async () => {
+                            try {
+                                const postID=post.id.split("/")[6];
+                                const response = await axios.get(`https://web-weavers-backend-fb4af7963149.herokuapp.com/authors/${post.author.uuid}/posts/${postID}/likes/`, {
+                                    headers: {
+                                        'Authorization': `Basic ${encodedCredentials}`
+                                    }
+                                })
+
+                                let likeCounter = li.querySelector('.like-counter');
+                                if (!likeCounter) {
+                                likeCounter = document.createElement('span');
+                                likeCounter.className = 'like-counter';
+                                li.appendChild(likeCounter);
+                                }
+                                likeCounter.textContent = response.data.items.length;
+                                response.data.items.forEach(likedPost => {
+                                    console.log(likedPost.author.id +"/"=== userData.url);
+                                    if (likedPost.author.id +"/"=== userData.url) {
+                                        img.src = "../images/likedIcon.png";
+                                        return true;
+                                    }
+                                });
+                                return false;
+                            } catch (error) {
+                                console.log(error);
+                            }
+                        }
+                        checkIfLiked();
+                    }
+                }
+                checkLike_web_weavers();
                     li.addEventListener('click', function() {
                         switch(action) {
                             case "like":
                                 console.log("like is clicked");
+                                const likePost_Web_Weavers = async () => {
+                                    let liked = false;
+                                    const checkBeforeLike=async()=>{
+                                    liked= await checkLike_web_weavers();
+                                    }
+                                    checkBeforeLike();
+                                    console.log(liked);
+                                    if(liked){
+                                        alert("You already liked this post.");
+                                        return;
+                                    }
+                                        try {
+                                            const data={
+                                                author:userData.url,
+                                                type : "Like",
+                                                object: post.id,
+                                                summary:"" + userData.displayName + " liked your post"
+                                            }
+                                            const response= await axios.post(`https://web-weavers-backend-fb4af7963149.herokuapp.com/authors/${post.author.uuid}/inbox/`,data, {
+                                                headers: {
+                                                    'Authorization': `Basic ${encodedCredentials}`
+                                                }
+                                                })
+                                            console.log(response.data)
+                                            checkLike_web_weavers();
+                                        } catch (error) {
+                                            console.log(error);
+                                            
+                                        }
+
+                                }
+                                likePost_Web_Weavers();
                         }
                         switch(action) {
                             case "comment":
                                 console.log("comment is clicked");
+                                const getComments_Web_Weavers = async () => {
+                                    try {
+                                        const postID=post.id.split("/")[6];
+                                        const response = await axios.get(`https://web-weavers-backend-fb4af7963149.herokuapp.com/authors/${post.author.uuid}/posts/${postID}/comments/`, {
+                                            headers: {
+                                                'Authorization': `Basic ${encodedCredentials}`
+                                            }
+                                        });
+                                        console.log(response.data);
+                                        commentList.innerHTML = '';
+                                        let commentsHtml = '';
+                                        if (response.data.items.length === 0) {
+                                            commentsHtml = '<p>No comments yet.</p>';
+                                        }
+                                        else{
+                                        response.data.items.forEach(comment => {
+                                            const commentHtml = `
+                                                <div class="comment-item">
+                                                    <strong><i>${comment.author["displayName"]}</i> said:</strong>
+                                                    <p>${comment.comment}</p>
+                                                    <button class="like-btn" onclick="console.log('Like clicked for comment:', ${comment.id});">Like</button>
+                                                </div>
+                                            `;
+                                            commentsHtml += commentHtml;
+                                        });
+                                    }
+                                        commentList.innerHTML = commentsHtml;
+                                        commentModal.style.display = "block";
+                                    } catch (error) {
+                                        console.log(error);
+                                    }
+                                }
+                                getComments_Web_Weavers();
+                                submitCommentBtn.onclick = () => {
+                                    const createComment_Web_Weavers = async () => {
+                                        try {
+                                            let urlSend=String(userData.url)
+                                            urlSend=urlSend.slice(0,-1)
+                                            const data={
+                                                author:urlSend,
+                                                comment:userCommentInput.value,
+                                                contentType:"text/plain"
+                                            }
+                                            const postID=post.id.split("/")[6];
+                                            const response = await axios.post(`https://web-weavers-backend-fb4af7963149.herokuapp.com/authors/${post.author.uuid}/posts/${postID}/comments/`,data, {
+                                                headers: {
+                                                    'Authorization': `Basic ${encodedCredentials}`
+                                                }
+                                            })
+                                            const comment_id=response.data.id;
+                                            try {
+                                                const data1={
+                                                    id:comment_id,
+                                                    type: "comment",
+                                                }
+                                                const response1= await axios.post(`https://web-weavers-backend-fb4af7963149.herokuapp.com/authors/${post.author.uuid}/inbox/` ,data1, {
+                                                    headers: {
+                                                        'Authorization': `Basic ${encodedCredentials}`
+                                                    }
+                                                 } )
+                                            } catch (error) {
+                                                console.log(error);
+                                            }
+                                        } catch (error) {
+                                            console.log(error);
+                                        }
+                                    }
+                                    createComment_Web_Weavers();
+                                    userCommentInput.value = '';
+                                    commentModal.style.display = "none";
+                                };
+
+                                break;
+
                             }
                         switch(action) {
                             case "share":
@@ -255,7 +471,7 @@ const encodedCredentials = btoa(`${username}:${password}`);
         } catch (error) {
             console.log(error);
         }
-        try {
+        try { //beeg-yoshi
             const response = await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/get/${userData.id}/posts/`);
             let images=[];
             try {
@@ -311,6 +527,7 @@ const encodedCredentials = btoa(`${username}:${password}`);
                     img.id = `${action}Icon`;
                     img.alt = action;
                     li.appendChild(img);
+                    const checkLike=async()=>{
                     if (action === "like") {
                         const checkIfLiked = async () => {
                             try {
@@ -325,8 +542,12 @@ const encodedCredentials = btoa(`${username}:${password}`);
                                 console.log(error);
                             }
                         }
-                        const likeCounter = document.createElement('span');
-                        likeCounter.className = 'like-counter';
+                        let likeCounter = li.querySelector('.like-counter');
+                        if (!likeCounter) {
+                            likeCounter = document.createElement('span');
+                            likeCounter.className = 'like-counter';
+                            li.appendChild(likeCounter);
+                        }
                         const getLikesForPost = async () => {
                             try {
                                 const response = await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${post.author}/posts/${post.id}/likes`)
@@ -343,6 +564,8 @@ const encodedCredentials = btoa(`${username}:${password}`);
                     checkIfLiked();
                     getLikesForPost();
                 }
+            }
+            checkLike("first");
                     li.addEventListener('click', function() {
                         switch(action) {
                             case "like":
@@ -355,7 +578,7 @@ const encodedCredentials = btoa(`${username}:${password}`);
                                     try {
                                         const response= await axios.post(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/like/${post.id}/`,data)
                                         console.log(response.data)
-                                        window.location.reload();
+                                        checkLike("second");
                                         if (response.status === 200) {
                                             alert("You already liked this post.");
                                         }
@@ -379,7 +602,7 @@ const encodedCredentials = btoa(`${username}:${password}`);
                                         response.data.forEach(comment => {
                                             const commentHtml = `
                                                 <div class="comment-item">
-                                                    <strong><i>${comment.author["displayName"]}</i> said:</strong>
+                                                    <strong><i>${comment.author["displayName"]?comment.author["displayName"]:comment.displayName}</i> said:</strong>
                                                     <p>${comment.comment}</p>
                                                     <button class="like-btn" onclick="console.log('Like clicked for comment:', ${comment.id});">Like</button>
                                                 </div>
@@ -434,18 +657,20 @@ const encodedCredentials = btoa(`${username}:${password}`);
                                 friendList.innerHTML = '';
                                 let friendsHtml = '';
                                 friendData.forEach(friend => {
+                                    console.log(friend);
+                                    const serverName = friend.host === "https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/" ? "Beeg Yoshi" : friend.server;
                                     const friendHtml = `
-                                    <li class="item" data-user-id="${friend.id}">
+                                    <li class="item" data-user-id="${friend.id ? friend.id : friend.to_user}">
                                     <span class="checkbox">
                                         <i class="fa-solid fa-check check-icon"></i>
                                     </span>
-                                    <span class="item-text">${friend.displayName}</span>
+                                    <span class="item-text" data-user-id="${friend.id ? friend.id : friend.to_user}" data-server="${serverName}">${friend.displayName}</span>
                                 </li>
                                     `;
                                     friendsHtml += friendHtml;
                                 });
                                 const submitbtnHTML = `
-                                <button class="share-posts-btn"">Share</button>
+                                <button class="share-posts-btn">Share</button>
                                 `
                                 friendsHtml += submitbtnHTML;
                                 friendList.innerHTML = friendsHtml;
@@ -458,10 +683,16 @@ const encodedCredentials = btoa(`${username}:${password}`);
                                 document.querySelector(".share-posts-btn").addEventListener("click", () => {
                                     const selectedFriends = [];
                                     document.querySelectorAll(".item.checked").forEach(item => {
-                                        selectedFriends.push(item.dataset.userId);
+                                        const server = item.querySelector(".item-text").dataset.server;
+                                        selectedFriends.push({ id: item.dataset.userId, server: server });
                                     });
-                                    selectedFriends.forEach(friendId => {
+                                    selectedFriends.forEach(friend  => {
+                                        if(friend.server==="Beeg Yoshi"){
+                                        const friendId = friend.id;
                                         const sharePost = async () => {
+                                            const response = await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${post.author}/posts/${post.id}/likes`)
+                                            console.log(response.data);
+                                            const numberOfLikes = response.data.length;
                                             const image_for_this_post = [];
                                             images.forEach(image => {
                                                 if (image.post === post.id) {
@@ -476,6 +707,7 @@ const encodedCredentials = btoa(`${username}:${password}`);
                                                 author:post.author,
                                                 count:post.count,
                                                 images:image_for_this_post,
+                                                numberOfLikes:numberOfLikes,
                                             }
                                             try {
                                                 const response = await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${friendId}/inbox/`)
@@ -494,9 +726,21 @@ const encodedCredentials = btoa(`${username}:${password}`);
                                             } catch (error) {
                                                 console.log(error);
                                             }
+
                                         }
+                                    
                                         sharePost();
+                                    }
+                                    else if(friend.server==="A-Team"){
+                                        console.log("Also picked A-Team");
+                                        friendModal.style.display = "none";
+                                    }
+                                    else if (friend.server==="Web Weavers"){
+                                        console.log("Also picked Web Weavers");
+                                        friendModal.style.display = "none";
+                                    }
                                     })
+                                
                                 });
                                 break;
                         }
