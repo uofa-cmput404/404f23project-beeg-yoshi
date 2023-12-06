@@ -42,7 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     modal.style.display = 'block';
                     document.getElementById('userId').value = user.id;
                     document.getElementById('userName').value = user.displayName || '';
-                    document.getElementById('userEmail').value = user.email || '';
                     document.getElementById('Github').value = user.github || '';
                     document.getElementById('Password').value = user.password || '';
                     document.querySelector('.close-button').onclick = function() {
@@ -52,7 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         event.preventDefault();
                         const data={
                             displayName:document.getElementById('userName').value,
-                            email:document.getElementById('userEmail').value,
                             github:document.getElementById('Github').value,
                             password:document.getElementById('Password').value
                         }
