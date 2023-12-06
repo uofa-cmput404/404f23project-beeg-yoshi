@@ -10,7 +10,7 @@ if (userData) {
     console.log(userData)
     if(userData.type==="SERVERADMIN"){
         let li = document.createElement("li");
-        li.innerHTML = '<a href="./AdminPage.html">Manage Author Access</a>';
+        li.innerHTML = '<a href="./AdminPage.html">Manage Access</a>';
         nav.appendChild(li);
     }
 }

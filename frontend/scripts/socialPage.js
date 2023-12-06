@@ -13,11 +13,16 @@ if (userData) {
     console.log(userData)
     if(userData.type==="SERVERADMIN"){
         let li = document.createElement("li");
-        li.innerHTML = '<a href="./AdminPage.html">Manage Author Access</a>';
+        li.innerHTML = '<a href="./AdminPage.html">Manage Access</a>';
         nav.appendChild(li);
     }
 }
 async function fetchLists() {
+    const res= await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/admin/node/`)
+    const Web_Weaver_connection=res.data[0]
+    const A_Team_connection=res.data[1]
+    console.log(Web_Weaver_connection)
+    console.log(A_Team_connection)
     let friends = await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${authorId}/friends/`, {
         headers: {
             'Authorization': userData.token
@@ -41,7 +46,7 @@ async function fetchLists() {
     // })
     let remote_followers= await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/remote/authors/${authorId}/followers/`)
     remote_followers.data.items.forEach(item => {
-        if (item.server==='Web Weavers'){
+        if (item.server==='Web Weavers' && Web_Weaver_connection.active){
         web_weavers_res.data.items.forEach(user => {
             if (item.id === user.uuid){
                 followers.data.items.push(user)
@@ -49,7 +54,7 @@ async function fetchLists() {
             }
         })
     }
-        else if (item.server==='A-Team'){
+        else if (item.server==='A-Team' && A_Team_connection.active){
         A_Team_res.data.results.items.forEach(user => {
             if (item.id === user.id){
                 followers.data.items.push(user)
@@ -60,7 +65,7 @@ async function fetchLists() {
     })
     let remoteFriends= await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/remote/authors/${authorId}/friends/`)
     remoteFriends.data.forEach(item => {
-        if (item.server==='Web Weavers'){
+        if (item.server==='Web Weavers' && Web_Weaver_connection.active){
         web_weavers_res.data.items.forEach(user => {
             if (item.to_user === user.uuid){
                 web_weavers_res.data.items.splice(web_weavers_res.data.items.indexOf(user),1)
@@ -70,7 +75,7 @@ async function fetchLists() {
         })
     }
 
-        else if (item.server==='A-Team'){
+        else if (item.server==='A-Team' && A_Team_connection.active){
         A_Team_res.data.results.items.forEach(user => {
             if (item.to_user === user.id){
                 A_Team_res.data.results.items.splice(A_Team_res.data.results.items.indexOf(user),1)
@@ -81,7 +86,7 @@ async function fetchLists() {
     }
     })
     pending_remote.data.items.forEach(item => {
-        if (item.server==='Web Weavers'){
+        if (item.server==='Web Weavers' && Web_Weaver_connection.active){
         web_weavers_res.data.items.forEach(user => {
             if (item.id === user.uuid){
                 web_weavers_res.data.items.splice(web_weavers_res.data.items.indexOf(user),1)
@@ -91,7 +96,7 @@ async function fetchLists() {
         })
     }
 
-        else if (item.server==='A-Team'){
+        else if (item.server==='A-Team' && A_Team_connection.active){
         A_Team_res.data.results.items.forEach(user => {
             if (item.id === user.id){
                 A_Team_res.data.results.items.splice(A_Team_res.data.results.items.indexOf(user),1)
@@ -110,8 +115,12 @@ async function fetchLists() {
     console.log(followers.data.items);
     console.log(friends.data);
     console.log(strangers.data);
-    populateList(strangersList, A_Team_res.data.results.items, 'Follow');
-    populateList(strangersList, web_weavers_res.data.items, 'Follow');
+    if(A_Team_connection.active){
+        populateList(strangersList, A_Team_res.data.results.items, 'Follow');
+    }
+    if(Web_Weaver_connection.active){
+        populateList(strangersList, web_weavers_res.data.items, 'Follow');
+    }
     populateList(pendingList, pending.data.items, 'Cancel');
     populateList(followersList, followers.data.items, '');
     populateList(friendsList, friends.data, 'Unfollow');
