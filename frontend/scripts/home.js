@@ -1223,6 +1223,8 @@ postButton.addEventListener("click", () =>{
     const visibility=document.querySelector("#visibility").value;
     const selectedOptions = Array.from(categoriesElement.selectedOptions);
     const categories = selectedOptions.map(option => option.value);
+    const unlistedCheckbox = document.getElementById('unlistedCheckbox');
+    const isUnlisted = unlistedCheckbox.checked;
     const createPost = async ()=> {
         const data={
             title:title,
@@ -1230,7 +1232,8 @@ postButton.addEventListener("click", () =>{
             content:content,
             contentType:contentType,
             categories:categories,
-            visibility:visibility
+            visibility:visibility,
+            unlisted: isUnlisted
         }
         try{
         const response= await axios.post(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/posts/`,data)
