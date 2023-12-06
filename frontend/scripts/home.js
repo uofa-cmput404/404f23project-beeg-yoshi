@@ -62,7 +62,7 @@ const encodedCredentials = btoa(`${username}:${password}`);
         console.log(userData);
         if(userData.type==="SERVERADMIN"){
             let li = document.createElement("li");
-            li.innerHTML = '<a href="./AdminPage.html">Manage Author Access</a>';
+            li.innerHTML = '<a href="./AdminPage.html">Manage Access</a>';
             nav.appendChild(li);
         }
     }
@@ -116,8 +116,14 @@ const encodedCredentials = btoa(`${username}:${password}`);
         }
     }
     getFriends();
-    const getPosts = async () => { // A-Team
-        try {
+    const getPosts = async () => { 
+        const res= await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/admin/node/`)
+        const Web_Weaver_connection=res.data[0]
+        const A_Team_connection=res.data[1]
+        console.log(Web_Weaver_connection);
+        console.log(A_Team_connection);
+        if (A_Team_connection.active) {
+        try {// A-Team
             const response = await axios.get(`https://c404-5f70eb0b3255.herokuapp.com/getAllPublicPosts/`)
             console.log(response.data.results.items);
             response.data.results.items.forEach(post => {
@@ -296,6 +302,8 @@ const encodedCredentials = btoa(`${username}:${password}`);
         } catch (error) {
             console.log(error);
         }
+    }
+    if (Web_Weaver_connection.active) {
         try { //Web weavers
             const response = await axios.get(`https://web-weavers-backend-fb4af7963149.herokuapp.com/public-posts/`,{
                 headers: {
@@ -522,6 +530,7 @@ const encodedCredentials = btoa(`${username}:${password}`);
         } catch (error) {
             console.log(error);
         }
+    }
         try { //beeg-yoshi
             const response = await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/get/${userData.id}/posts/`);
             let images=[];
@@ -718,7 +727,15 @@ const encodedCredentials = btoa(`${username}:${password}`);
                                     <span class="item-text" data-user-id="${friend.id ? friend.id : friend.to_user}" data-server="${serverName}">${friend.displayName}</span>
                                 </li>
                                     `;
-                                    friendsHtml += friendHtml;
+                                    if (serverName === "Beeg Yoshi") {
+                                        friendsHtml += friendHtml;
+                                    }
+                                    if(serverName==="A-Team" && A_Team_connection.active){
+                                        friendsHtml += friendHtml;
+                                    }
+                                    if(serverName==="Web Weavers" && Web_Weaver_connection.active){
+                                        friendsHtml += friendHtml;
+                                    }
                                 });
                                 const submitbtnHTML = `
                                 <button class="share-posts-btn">Share</button>
@@ -735,7 +752,17 @@ const encodedCredentials = btoa(`${username}:${password}`);
                                     const selectedFriends = [];
                                     document.querySelectorAll(".item.checked").forEach(item => {
                                         const server = item.querySelector(".item-text").dataset.server;
+                                        if (server ==="A-team" && A_Team_connection.active) {
+                                            console.log('A team member is added')
                                         selectedFriends.push({ id: item.dataset.userId, server: server });
+                                        }
+                                        else if (server ==="Web Weavers" && Web_Weaver_connection.active) {
+                                            console.log('Web weavers member is added')
+                                            selectedFriends.push({ id: item.dataset.userId, server: server });
+                                        }
+                                        else if (server ==="Beeg Yoshi") {
+                                            selectedFriends.push({ id: item.dataset.userId, server: server });
+                                        }
                                     });
                                     selectedFriends.forEach(friend  => {
                                         if(friend.server==="Beeg Yoshi"){
