@@ -32,6 +32,7 @@
 .content{
     overflow: auto; /* make it so when content goes out of each column, it adds a scrollbar */
     padding: 1rem;
+    justify-content: space-around;
 }
 
 .content h1{
@@ -50,7 +51,7 @@
     /* Structure */
     display: flex;
     flex-direction: column;
-    flex: 0 0 33%;
+    flex: 0 0 40%;
     border: 1px solid black;
     border-radius: 12px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -62,8 +63,7 @@
     padding: 1rem;
 }
 
-.likedCommentedStream{
-    /* Structure */
+/* .likedCommentedStream{
     display: flex;
     flex-direction: column;
     flex: 0 0 33%;
@@ -73,16 +73,15 @@
     overflow-y: auto;
     min-height: min-content;
 
-    /* Styling */
-    gap: 1rem; /* Gap between nodes */
+    gap: 1rem; 
     padding: 1rem;
-}
+} */
 
 .inboxStream{
     /* Structure */
     display: flex;
     flex-direction: column;
-    flex: 0 0 33%;
+    flex: 0 0 40%;
     border: 1px solid black;
     border-radius: 12px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
