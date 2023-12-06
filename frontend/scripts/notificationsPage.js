@@ -80,7 +80,7 @@ const fetchInbox= async () => {
             </div>
             <div class="modal-footer">
                 <img src="../images/likeIcon.png" alt="">
-                <span id="likeCount">${message.numberOfLikes}</span>
+                <span id="likeCount">${message.numberOfLikes?message.numberOfLikes:0}</span>
             </div>
 
             
@@ -92,7 +92,7 @@ const fetchInbox= async () => {
             const closeInboxNodeBtn = document.querySelector(".close");
             closeInboxNodeBtn.addEventListener("click", () => {
                 inboxNodeModal.style.display="none";
-                document.body.style.overflow = "auto"; /* unlocks the background */
+                document.body.style.overflow = "auto";
             })
             })
             inboxStream.appendChild(node);

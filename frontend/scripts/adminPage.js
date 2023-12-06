@@ -2,6 +2,7 @@ const Backbtn = document.getElementById('backButton');
 document.addEventListener("DOMContentLoaded", () => {
     const activeUserList = document.getElementById('activeUserList');
     const inactiveUserList = document.getElementById('inactiveUserList');
+    const nodeConnectionList = document.getElementById('nodeConnectionList');
     const users = [];
     const fetchAuthors = async () => {
         try {
@@ -86,6 +87,45 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
     fetchAuthors();
+    const fetchNodeConnections = async () => {
+        try {
+            const response = await axios.get('https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/admin/node/');
+            
+            response.data.forEach(nodeConnection => {
+                console.log(nodeConnection);
+                const nodeConnectionItem = document.createElement('div');
+                nodeConnectionItem.className = 'user-item';
+                nodeConnectionItem.textContent = nodeConnection.name + " is ";
+                const statusWords= nodeConnection.active? 'active' : 'inactive';
+                nodeConnectionItem.textContent+= statusWords;
+                const actionButton = document.createElement('button');
+                const buttonContainer = document.createElement('div');
+                buttonContainer.className = 'button-container';
+                const deleteNodeConnection = async (nodeConnection) => {
+                    console.log(nodeConnection);
+                    console.log("delete is called");
+
+                    try {
+                        const data={
+                            name:nodeConnection.name,
+                        }
+                        const response = await axios.put(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/admin/node/`, data);
+                        window.location.reload();
+                    }catch(error) {
+                        console.log(error);
+                    }
+                }
+                actionButton.textContent = nodeConnection.active ? 'Deactivate' : 'Activate';
+                actionButton.onclick = () => deleteNodeConnection(nodeConnection);
+                buttonContainer.appendChild(actionButton);
+                nodeConnectionItem.appendChild(buttonContainer);
+                nodeConnectionList.appendChild(nodeConnectionItem);
+            });
+        }catch(error) {
+            console.log(error)
+        }
+    }
+    fetchNodeConnections();
 });
 Backbtn.addEventListener('click', () => {
     window.location.href = "Dashboard.html";
