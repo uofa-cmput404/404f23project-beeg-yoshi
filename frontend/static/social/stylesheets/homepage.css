@@ -467,10 +467,11 @@ dialog::backdrop{
     transform: translate(-50%, -50%);
     z-index: 10;
     position: fixed;
-    width: 550px;
+    width: 450px;
     height: fit-content;
     margin-top: 10px;
     border-radius: 12px;
+    border: 2px solid var(--darkText);
     display: none;
 }
 .select-btn{
@@ -511,6 +512,26 @@ dialog::backdrop{
     padding: 16px;
     background-color: #fff;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--niceGray);
+}
+
+.list-items .share-posts-btn{
+
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    font-weight: 500;
+    border-radius: 3px;
+    padding: 0 15px;
+    border-radius: 4px;
+    color: #6200ee;
+    background: transparent;
+    line-height: 1.15;
+    height: 36px;
+    min-width: 64px;
+    border: 1px solid #6200ee;
+    text-align: center;
+
 }
 .select-btn.open ~ .list-items{
     display: block;
