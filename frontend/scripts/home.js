@@ -289,7 +289,127 @@ const encodedCredentials = btoa(`${username}:${password}`);
                             
                         switch(action) {
                             case "share":
-                                console.log("share is clicked");
+                                friendModal.style.display = "block";
+                                friendList.innerHTML = '';
+                                let friendsHtml = '';
+                                friendData.forEach(friend => {
+                                    console.log(friend);
+                                    const serverName = friend.host === "https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/" ? "Beeg Yoshi" : friend.server;
+                                    const friendHtml = `
+                                    <li class="item" data-user-id="${friend.id ? friend.id : friend.to_user}">
+                                    <span class="checkbox">
+                                        <i class="fa-solid fa-check check-icon"></i>
+                                    </span>
+                                    <span class="item-text" data-user-id="${friend.id ? friend.id : friend.to_user}" data-server="${serverName}">${friend.displayName}</span>
+                                </li>
+                                    `;
+                                    if (serverName === "Beeg Yoshi") {
+                                        friendsHtml += friendHtml;
+                                    }
+                                    if(serverName==="A-Team" && A_Team_connection.active){
+                                        friendsHtml += friendHtml;
+                                    }
+                                    if(serverName==="Web Weavers" && Web_Weaver_connection.active){
+                                        friendsHtml += friendHtml;
+                                    }
+                                });
+                                const submitbtnHTML = `
+                                <button class="share-posts-btn">Share</button>
+                                `
+                                friendsHtml += submitbtnHTML;
+                                friendList.innerHTML = friendsHtml;
+                                const items = document.querySelectorAll(".item");
+                                items.forEach(item => {
+                                    item.addEventListener("click", () => {
+                                        item.classList.toggle("checked");
+                                    });
+                                })
+                                document.querySelector(".share-posts-btn").addEventListener("click", () => {
+                                    const selectedFriends = [];
+                                    document.querySelectorAll(".item.checked").forEach(item => {
+                                        const server = item.querySelector(".item-text").dataset.server;
+                                        if (server ==="A-team" && A_Team_connection.active) {
+                                            console.log('A team member is added')
+                                        selectedFriends.push({ id: item.dataset.userId, server: server });
+                                        }
+                                        else if (server ==="Web Weavers" && Web_Weaver_connection.active) {
+                                            console.log('Web weavers member is added')
+                                            selectedFriends.push({ id: item.dataset.userId, server: server });
+                                        }
+                                        else if (server ==="Beeg Yoshi") {
+                                            selectedFriends.push({ id: item.dataset.userId, server: server });
+                                        }
+                                    });
+                                    selectedFriends.forEach(friend  => {
+                                        console.log(friend);
+                                        if(friend.server==="Beeg Yoshi"){
+                                        const friendId = friend.id;
+                                        const sharePost = async () => {
+                                            const imageTosend=[]
+                                            imageTosend.push(post.image);
+                                            const numberOfLikes = post.likes.length;
+                                            const data = {
+                                                senderId:userData.id,
+                                                senderName:userData.displayName,
+                                                postId:post.id,
+                                                post:post.content,
+                                                author:post.author.displayName,
+                                                count:post.count,
+                                                images:imageTosend,
+                                                numberOfLikes:numberOfLikes,
+                                            }
+                                            try {
+                                                const response = await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${friendId}/inbox/`)
+                                                const friendRequest=response.data.items["friendrequests"];
+                                                const notifications=response.data.items["notifications"];
+                                                const inbox = response.data.items["inbox"];
+                                                inbox.push(data);
+                                                const InboxData={"inbox":inbox,"notifications":notifications,"friendrequests":friendRequest}
+                                                try {
+                                                    const response = await axios.put(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${friendId}/inbox/`,InboxData)
+                                                    console.log(response.data);
+                                                    friendModal.style.display = "none";
+                                                } catch (error) {
+                                                    console.log(error);
+                                                }
+                                            } catch (error) {
+                                                console.log(error);
+                                            }
+
+                                        }
+                                    
+                                        sharePost();
+                                    }
+                                    else if(friend.server==="A-Team"){
+                                        console.log("Also picked A-Team");
+                                        friendModal.style.display = "none";
+                                    }
+                                    else if (friend.server==="Web Weavers"){
+                                        console.log("Also picked Web Weavers");
+                                        const SharepostToWebWeavers = async () => {
+                                            const data = {
+                                                id:post.source,
+                                                type: "post",
+                                            }
+                                                try {
+                                                    const res= await axios.post(`https://web-weavers-backend-fb4af7963149.herokuapp.com/authors/${friend.id}/inbox/`,data, {
+                                                        headers: {
+                                                            authorization: `Basic ${encodedCredentials}`
+                                                        }
+                                                    })
+                                                    console.log(res.data);
+                                                    friendModal.style.display = "none";
+                                                } catch (error) {
+                                                    console.log(error);
+                                                }
+                                        }
+                                        SharepostToWebWeavers();
+                                        
+                                    }
+                                    })
+                                
+                                });
+                                break;
                             }
                         });
                 });
@@ -516,7 +636,125 @@ const encodedCredentials = btoa(`${username}:${password}`);
                             }
                         switch(action) {
                             case "share":
-                                console.log("share is clicked");
+                                friendModal.style.display = "block";
+                                friendList.innerHTML = '';
+                                let friendsHtml = '';
+                                friendData.forEach(friend => {
+                                    console.log(friend);
+                                    const serverName = friend.host === "https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/" ? "Beeg Yoshi" : friend.server;
+                                    const friendHtml = `
+                                    <li class="item" data-user-id="${friend.id ? friend.id : friend.to_user}">
+                                    <span class="checkbox">
+                                        <i class="fa-solid fa-check check-icon"></i>
+                                    </span>
+                                    <span class="item-text" data-user-id="${friend.id ? friend.id : friend.to_user}" data-server="${serverName}">${friend.displayName}</span>
+                                </li>
+                                    `;
+                                    if (serverName === "Beeg Yoshi") {
+                                        friendsHtml += friendHtml;
+                                    }
+                                    if(serverName==="A-Team" && A_Team_connection.active){
+                                        friendsHtml += friendHtml;
+                                    }
+                                    if(serverName==="Web Weavers" && Web_Weaver_connection.active){
+                                        friendsHtml += friendHtml;
+                                    }
+                                });
+                                const submitbtnHTML = `
+                                <button class="share-posts-btn">Share</button>
+                                `
+                                friendsHtml += submitbtnHTML;
+                                friendList.innerHTML = friendsHtml;
+                                const items = document.querySelectorAll(".item");
+                                items.forEach(item => {
+                                    item.addEventListener("click", () => {
+                                        item.classList.toggle("checked");
+                                    });
+                                })
+                                document.querySelector(".share-posts-btn").addEventListener("click", () => {
+                                    const selectedFriends = [];
+                                    document.querySelectorAll(".item.checked").forEach(item => {
+                                        const server = item.querySelector(".item-text").dataset.server;
+                                        if (server ==="A-team" && A_Team_connection.active) {
+                                            console.log('A team member is added')
+                                        selectedFriends.push({ id: item.dataset.userId, server: server });
+                                        }
+                                        else if (server ==="Web Weavers" && Web_Weaver_connection.active) {
+                                            console.log('Web weavers member is added')
+                                            selectedFriends.push({ id: item.dataset.userId, server: server });
+                                        }
+                                        else if (server ==="Beeg Yoshi") {
+                                            selectedFriends.push({ id: item.dataset.userId, server: server });
+                                        }
+                                    });
+                                    selectedFriends.forEach(friend  => {
+                                        if(friend.server==="Beeg Yoshi"){
+                                        const friendId = friend.id;
+                                        const sharePost = async () => {
+                                            const image_for_this_post = [];
+                                            if(post.content.startsWith('http://') || post.content.startsWith('https://')){
+                                                image_for_this_post.push(post.content);
+                                            }
+                                            const data = {
+                                                senderId:userData.id,
+                                                senderName:userData.displayName,
+                                                postId:post.id,
+                                                post:post.title,
+                                                author:post.author.displayName,
+                                                count:post.count,
+                                                images:image_for_this_post,
+                                            }
+                                            try {
+                                                const response = await axios.get(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${friendId}/inbox/`)
+                                                const friendRequest=response.data.items["friendrequests"];
+                                                const notifications=response.data.items["notifications"];
+                                                const inbox = response.data.items["inbox"];
+                                                inbox.push(data);
+                                                const InboxData={"inbox":inbox,"notifications":notifications,"friendrequests":friendRequest}
+                                                try {
+                                                    const response = await axios.put(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${friendId}/inbox/`,InboxData)
+                                                    console.log(response.data);
+                                                    friendModal.style.display = "none";
+                                                } catch (error) {
+                                                    console.log(error);
+                                                }
+                                            } catch (error) {
+                                                console.log(error);
+                                            }
+
+                                        }
+                                    
+                                        sharePost();
+                                    }
+                                    else if(friend.server==="A-Team"){
+                                        console.log("Also picked A-Team");
+                                        friendModal.style.display = "none";
+                                    }
+                                    else if (friend.server==="Web Weavers"){
+                                        console.log("Also picked Web Weavers");
+                                        const SharepostToWebWeavers = async () => {
+                                            const data = {
+                                                id:post.source,
+                                                type: "post",
+                                            }
+                                                try {
+                                                    const res= await axios.post(`https://web-weavers-backend-fb4af7963149.herokuapp.com/authors/${friend.id}/inbox/`,data, {
+                                                        headers: {
+                                                            authorization: `Basic ${encodedCredentials}`
+                                                        }
+                                                    })
+                                                    console.log(res.data);
+                                                    friendModal.style.display = "none";
+                                                } catch (error) {
+                                                    console.log(error);
+                                                }
+                                        }
+                                        SharepostToWebWeavers();
+                                        
+                                    }
+                                    })
+                                
+                                });
                             }
                         });
 
