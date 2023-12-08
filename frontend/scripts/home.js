@@ -164,25 +164,24 @@ const encodedCredentials = btoa(`${username}:${password}`);
                     li.className = `${action}-btn`;
                     const img = document.createElement("img");
                     img.src = `../images/${action}Icon.png`;
-                    
-                    img.id = `${action}Icon`;
+                    const ID=post.id.split("/")[6];
+                    img.id = `${ID}Icon`;
                     img.alt = action;
                     li.appendChild(img);
                     postNavList.appendChild(li);
                     const checkIfLikedA_Team = () => {
-                        console.log("check if liked running")
                         if (action === "like") {
-                            console.log("action is like")
                             let likeCounter = li.querySelector('.like-counter');
                             if (!likeCounter) {
                                 likeCounter = document.createElement('span');
                                 likeCounter.className = 'like-counter';
+                                
+                                likeCounter.id =`${ID}-like-counter`
                                 li.appendChild(likeCounter);
                             }
                             likeCounter.textContent = post.likes.length;
                         post.likes.forEach(likedPost => {
                             if (likedPost.author.id === userData.id.toString()) {
-                                console.log("liked by me")
                                 img.src = "../images/likedIcon.png";
                             }
                         });
@@ -214,9 +213,21 @@ const encodedCredentials = btoa(`${username}:${password}`);
                                                 headers: {
                                                     'Authorization': "Token e99281997c1aad7dbc54e0c9b6414a9b3065339a"
                                                 }
-                                            })
-                                            console.log(response.data)
-                                            window.location.reload();
+                                            }).then((response) => {
+                                            const response1=axios.get(`https://c404-5f70eb0b3255.herokuapp.com/authors/${post.author.id}/posts/${postID}/likes/`, {
+                                                headers: {
+                                                    'Authorization': "Token e99281997c1aad7dbc54e0c9b6414a9b3065339a"
+                                                }
+                                            }).then((response1) => {
+                                                console.log(response1.data);
+                                                const numberOflikes=response1.data.count;
+                                                const likeCounter=document.getElementById(`${postID}-like-counter`);
+                                                console.log(likeCounter);
+                                                console.log(numberOflikes);
+                                                likeCounter.textContent=numberOflikes;
+                                                img.src = "../images/likedIcon.png";
+                                            });
+                                            });
                                         } catch (error) {
                                             console.log(error);
                                         }
@@ -793,8 +804,12 @@ const encodedCredentials = btoa(`${username}:${password}`);
                 postTitle.textContent = post.title;
                 postDiv.appendChild(postTitle);
                 const postContent = document.createElement("div");
+                const contentText=document.createElement("p")
+                contentText.textContent=post.content;
+                contentText.id=post.id;
+                postContent.appendChild(contentText);
                 postContent.className = "postContent";
-                postContent.textContent = post.content;
+                // postContent.textContent = post.content;
                 const imageDiv = document.createElement('div');
                 images.forEach(image => {
                     if (image.post === post.id) {
@@ -862,7 +877,7 @@ const encodedCredentials = btoa(`${username}:${password}`);
                     getLikesForPost();
                 }
             }
-            checkLike("first");
+            checkLike();
                     li.addEventListener('click', function() {
                         switch(action) {
                             case "like":
@@ -875,7 +890,7 @@ const encodedCredentials = btoa(`${username}:${password}`);
                                     try {
                                         const response= await axios.post(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/like/${post.id}/`,data)
                                         console.log(response.data)
-                                        checkLike("second");
+                                        checkLike();
                                         if (response.status === 200) {
                                             alert("You already liked this post.");
                                         }
@@ -1089,6 +1104,7 @@ const encodedCredentials = btoa(`${username}:${password}`);
                     AddImageBtn.textContent = "Add Image";
                     AddImageBtn.className = "add-image-btn";
                     buttondiv.appendChild(AddImageBtn);
+                    
                     AddImageBtn.addEventListener('click', () => {
                         const fileInput = document.createElement('input');
                         fileInput.type = 'file';
@@ -1112,7 +1128,6 @@ const encodedCredentials = btoa(`${username}:${password}`);
                                         try {
                                             const response = await axios.post(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/posts/${post.id}/image`, data);
                                             console.log(response.data);
-                                            window.location.reload();
                                         } catch (error) {
                                             console.log(error);
                                         }
@@ -1166,14 +1181,15 @@ const encodedCredentials = btoa(`${username}:${password}`);
                             const data={
                                 content:post.content
                             }
-                            try {
-                                const response= axios.put(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/posts/${post.id}/`,data)
-                                console.log(response.data)
-                                window.location.reload();
-                            } catch (error) {
-                                console.log(error.response.data);
-                                console.log(error.response.status); 
-                            }
+                            axios.put(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/posts/${post.id}/`, data)
+                            .then(response => {
+                                console.log("Post updated successfully:", response.data);
+                                contentText.textContent=theValue;
+                                editModal.style.display = "none";
+                            })
+                            .catch(error => {   
+                                console.error("Error updating post:", error);
+                            });
                             editModal.style.display = "none";
                         };
                     
@@ -1283,7 +1299,8 @@ postButton.addEventListener("click", () =>{
         }
     }
     createPost()
-    getPosts();
+    getPosts()
+
 })
 
 Logout.addEventListener("click", () =>{
