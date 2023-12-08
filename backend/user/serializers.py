@@ -1,4 +1,4 @@
-from .models import User,Like,Inbox
+from .models import User,Like,Inbox,remoteLike,node
 from django.contrib.contenttypes.models import ContentType
 from rest_framework import serializers
 
@@ -21,4 +21,17 @@ class LikeSerializer(serializers.ModelSerializer):
 class InboxSerializer(serializers.ModelSerializer):
     class Meta:
         model=Inbox
+        fields="__all__"
+        
+class remoteLikeSerializer(serializers.ModelSerializer):
+    content_type_name = serializers.SerializerMethodField()
+    class Meta:
+        model=remoteLike
+        fields = ['id', 'type', 'object_id', 'author', "displayName",'content_type_name', 'content_type', "server"]
+        
+    def get_content_type_name(self, obj):
+        return obj.content_type.model
+class nodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=node
         fields="__all__"

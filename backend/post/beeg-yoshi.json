@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "beeg-yoshi",
+  "private_key_id": "d488d007cc41a940b7e29d2de4d3a5b3c753745a",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDIAvj5RCAN76vt\nV38QU33xL58xw65GazwBaEy/0DKn7pn9XPCbeziW82ELMLUuNjAZ5u7qtDBc2KPU\nIwQgzQvFrWfzYSlKpyKDUeEDQ/0HwV1ftXb70/XOrpKqrxianoaYxCQwDW5vhC4Q\naxHzsFqsVb/YN1yNZQ8wYvHxCnCNuU3l+rGelnqbkFspEo/jtfzO8jfooz8t14XU\n1VPszgydNN4phgHpCVpwg6neJjb9Q9bnJSHtF5oBLcqIQeEsMIkfnlmV4Kcn/C95\nDUO1LodHF9cv4RysoIxBy5yggvqtZpi5fi/DHs9uYXl6fCt/Cgw9HGwYXECJe4oE\nt0jT7KBTAgMBAAECggEAYozQZ2WxU5yRvpa7lWxGJGY+DtOnlav1u43ML0DjDMqs\nlmHKbhnHVt1hphVgWH47si+O7hdNsxnNk1OTj6PoloSsMQfhRBbZExJvh9/il4Un\nwGZV05xrQ+TRgIdY3KqakEAowoKDtS/QUKepB0UQUFTJ+7u/fy3Zz5IZOxbVQYa7\nABaY1Tw0fTo3l2apSl4/9WQV3/JvzEFn9m8jwRwZ0+Yg21OXJOECgwVHvvvMoJ6Y\n23dFKRboOcRtXGu+RSs53nB/0d2gx4eDyfqkqEd4ayU4C7UbNcmziX8WgnX9DpUe\nAE1/XxLFxD9HA/M0EsWx2vaQNm9J3rl/dCC7vLu4RQKBgQDlWPn2tiNTnLVa3hK+\n8zlROZvFx5cxyQQoO8rENzpmzNzSefpNEbUbeMude9tMQbOsk5/PCzpjgkrFzlzx\n06EkAcimZhTvwpXW+UFfKf+ItXUGLDgpDVAZiQxoxDdklneVh2Lg6OyTYbllb/3f\nlG8NMU0093kksd29pPMIRPKSpwKBgQDfQUKSKyBKE5XB4nAQarurdJRpRgQNHmra\nF9BJZVMv+av7pOtAlZtGmxelu6FmdVAzQJ+45u3vHM2UqgerREz70IAS6WrTamRX\nZriuwh06B8JFu05MULL309vhnAFCXBggE8hs9iP5SBAj5xYMy61TBRll7yHi7rwf\n6X+bSMjWdQKBgQCR6092gaHuU7krLDnfFd705+NNLdTrjwq/EnPK7ZyRxWwF2ie/\nmzGQXgWmmCQJ24+WkIJP98PZhg9O1SJblhtjTmM8Q5y0gyhUk1fdVVpIv7LKD55X\nuCmrZX/otFbN/9Hr6CyoDmpexwFvIZb0Bnu1eBW4Sm/gQe5j96vNKhjv5wKBgQCi\nZL7+wb34BCz/3i0z0991BRTbSqGxxTlmMMJCUSDkmdD+9+Rjky9ieXgHBueNNrJC\nxbQo9FmIf8QOamuvqbvxw6UVnJIm/JHGfaLDA9Hsny4yON/oZR75ZDLh9e94jLLD\nyoAUuipKrp+G7hW88v69j8z8t6hHgO54rAk1NAla7QKBgHTKSHmjuAq3S/Xz4Rb7\nQESeBlcOvL3VV+enSgMCT7p23NJNphNKeFjwK4MyDCrmJCEuMoV33kV3Pxyx6bUw\ndSgDDK+oHifP7q8Zx00gJc1sdLHpJTf1wPhmx+PjkwXk35nRPcRPgQJPUa0EQboW\nOoKsBnbQaLKSGA7NHLb311Kf\n-----END PRIVATE KEY-----\n",
+  "client_email": "beeg-yoshi-upload@beeg-yoshi.iam.gserviceaccount.com",
+  "client_id": "107045459258425906515",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/beeg-yoshi-upload%40beeg-yoshi.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

@@ -33,7 +33,8 @@ class PostTestCase(TestCase):
             source="Test source1",
             origin="Test origin1",
             description="Test description1",
-            contentType="text/plain",                               
+            contentType="text/plain",
+            categories= ['test1', 'test2']                              
         )
         self.private_post = Post.objects.create(
             title='Private Post', 
@@ -43,6 +44,7 @@ class PostTestCase(TestCase):
             origin="Test origin1",
             description="Test description1",
             contentType="text/plain",
+            categories= ['test1', 'test2']
             )
         self.client = APIClient()
 
