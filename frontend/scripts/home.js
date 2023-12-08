@@ -1128,6 +1128,8 @@ const encodedCredentials = btoa(`${username}:${password}`);
                                         try {
                                             const response = await axios.post(`https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/${userData.id}/posts/${post.id}/image`, data);
                                             console.log(response.data);
+                                            getPosts();
+
                                         } catch (error) {
                                             console.log(error);
                                         }
