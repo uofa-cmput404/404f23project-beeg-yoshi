@@ -63,4 +63,5 @@ class CommentTestCase(TestCase):
         response = self.client.post(url, comment_data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Comment.objects.count(), 2)
-
+        
+    

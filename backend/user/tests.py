@@ -2,7 +2,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 from django.test import TestCase
-from .models import User, Like
+from .models import User, Like,UserToken
 from post.models import Post
 from friendship.models import Friendship
 
@@ -27,7 +27,8 @@ class UserAppTestCase(TestCase):
         )
         self.friendship = Friendship.objects.create(from_user=self.user1, to_user=self.user2)
         self.client = APIClient()
-
+        self.token = UserToken.objects.create(user=self.user1)
+        self.token2 = UserToken.objects.create(user=self.user2)
     def test_login(self):
         url = reverse('login')
         data = {'email': self.user1.email, 'password': self.user1.password}
@@ -63,6 +64,7 @@ class UserAppTestCase(TestCase):
 
     def test_get_all_friendship_of_single_author(self):
         url = reverse('get_all_friendship_of_single_author', kwargs={'pk': self.user1.pk})
+        self.client.credentials(HTTP_AUTHORIZATION= str(self.token.token))
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 

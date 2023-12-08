@@ -20,7 +20,7 @@ urlpatterns = [
     path('authors/<str:pk>/posts/<str:postID>/comments/<str:cid>/likes', views.get_like_for_comment_on_post, name='get_like_for_comment_on_post'),
     path('authors/<str:pk>/liked',views.likes_of_single_author, name='likes_of_single_author'),
     path('authors/<str:pk>/like/<str:postID>/', views.like_single_post, name='like_single_post'),
-
+    path('remote/authors/like/<str:postID>/', views.create_remote_like, name='create_remote_like'),
 
 ########################################################################################
 #                      testing purpose  
@@ -32,5 +32,9 @@ urlpatterns = [
 #                      Inbox  
 ########################################################################################
     path('authors/<str:pk>/inbox/', views.inbox_methods, name='inbox_methods'),
+########################################################################################
+#                      node 
+########################################################################################
+    path('admin/node/', views.node_methods, name='node_methods'),
 ]   
 

@@ -47,7 +47,7 @@ class Like(models.Model):
     type=models.CharField(default="like",max_length=1024)
     id=models.AutoField(primary_key=True)
     author=models.ForeignKey(User,on_delete=models.CASCADE)
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, default=18)
     object_id = models.CharField(max_length=1024)
     object=GenericForeignKey("content_type", "object_id")
     def __str__(self):
@@ -64,3 +64,21 @@ class Inbox(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['author'], name='unique_author_inbox')
         ]
+
+class remoteLike(models.Model):
+    type=models.CharField(default="remote like",max_length=1024)
+    id=models.AutoField(primary_key=True)
+    author=models.CharField(max_length=1024)
+    displayName=models.CharField(max_length=1024,default="unknown")
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, default=18)
+    object_id = models.CharField(max_length=1024)
+    object=GenericForeignKey("content_type", "object_id")
+    server=models.CharField(max_length=1024,default="unknown")
+    def __str__(self):
+        return self.displayName + " likes "
+
+class node(models.Model):
+    name=models.CharField(max_length=1024)
+    active=models.BooleanField(default=True)
+    def __str__(self):
+        return self.name + " is " + "active" if self.active else "inactive"
