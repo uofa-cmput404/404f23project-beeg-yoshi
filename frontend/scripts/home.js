@@ -946,7 +946,7 @@ const encodedCredentials = btoa(`${username}:${password}`);
                                     const createComment = async () => {
                                         const data = {
                                             comment: userCommentInput.value,
-                                            contentType:"text/markdown",
+                                            contentType:"text/plain",
                                             post: post.id,
                                             author: userData.id
                                         };
