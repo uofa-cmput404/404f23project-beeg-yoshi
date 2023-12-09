@@ -74,12 +74,13 @@ const fetchInbox= async () => {
                 <span class="close">&times;</span>
             </div>
 
-            <div class="modal-body">
+            <div class="modal-body" style="overflow-y: auto; max-height: 450px;">
                 <p id="postContent">${message.post}</p>
+                ${message.images.map(image => `<img src="${image}" alt="Image" style="width: 400px; max-height: 500px;">`).join('')}
             </div>
-
             <div class="modal-footer">
                 <img src="../images/likeIcon.png" alt="">
+                <span id="likeCount">${message.numberOfLikes?message.numberOfLikes:0}</span>
             </div>
 
             
@@ -91,7 +92,7 @@ const fetchInbox= async () => {
             const closeInboxNodeBtn = document.querySelector(".close");
             closeInboxNodeBtn.addEventListener("click", () => {
                 inboxNodeModal.style.display="none";
-                document.body.style.overflow = "auto"; /* unlocks the background */
+                document.body.style.overflow = "auto";
             })
             })
             inboxStream.appendChild(node);

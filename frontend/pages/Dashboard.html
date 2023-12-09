@@ -57,8 +57,8 @@
                     <!-- <label style="display: block;" for="content-type">Choose content type</label> -->
                     <select name="content-type" id="content-type">
                         <option value="" selected disabled>Content Type</option>
-                        <option value="plain-text">Plain Text</option>
-                        <option value="markdown">Markdown</option>
+                        <option value="text/plain">Plain Text</option>
+                        <option value="image">Image</option>
                     </select>
                     <!-- <label for="categories">Choose categories</label> -->
                     <select name="categories" id="categories">
@@ -74,9 +74,20 @@
                         <option value="FRIENDS">Friends Only</option>
                     </select>
                 </div>
+                <div class="unlistedOption">
+                    <input type="checkbox" id="unlistedCheckbox">
+                    <label for="unlistedCheckbox">Unlisted?</label>
+                </div>
 
                 <h4>Content</h4>
                 <textarea id="postContent" name="postContent" maxlength="500" placeholder="Enter Text (Max 500 characters)"></textarea>
+                <div id="imagePreviewContainer" style="display: none;">
+                    <img id="imagePreview" src="" alt="Image Preview" style="max-width: 100%; max-height: 300px; display: none;">
+                    <div id="imageInputContainer" style="display: none;">
+                        <input type="file" id="imageInput" accept="image/png, image/jpeg, image/webp">
+                        <img id="imageInputPreview" src="" alt="Image Preview" style="max-width: 100%; max-height: 350px; display: none;">
+                    </div>
+                </div>
             </div>
 
             <div class="modalFooter">
@@ -145,6 +156,5 @@
             </ul>
         </div>
         </div>
-        
     </body>
     </html>

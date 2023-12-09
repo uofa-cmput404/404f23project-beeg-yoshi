@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from .models import User,ServerAdmin, Like,Inbox, UserToken
+from .models import User,ServerAdmin, Like,Inbox, UserToken,remoteLike, node
 from friendship.models import Friendship, FriendRequest, remoteFriendRequest, remoteFriendship
-from .serializers import UserSerializer,LikeSerializer,InboxSerializer
+from .serializers import UserSerializer,LikeSerializer,InboxSerializer,remoteLikeSerializer,nodeSerializer
 from friendship.serializers import FriendshipSerializer, FriendRequestSerializer, remoteFriendRequestSerializer, remoteFriendshipSerializer
 from rest_framework import status
 from rest_framework.response import Response
@@ -115,7 +115,7 @@ def create_author(request):
     if request.method=='POST':
         new_user=User.objects.create(**request.data)
         new_user.save()
-        new_user.url=f"https://beeg-yoshi-social-distribution-50be4cf2bba8.herokuapp.com/service/authors/{new_user.id}/"
+        new_user.url=f"https://beeg-yoshi-backend-858f363fca5e.herokuapp.com/service/authors/{new_user.id}/"
         new_user.save()
         serializer=UserSerializer(new_user)
         author=User.objects.get(pk=serializer.data['id'])
@@ -297,9 +297,12 @@ def create_like(request):
 @api_view(['GET'])
 def get_like_for_post(request,pk,postID):
     if request.method=='GET':
-        likes=Like.objects.filter(object_id=postID,content_type=12)
+        likes=Like.objects.filter(object_id=postID,content_type=18)
         serializer=LikeSerializer(likes,many=True)
-        return Response(serializer.data,status=status.HTTP_200_OK)
+        remote_likes=remoteLike.objects.filter(object_id=postID,content_type=18)
+        remote_serializer=remoteLikeSerializer(remote_likes,many=True)
+        response=serializer.data+remote_serializer.data
+        return Response(response,status=status.HTTP_200_OK)
 @swagger_auto_schema(
         method='get',
         operation_description='Get a likes of an author',
@@ -346,7 +349,7 @@ def get_like_for_comment_on_post(request,pk, postID, cid):
 @api_view(['POST'])
 def like_single_post(request, pk,postID):
     if request.method=='POST':
-        like=Like.objects.filter(object_id=postID,content_type=12,author=pk)
+        like=Like.objects.filter(object_id=postID,content_type=18,author=pk)
         if like.exists():
             return Response({"message":{f"Like already exists "}},status=status.HTTP_200_OK)
         serializer=LikeSerializer(data=request.data)
@@ -354,7 +357,28 @@ def like_single_post(request, pk,postID):
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-
+@swagger_auto_schema(
+        method='post',
+        operation_description='remote like a comment on a post',
+        responses={
+            200: openapi.Response(
+                description='remote like a comment on a post',
+                schema=remoteLikeSerializer()
+            ),
+            400: 'Bad request',
+        },
+)
+@api_view(['POST'])
+def create_remote_like(request, postID):
+    if request.method=='POST':
+        remote_like=remoteLike.objects.filter(object_id=request.data['object_id'],content_type=18,author=request.data['author'])
+        if remote_like.exists():
+            return Response({"message":{f"Like already exists "}},status=status.HTTP_200_OK)
+        serializer=remoteLikeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 @swagger_auto_schema(
         method='get',
         operation_description='get inbox of an author',
@@ -387,3 +411,26 @@ def inbox_methods(request,pk):
         inbox.save()
         serializer=InboxSerializer(inbox)
         return Response(serializer.data,status=status.HTTP_200_OK)
+
+@api_view(['GET', 'POST', 'PUT'])
+def node_methods(request):
+    if request.method=='GET':
+        nodes=node.objects.all()
+        serializer=nodeSerializer(nodes,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    elif request.method=='POST':
+        serializer=nodeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    elif request.method=='PUT':
+        try:
+            node_obj=node.objects.get(name=request.data['name'])
+            node_obj.active= not node_obj.active
+            node_obj.save()
+            serializer=nodeSerializer(node_obj)
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        except node.DoesNotExist:
+            return Response({"message":{f"Node does not exist"}},status=status.HTTP_404_NOT_FOUND)
+    
